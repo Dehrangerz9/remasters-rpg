@@ -46,8 +46,7 @@
         <div class="weapon-tab-content">
           <div class="tab" data-group="weapon" data-tab="description">
             <div class="description-block">
-              <label>{{localize "RMRPG.Common.Description"}}</label>
-              <textarea name="system.description">{{system.description}}</textarea>
+              {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
             </div>
           </div>
           <div class="tab" data-group="weapon" data-tab="details">
@@ -113,7 +112,7 @@
                 </select>
               </div>
               <div class="weapon-damage-base">
-                <div class="weapon-field">
+                <div class="weapon-field weapon-damage-qty">
                   <label>{{localize "RMRPG.Item.Weapon.DiceCount"}}</label>
                   <input type="number" name="system.weapon.damage.base.dice" value="{{weapon.damage.base.dice}}" min="0" step="1" />
                 </div>
@@ -201,7 +200,7 @@
         </div>
         <div class="description-block">
           <label>{{localize "RMRPG.Item.Feat.Description"}}</label>
-          <textarea name="system.description">{{system.description}}</textarea>
+          {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
         </div>
       </div>
       {{else}}

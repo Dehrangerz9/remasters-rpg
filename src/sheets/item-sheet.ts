@@ -28,9 +28,7 @@ export class RMRPGItemSheet extends ItemSheet {
     html.find("[data-action='weapon-hit-bonus-add']").on("click", async (event: any) => {
       event.preventDefault();
       await this._onSubmit(event, { preventClose: true, preventRender: true });
-      const bonuses = Array.isArray(this.item.system?.weapon?.hit?.bonuses)
-        ? [...this.item.system.weapon.hit.bonuses]
-        : [];
+      const bonuses = this.normalizeBonusArray(this.item.system?.weapon?.hit?.bonuses).map((bonus) => ({ ...bonus }));
       bonuses.push({ label: "", value: 0 });
       await this.item.update({ "system.weapon.hit.bonuses": bonuses });
     });
@@ -40,9 +38,7 @@ export class RMRPGItemSheet extends ItemSheet {
       const index = Number(event.currentTarget.dataset.index);
       if (!Number.isFinite(index) || index < 0) return;
       await this._onSubmit(event, { preventClose: true, preventRender: true });
-      const bonuses = Array.isArray(this.item.system?.weapon?.hit?.bonuses)
-        ? [...this.item.system.weapon.hit.bonuses]
-        : [];
+      const bonuses = this.normalizeBonusArray(this.item.system?.weapon?.hit?.bonuses).map((bonus) => ({ ...bonus }));
       if (index >= bonuses.length) return;
       bonuses.splice(index, 1);
       await this.item.update({ "system.weapon.hit.bonuses": bonuses });
@@ -51,9 +47,7 @@ export class RMRPGItemSheet extends ItemSheet {
     html.find("[data-action='weapon-damage-bonus-add']").on("click", async (event: any) => {
       event.preventDefault();
       await this._onSubmit(event, { preventClose: true, preventRender: true });
-      const bonuses = Array.isArray(this.item.system?.weapon?.damage?.bonuses)
-        ? [...this.item.system.weapon.damage.bonuses]
-        : [];
+      const bonuses = this.normalizeBonusArray(this.item.system?.weapon?.damage?.bonuses).map((bonus) => ({ ...bonus }));
       bonuses.push({ formula: "", type: "physical" });
       await this.item.update({ "system.weapon.damage.bonuses": bonuses });
     });
@@ -63,13 +57,23 @@ export class RMRPGItemSheet extends ItemSheet {
       const index = Number(event.currentTarget.dataset.index);
       if (!Number.isFinite(index) || index < 0) return;
       await this._onSubmit(event, { preventClose: true, preventRender: true });
-      const bonuses = Array.isArray(this.item.system?.weapon?.damage?.bonuses)
-        ? [...this.item.system.weapon.damage.bonuses]
-        : [];
+      const bonuses = this.normalizeBonusArray(this.item.system?.weapon?.damage?.bonuses).map((bonus) => ({ ...bonus }));
       if (index >= bonuses.length) return;
       bonuses.splice(index, 1);
       await this.item.update({ "system.weapon.damage.bonuses": bonuses });
     });
+  }
+
+  protected async _updateObject(event: Event, formData: Record<string, any>) {
+    const expanded = foundry.utils.expandObject(formData);
+    const weapon = expanded?.system?.weapon;
+    if (weapon?.hit?.bonuses && !Array.isArray(weapon.hit.bonuses)) {
+      weapon.hit.bonuses = this.normalizeBonusArray(weapon.hit.bonuses);
+    }
+    if (weapon?.damage?.bonuses && !Array.isArray(weapon.damage.bonuses)) {
+      weapon.damage.bonuses = this.normalizeBonusArray(weapon.damage.bonuses);
+    }
+    return super._updateObject(event, expanded);
   }
 
   get template() {
@@ -146,7 +150,7 @@ export class RMRPGItemSheet extends ItemSheet {
       range: rawWeapon.range ?? "melee",
       hit: {
         attribute: rawHit.attribute ?? "corpo",
-        bonuses: Array.isArray(rawHit.bonuses) ? rawHit.bonuses : []
+        bonuses: this.normalizeBonusArray(rawHit.bonuses)
       },
       damage: {
         attribute: rawDamage.attribute ?? "none",
@@ -155,10 +159,18 @@ export class RMRPGItemSheet extends ItemSheet {
           die: String(rawDamage.base?.die ?? "d6"),
           type: String(rawDamage.base?.type ?? "physical")
         },
-        bonuses: Array.isArray(rawDamage.bonuses) ? rawDamage.bonuses : []
+        bonuses: this.normalizeBonusArray(rawDamage.bonuses)
       }
     };
     return context;
+  }
+
+  private normalizeBonusArray(bonuses: unknown) {
+    if (Array.isArray(bonuses)) return bonuses;
+    if (bonuses && typeof bonuses === "object") {
+      return Object.values(bonuses as Record<string, any>);
+    }
+    return [];
   }
 
   private applyThemeClass() {

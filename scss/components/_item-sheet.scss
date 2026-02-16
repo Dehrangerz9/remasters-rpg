@@ -98,15 +98,15 @@
     }
 
     .weapon-summary-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      display: grid;
+      gap: 0.4rem;
     }
 
     .weapon-field-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
+      align-items: center;
+      column-gap: 0.5rem;
+      display: grid;
+      grid-template-columns: minmax(64px, 96px) 1fr;
     }
 
     .weapon-summary-grid input,
@@ -114,8 +114,55 @@
     .weapon-field select,
     .weapon-bonus-row input,
     .weapon-bonus-row select {
-      height: 2rem;
+      height: 1.7rem;
       width: 100%;
+    }
+
+    .sheet-body input[type="text"],
+    .sheet-body input[type="number"],
+    .sheet-body select,
+    .sheet-body textarea {
+      background: #f2f8ff;
+      border: 1px solid #9fc5e4;
+      border-radius: 6px;
+      color: #1c3a52;
+    }
+
+    .sheet-body input[type="text"],
+    .sheet-body input[type="number"],
+    .sheet-body select {
+      height: 1.7rem;
+      padding: 0 0.4rem;
+    }
+
+    .sheet-body textarea {
+      padding: 0.4rem 0.5rem;
+    }
+
+    .sheet-body input[type="text"]:focus,
+    .sheet-body input[type="number"]:focus,
+    .sheet-body select:focus,
+    .sheet-body textarea:focus {
+      border-color: #5fa8d8;
+      box-shadow: 0 0 0 1px #5fa8d8;
+      outline: none;
+    }
+
+    .sheet-body .editor {
+      background: #f1f1f1;
+      border: 1px solid #c8cdd6;
+      border-radius: 8px;
+      color: #111;
+    }
+
+    .sheet-body .editor .editor-content,
+    .sheet-body .editor .editor-content .ProseMirror {
+      background: #f1f1f1;
+      color: #111;
+    }
+
+    .sheet-body .editor .editor-content {
+      padding: 0.45rem 0.55rem;
     }
 
     .weapon-tabs-column {
@@ -151,12 +198,20 @@
       min-width: 0;
       height: 1.8rem;
       line-height: 1;
+      box-shadow: none;
     }
 
     .weapon-tabs .item.active {
-      background: var(--rmrpg-accent-soft);
-      border-color: var(--rmrpg-accent-soft);
-      color: var(--rmrpg-accent);
+      background: #123a63;
+      border-color: #123a63;
+      color: #fff;
+      box-shadow: none;
+    }
+
+    .weapon-tabs .item:focus,
+    .weapon-tabs .item:focus-visible {
+      box-shadow: none;
+      outline: none;
     }
 
     .weapon-tab-content .tab {
@@ -205,6 +260,12 @@
 
     .weapon-damage-base .weapon-field {
       flex: 1 1 140px;
+    }
+
+    .weapon-damage-qty label {
+      font-size: 0.55rem;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
     }
 
     .weapon-bonus-list {
