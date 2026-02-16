@@ -1,0 +1,69 @@
+{
+  "Actor": {
+    "types": [
+      "character",
+      "npc"
+    ],
+    "templates": {
+      "common": {
+        "attributes": {
+          "strength": {
+            "value": 0
+          },
+          "agility": {
+            "value": 0
+          },
+          "intellect": {
+            "value": 0
+          }
+        },
+        "health": {
+          "value": 10,
+          "max": 10
+        }
+      }
+    },
+    "character": {
+      "templates": [
+        "common"
+      ],
+      "resources": {
+        "heroPoints": {
+          "value": 1,
+          "max": 3
+        }
+      }
+    },
+    "npc": {
+      "templates": [
+        "common"
+      ],
+      "threat": 1
+    }
+  },
+  "Item": {
+    "types": [
+      "weapon",
+      "ability"
+    ],
+    "templates": {
+      "common": {
+        "description": ""
+      }
+    },
+    "weapon": {
+      "templates": [
+        "common"
+      ],
+      "damage": {
+        "formula": "1d6"
+      }
+    },
+    "ability": {
+      "templates": [
+        "common"
+      ],
+      "cost": 0
+    }
+  }
+}

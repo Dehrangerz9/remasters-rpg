@@ -1,0 +1,67 @@
+<form class="rmrpg-sheet flexcol" autocomplete="off">
+  <header class="sheet-header flexrow">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'RMRPG.Actor.Name'}}" />
+      </h1>
+      <div class="type-pill">{{actor.type}}</div>
+    </div>
+  </header>
+
+  <nav class="tabs" data-group="primary">
+    <a class="item" data-tab="attributes">{{localize "RMRPG.Actor.Tabs.Attributes"}}</a>
+    <a class="item" data-tab="details">{{localize "RMRPG.Actor.Tabs.Details"}}</a>
+  </nav>
+
+  <section class="sheet-body">
+    <div class="tab" data-group="primary" data-tab="attributes">
+      <div class="grid-2">
+        <label>{{localize "RMRPG.Actor.Attributes.Strength"}}</label>
+        <div class="field-with-action">
+          <input type="number" name="system.attributes.strength.value" value="{{system.attributes.strength.value}}" />
+          <button type="button" data-action="roll-attribute" data-attribute="strength">{{localize "RMRPG.Common.Roll"}}</button>
+        </div>
+
+        <label>{{localize "RMRPG.Actor.Attributes.Agility"}}</label>
+        <div class="field-with-action">
+          <input type="number" name="system.attributes.agility.value" value="{{system.attributes.agility.value}}" />
+          <button type="button" data-action="roll-attribute" data-attribute="agility">{{localize "RMRPG.Common.Roll"}}</button>
+        </div>
+
+        <label>{{localize "RMRPG.Actor.Attributes.Intellect"}}</label>
+        <div class="field-with-action">
+          <input type="number" name="system.attributes.intellect.value" value="{{system.attributes.intellect.value}}" />
+          <button type="button" data-action="roll-attribute" data-attribute="intellect">{{localize "RMRPG.Common.Roll"}}</button>
+        </div>
+
+        <label>{{localize "RMRPG.Actor.Health"}}</label>
+        <div class="field-inline">
+          <input type="number" name="system.health.value" value="{{system.health.value}}" />
+          <span>/</span>
+          <input type="number" name="system.health.max" value="{{system.health.max}}" />
+        </div>
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="details">
+      {{#if isCharacter}}
+      <div class="grid-2">
+        <label>{{localize "RMRPG.Actor.HeroPoints"}}</label>
+        <div class="field-inline">
+          <input type="number" name="system.resources.heroPoints.value" value="{{system.resources.heroPoints.value}}" />
+          <span>/</span>
+          <input type="number" name="system.resources.heroPoints.max" value="{{system.resources.heroPoints.max}}" />
+        </div>
+      </div>
+      {{/if}}
+
+      {{#if isNPC}}
+      <div class="grid-2">
+        <label>{{localize "RMRPG.Actor.Threat"}}</label>
+        <input type="number" name="system.threat" value="{{system.threat}}" />
+      </div>
+      {{/if}}
+    </div>
+  </section>
+</form>

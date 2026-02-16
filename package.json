@@ -1,0 +1,17 @@
+{
+  "name": "remasters-rpg",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:ts && npm run build:scss",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:scss": "sass scss/remasters-rpg.scss dist/remasters-rpg.css --no-source-map",
+    "watch:ts": "tsc -p tsconfig.json --watch",
+    "watch:scss": "sass --watch scss/remasters-rpg.scss:dist/remasters-rpg.css"
+  },
+  "devDependencies": {
+    "sass": "^1.93.2",
+    "typescript": "^5.9.3"
+  }
+}

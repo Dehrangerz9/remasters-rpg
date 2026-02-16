@@ -1,0 +1,32 @@
+<form class="rmrpg-sheet flexcol" autocomplete="off">
+  <header class="sheet-header flexrow">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'RMRPG.Item.Name'}}" />
+      </h1>
+      <div class="type-pill">{{item.type}}</div>
+    </div>
+  </header>
+
+  <section class="sheet-body">
+    {{#if isWeapon}}
+    <div class="grid-2">
+      <label>{{localize "RMRPG.Item.Weapon.Damage"}}</label>
+      <input type="text" name="system.damage.formula" value="{{system.damage.formula}}" />
+    </div>
+    {{/if}}
+
+    {{#if isAbility}}
+    <div class="grid-2">
+      <label>{{localize "RMRPG.Item.Ability.Cost"}}</label>
+      <input type="number" name="system.cost" value="{{system.cost}}" />
+    </div>
+    {{/if}}
+
+    <div class="description-block">
+      <label>{{localize "RMRPG.Common.Description"}}</label>
+      {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
+    </div>
+  </section>
+</form>

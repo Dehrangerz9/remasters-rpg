@@ -1,0 +1,98 @@
+:root {
+  --rmrpg-accent: #205f78;
+  --rmrpg-accent-soft: #d9ecf2;
+  --rmrpg-border: #aabac1;
+  --rmrpg-bg: #f7f8f8;
+}
+
+.rmrpg {
+  &.sheet .window-content {
+    background: linear-gradient(180deg, var(--rmrpg-bg), #ffffff 28%);
+  }
+}
+
+.rmrpg-sheet {
+  gap: 0.75rem;
+  height: 100%;
+  padding: 0.5rem;
+
+  .sheet-header {
+    align-items: center;
+    border-bottom: 1px solid var(--rmrpg-border);
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .profile-img {
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 8px;
+    height: 84px;
+    width: 84px;
+  }
+
+  .header-fields {
+    flex: 1;
+  }
+
+  .charname input {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .type-pill {
+    color: var(--rmrpg-accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+
+    .item {
+      background: var(--rmrpg-accent-soft);
+      border: 1px solid var(--rmrpg-border);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.2rem 0.75rem;
+    }
+  }
+
+  .grid-2 {
+    align-items: center;
+    column-gap: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    row-gap: 0.5rem;
+  }
+
+  .field-inline,
+  .field-with-action {
+    align-items: center;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .field-inline {
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .field-with-action {
+    grid-template-columns: 1fr auto;
+  }
+
+  button {
+    background: var(--rmrpg-accent);
+    border: 1px solid var(--rmrpg-accent);
+    color: #fff;
+  }
+
+  .description-block {
+    display: grid;
+    gap: 0.4rem;
+  }
+}

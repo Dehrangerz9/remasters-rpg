@@ -1,0 +1,36 @@
+{
+  "RMRPG": {
+    "Sheets": {
+      "Actor": "Remasters Actor Sheet",
+      "Item": "Remasters Item Sheet"
+    },
+    "Common": {
+      "Roll": "Roll",
+      "Description": "Description"
+    },
+    "Actor": {
+      "Name": "Actor Name",
+      "Health": "Health",
+      "HeroPoints": "Hero Points",
+      "Threat": "Threat",
+      "Tabs": {
+        "Attributes": "Attributes",
+        "Details": "Details"
+      },
+      "Attributes": {
+        "Strength": "Strength",
+        "Agility": "Agility",
+        "Intellect": "Intellect"
+      }
+    },
+    "Item": {
+      "Name": "Item Name",
+      "Weapon": {
+        "Damage": "Damage Formula"
+      },
+      "Ability": {
+        "Cost": "Cost"
+      }
+    }
+  }
+}
