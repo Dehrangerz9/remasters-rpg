@@ -1,0 +1,92 @@
+.rmrpg-sheet {
+  .advantages-section {
+    background: var(--rmrpg-surface);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 0.6rem;
+  }
+
+  .feat-drop-zone {
+    align-items: center;
+    border: 1px dashed var(--rmrpg-border);
+    border-radius: 8px;
+    color: var(--rmrpg-text-soft);
+    display: flex;
+    font-size: 0.8rem;
+    justify-content: center;
+    min-height: 2.2rem;
+    text-align: center;
+  }
+
+  .feat-drop-label {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .feats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .feat-row {
+    align-items: center;
+    border: 1px solid #e1e7ea;
+    border-radius: 8px;
+    cursor: grab;
+    display: flex;
+    gap: 0.45rem;
+    padding: 0.35rem 0.4rem;
+  }
+
+  .feat-icon {
+    border-radius: 6px;
+    height: 32px;
+    object-fit: cover;
+    width: 32px;
+  }
+
+  .feat-name {
+    flex: 1 1 auto;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    min-width: 0;
+    padding: 0;
+    text-align: left;
+
+    &:hover {
+      color: var(--rmrpg-accent);
+    }
+  }
+
+  .feat-chat,
+  .feat-remove {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 6px;
+    color: var(--rmrpg-accent);
+    display: inline-flex;
+    height: 2rem;
+    justify-content: center;
+    width: 2rem;
+  }
+
+  .feat-remove {
+    border-color: #d7a8a8;
+    color: #a64646;
+  }
+  .add-feat {
+    align-self: flex-start;
+  }
+}

@@ -1,0 +1,68 @@
+.rmrpg-sheet {
+  .personal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .personal-section {
+    background: var(--rmrpg-surface);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 8px;
+    display: grid;
+    gap: 0.4rem;
+    padding: 0.55rem;
+
+    h3,
+    h4 {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+  }
+
+  .personal-grid {
+    display: flex;
+    gap: 0.45rem;
+    align-items: start;
+  }
+
+  .personal-grid-4 {
+    flex-wrap: nowrap;
+  }
+
+  .personal-grid-2 {
+    flex-wrap: nowrap;
+  }
+
+  .personal-grid-1 {
+    flex-direction: column;
+  }
+
+  .personal-field {
+    background: var(--rmrpg-surface);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 8px;
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.45rem;
+    flex: 1 1 0;
+
+    label {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+  }
+}

@@ -1,0 +1,63 @@
+:root {
+  --rmrpg-accent: #205f78;
+  --rmrpg-accent-soft: #d9ecf2;
+  --rmrpg-border: #aabac1;
+  --rmrpg-bg: #f7f8f8;
+  --rmrpg-text-soft: #4f6168;
+  --rmrpg-surface: #ffffff;
+}
+
+.punk-city {
+  --rmrpg-accent: #e44655;
+  --rmrpg-accent-soft: #3a151c;
+  --rmrpg-border: #4a2530;
+  --rmrpg-bg: #0e0a0f;
+  --rmrpg-text-soft: #c28d98;
+  --rmrpg-surface: #161118;
+}
+
+.rmrpg {
+  &.sheet .window-content {
+    background: linear-gradient(180deg, var(--rmrpg-bg), #ffffff 28%);
+  }
+}
+
+.punk-city .rmrpg.sheet .window-content {
+  background: radial-gradient(circle at 20% 10%, rgba(228, 70, 85, 0.18), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(255, 72, 125, 0.12), transparent 40%),
+    linear-gradient(180deg, var(--rmrpg-bg), #0a090c 35%);
+}
+
+.punk-city .rmrpg-sheet {
+  color: #f1d6dc;
+}
+
+.punk-city .rmrpg-sheet input,
+.punk-city .rmrpg-sheet select,
+.punk-city .rmrpg-sheet textarea {
+  background: #120d12;
+  border: 1px solid var(--rmrpg-border);
+  color: #f1d6dc;
+}
+
+.punk-city .rmrpg-sheet input:focus,
+.punk-city .rmrpg-sheet select:focus,
+.punk-city .rmrpg-sheet textarea:focus {
+  box-shadow: 0 0 0 1px rgba(228, 70, 85, 0.6);
+  border-color: var(--rmrpg-accent);
+}
+
+.punk-city .rmrpg-sheet .status-card,
+.punk-city .rmrpg-sheet .attribute-card,
+.punk-city .rmrpg-sheet .skills-section,
+.punk-city .rmrpg-sheet .advantages-section,
+.punk-city .rmrpg-sheet .equipment-section,
+.punk-city .rmrpg-sheet .carry-capacity,
+.punk-city .rmrpg-sheet .personal-section {
+  box-shadow: 0 0 0 1px rgba(255, 72, 125, 0.08);
+}
+
+.punk-city .rmrpg-sheet .meta-value {
+  box-shadow: 0 0 10px rgba(228, 70, 85, 0.35);
+}
+

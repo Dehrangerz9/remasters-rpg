@@ -468,6 +468,7 @@
   padding: 0;
   width: 1.6rem;
 }
+
 .rmrpg-sheet .skills-section {
   background: var(--rmrpg-surface);
   border: 1px solid var(--rmrpg-border);
@@ -476,6 +477,61 @@
   gap: 0.55rem;
   padding: 0.6rem;
 }
+.rmrpg-sheet .skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.rmrpg-sheet .skill-row {
+  align-items: center;
+  border: 1px solid #e1e7ea;
+  border-radius: 8px;
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.35rem 0.4rem;
+  flex-wrap: nowrap;
+}
+.rmrpg-sheet .skill-row input[type=checkbox] {
+  height: 1.1rem;
+  width: 1.1rem;
+}
+.rmrpg-sheet .skill-row select {
+  min-width: 0;
+  flex: 0 0 140px;
+  height: 2rem;
+}
+.rmrpg-sheet .skill-label {
+  flex: 1 1 auto;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.rmrpg-sheet .skill-roll {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.3rem;
+  justify-content: center;
+  min-width: 84px;
+  height: 2rem;
+  flex: 0 0 84px;
+}
+.rmrpg-sheet .skill-row > input[type=checkbox] {
+  flex: 0 0 1.2rem;
+}
+.rmrpg-sheet .skill-remove {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #d7a8a8;
+  border-radius: 6px;
+  color: #a64646;
+  display: inline-flex;
+  height: 1.7rem;
+  justify-content: center;
+  width: 1.9rem;
+}
+.rmrpg-sheet .add-skill {
+  align-self: flex-start;
+}
+
 .rmrpg-sheet .advantages-section {
   background: var(--rmrpg-surface);
   border: 1px solid var(--rmrpg-border);
@@ -554,6 +610,10 @@
   border-color: #d7a8a8;
   color: #a64646;
 }
+.rmrpg-sheet .add-feat {
+  align-self: flex-start;
+}
+
 .rmrpg-sheet .inventory-section {
   display: flex;
   flex-direction: column;
@@ -605,7 +665,7 @@
   cursor: pointer;
   display: flex;
   gap: 0.5rem;
-  justify-content: space-between;
+  justify-content: flex-start;
   list-style: none;
   padding: 0.4rem 0.55rem;
   font-size: 0.8rem;
@@ -622,6 +682,12 @@
   color: var(--rmrpg-text-soft);
   transition: transform 0.15s ease;
 }
+.rmrpg-sheet .equipment-summary-meta {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-left: auto;
+}
 .rmrpg-sheet .equipment-category[open] .equipment-summary::after {
   transform: rotate(180deg);
 }
@@ -632,6 +698,20 @@
   font-size: 0.7rem;
   font-weight: 700;
   padding: 0.1rem 0.5rem;
+}
+.rmrpg-sheet .category-action {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 6px;
+  color: var(--rmrpg-text-soft);
+  display: inline-flex;
+  height: 1.55rem;
+  justify-content: center;
+  width: 1.55rem;
+}
+.rmrpg-sheet .category-action:hover {
+  color: var(--rmrpg-accent);
 }
 .rmrpg-sheet .equipment-table {
   display: flex;
@@ -644,7 +724,7 @@
   align-items: center;
   display: grid;
   gap: 0.45rem;
-  grid-template-columns: 36px minmax(0, 1fr) 90px 80px 42px 42px;
+  grid-template-columns: 36px minmax(0, 1fr) 90px 80px 42px 42px 42px;
 }
 .rmrpg-sheet .equipment-header {
   color: var(--rmrpg-text-soft);
@@ -671,11 +751,18 @@
   border: 0;
   color: inherit;
   cursor: pointer;
+  display: inline-flex;
   font-size: 0.85rem;
   font-weight: 600;
   min-width: 0;
+  max-width: 100%;
   padding: 0;
   text-align: left;
+  width: fit-content;
+  justify-self: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .rmrpg-sheet .item-name:hover {
   color: var(--rmrpg-accent);
@@ -731,6 +818,25 @@
   border-color: #d7a8a8;
   color: #a64646;
 }
+.rmrpg-sheet .item-reorder {
+  display: grid;
+  gap: 0.2rem;
+  justify-items: center;
+}
+.rmrpg-sheet .reorder-btn {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 6px;
+  color: var(--rmrpg-text-soft);
+  display: inline-flex;
+  height: 1.1rem;
+  justify-content: center;
+  width: 1.1rem;
+}
+.rmrpg-sheet .reorder-btn:hover {
+  color: var(--rmrpg-accent);
+}
 .rmrpg-sheet .item-delete {
   align-items: center;
   background: #fff;
@@ -775,75 +881,7 @@
   height: 100%;
   width: 0;
 }
-.rmrpg-sheet .skills-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-.rmrpg-sheet .skill-row {
-  align-items: center;
-  border: 1px solid #e1e7ea;
-  border-radius: 8px;
-  display: flex;
-  gap: 0.45rem;
-  padding: 0.35rem 0.4rem;
-  flex-wrap: nowrap;
-}
-.rmrpg-sheet .skill-row input[type=checkbox] {
-  height: 1.1rem;
-  width: 1.1rem;
-}
-.rmrpg-sheet .skill-row select {
-  min-width: 0;
-  flex: 0 0 140px;
-  height: 2rem;
-}
-.rmrpg-sheet .skill-label {
-  flex: 1 1 auto;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-.rmrpg-sheet .skill-roll {
-  align-items: center;
-  display: inline-flex;
-  gap: 0.3rem;
-  justify-content: center;
-  min-width: 84px;
-  height: 2rem;
-  flex: 0 0 84px;
-}
-.rmrpg-sheet .skill-row > input[type=checkbox] {
-  flex: 0 0 1.2rem;
-}
-.rmrpg-sheet .skill-remove {
-  align-items: center;
-  background: #fff;
-  border: 1px solid #d7a8a8;
-  border-radius: 6px;
-  color: #a64646;
-  display: inline-flex;
-  height: 1.7rem;
-  justify-content: center;
-  width: 1.9rem;
-}
-.rmrpg-sheet .add-skill {
-  align-self: flex-start;
-}
-.rmrpg-sheet .add-feat {
-  align-self: flex-start;
-}
-.rmrpg-sheet .advancement-toolbar {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.55rem;
-}
-.rmrpg-sheet .advancement-summary {
-  display: flex;
-  gap: 0.35rem;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
+
 .rmrpg-sheet .personal-info {
   display: flex;
   flex-direction: column;
@@ -901,6 +939,19 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+
+.rmrpg-sheet .advancement-toolbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.55rem;
+}
+.rmrpg-sheet .advancement-summary {
+  display: flex;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
 .rmrpg-sheet .advancement-empty {
   color: var(--rmrpg-text-soft);
   font-style: italic;
@@ -936,6 +987,7 @@
   justify-content: center;
   width: 1.9rem;
 }
+
 .rmrpg-sheet .grid-2 {
   align-items: center;
   column-gap: 0.75rem;
@@ -947,57 +999,295 @@
   display: grid;
   gap: 0.4rem;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .sheet-header {
-  align-items: flex-start;
-  column-gap: 0.75rem;
-  grid-template-columns: 1fr;
-}
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-pill-row {
-  display: flex;
-  gap: 0.45rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .header-fields {
+.rmrpg-sheet.rmrpg-item-sheet .sheet-header,
+.rmrpg-sheet .rmrpg-item-sheet .sheet-header {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  width: 100%;
+  gap: 0.6rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  flex: 0 0 auto;
+  min-height: 0;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-title-row {
+.rmrpg-sheet.rmrpg-item-sheet .item-header-top,
+.rmrpg-sheet .rmrpg-item-sheet .item-header-top {
   align-items: center;
   display: flex;
   gap: 0.75rem;
-  width: 100%;
+  justify-content: flex-start;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-title-row .profile-img {
+.rmrpg-sheet.rmrpg-item-sheet .item-header-tags,
+.rmrpg-sheet .rmrpg-item-sheet .item-header-tags {
+  align-items: center;
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.rmrpg-sheet.rmrpg-item-sheet .item-title,
+.rmrpg-sheet .rmrpg-item-sheet .item-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.rmrpg-sheet.rmrpg-item-sheet .profile-img,
+.rmrpg-sheet .rmrpg-item-sheet .profile-img {
   border: 1px solid var(--rmrpg-border);
   border-radius: 10px;
   height: 52px;
   object-fit: cover;
   width: 52px;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-title-row .feat-title {
-  flex: 1 1 auto;
+.rmrpg-sheet.rmrpg-item-sheet .sheet-body,
+.rmrpg-sheet .rmrpg-item-sheet .sheet-body {
+  overflow-x: hidden;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-description-grid {
+.rmrpg-sheet.rmrpg-item-sheet .weapon-layout,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-layout {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  min-width: 0;
+  width: 100%;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-summary,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-summary {
+  background: var(--rmrpg-surface);
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  flex: 1 1 220px;
+  min-width: 200px;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-description-grid .description-block label {
+.rmrpg-sheet.rmrpg-item-sheet .weapon-summary h3,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-summary h3 {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-transform: uppercase;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-summary-grid label,
+.rmrpg-sheet.rmrpg-item-sheet .weapon-field label,
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-header,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-summary-grid label,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-field label,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-header {
   color: var(--rmrpg-text-soft);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field {
+.rmrpg-sheet.rmrpg-item-sheet .weapon-summary-grid,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-summary-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-field-row,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-field-row {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field label {
+.rmrpg-sheet.rmrpg-item-sheet .weapon-summary-grid input,
+.rmrpg-sheet.rmrpg-item-sheet .weapon-field input,
+.rmrpg-sheet.rmrpg-item-sheet .weapon-field select,
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row input,
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row select,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-summary-grid input,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-field input,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-field select,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-row input,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-row select {
+  height: 2rem;
+  width: 100%;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs-column,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 2 1 320px;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  width: 100%;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs .item,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs .item {
+  background: #fff;
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 999px;
+  color: var(--rmrpg-text-soft);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.9rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  width: auto;
+  min-width: 0;
+  height: 1.8rem;
+  line-height: 1;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs .item.active,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs .item.active {
+  background: var(--rmrpg-accent-soft);
+  border-color: var(--rmrpg-accent-soft);
+  color: var(--rmrpg-accent);
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-tab-content .tab,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-tab-content .tab {
+  display: none;
+  height: auto;
+  overflow: visible;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-tab-content .tab.active,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-tab-content .tab.active {
+  display: block;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-tab-content textarea,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-tab-content textarea {
+  min-height: 140px;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-details,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: clamp(240px, 45vh, 380px);
+  overflow-y: auto;
+  padding-right: 0.3rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-field,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-section-title,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-section-title {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-top: 0.4rem;
+  text-transform: uppercase;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-damage-base,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-damage-base {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-damage-base .weapon-field,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-damage-base .weapon-field {
+  flex: 1 1 140px;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-list,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-header,
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-header,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-row {
+  align-items: center;
+  display: flex;
+  gap: 0.4rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-header > :nth-child(1),
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row > :nth-child(1),
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-header > :nth-child(1),
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-row > :nth-child(1) {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-header > :nth-child(2),
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row > :nth-child(2),
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-header > :nth-child(2),
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-row > :nth-child(2) {
+  flex: 0 0 110px;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-header > :nth-child(3),
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row > :nth-child(3),
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-header > :nth-child(3),
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-row > :nth-child(3) {
+  flex: 0 0 32px;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row input,
+.rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row select,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-row input,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-bonus-row select {
+  width: 100%;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-add,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-add {
+  align-items: center;
+  background: #fff;
+  border: 1px dashed var(--rmrpg-border);
+  border-radius: 6px;
+  color: var(--rmrpg-text-soft);
+  display: inline-flex;
+  gap: 0.35rem;
+  height: 2rem;
+  justify-content: center;
+  padding: 0 0.6rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-add:hover,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-add:hover {
+  color: var(--rmrpg-accent);
+}
+.rmrpg-sheet.rmrpg-item-sheet .weapon-remove,
+.rmrpg-sheet .rmrpg-item-sheet .weapon-remove {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #d7a8a8;
+  border-radius: 6px;
+  color: #a64646;
+  display: inline-flex;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-description-grid,
+.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-description-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-description-grid .description-block label,
+.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-description-grid .description-block label {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field,
+.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field label,
+.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-field label {
   color: var(--rmrpg-text-soft);
   font-size: 0.62rem;
   font-weight: 700;
@@ -1005,10 +1295,13 @@
   text-transform: uppercase;
 }
 .rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field input,
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field select {
+.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field select,
+.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-field input,
+.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-field select {
   height: 2rem;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-rank-select {
+.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-rank-select,
+.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-rank-select {
   background: #1f2a30;
   border: 1px solid #1f2a30;
   border-radius: 999px;
@@ -1021,6 +1314,23 @@
   height: 1.8rem;
 }
 
+@media (max-width: 740px) {
+  .rmrpg-sheet.rmrpg-item-sheet .weapon-layout {
+    flex-direction: column;
+    min-width: 0;
+  }
+  .rmrpg-sheet.rmrpg-item-sheet .weapon-damage-base {
+    flex-direction: column;
+  }
+  .rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-header,
+  .rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row {
+    flex-wrap: wrap;
+  }
+  .rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-header > :nth-child(2),
+  .rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row > :nth-child(2) {
+    flex: 1 1 90px;
+  }
+}
 .dialog .rmrpg-dialog-form .form-group {
   display: grid;
   gap: 0.3rem;

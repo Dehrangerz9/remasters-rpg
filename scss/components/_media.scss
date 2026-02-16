@@ -1,0 +1,83 @@
+@media (max-width: 1320px) {
+  .rmrpg-sheet {
+    .attributes-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .skill-row {
+      flex-wrap: wrap;
+    }
+  }
+}
+
+@media (max-width: 1080px) {
+  .rmrpg-sheet {
+    .sheet-columns {
+      grid-template-columns: 1fr;
+    }
+
+    .left-column {
+      grid-template-columns: 220px 1fr;
+      grid-template-rows: auto;
+    }
+
+    .profile-portrait {
+      height: 250px;
+      width: 220px;
+    }
+
+    .status-rail {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-height: 250px;
+    }
+
+    .attributes-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .skill-row {
+      flex-wrap: wrap;
+    }
+
+    .skill-roll {
+      justify-self: end;
+    }
+
+    .main-sections {
+      grid-template-columns: 1fr;
+    }
+
+    .personal-grid-4,
+    .personal-grid-2 {
+      flex-wrap: wrap;
+    }
+
+  }
+}
+
+@media (max-width: 760px) {
+  .rmrpg-sheet {
+    .left-column {
+      grid-template-columns: 1fr;
+    }
+
+    .profile-portrait {
+      height: 220px;
+      width: 100%;
+    }
+
+    .status-rail {
+      grid-template-columns: 1fr;
+      max-height: none;
+    }
+
+    .attributes-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .header-top {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+}

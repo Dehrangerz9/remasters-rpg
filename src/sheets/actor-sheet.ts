@@ -71,6 +71,8 @@ function sortAdvancementKeys(keys: string[]) {
 }
 
 export class RMRPGActorSheet extends ActorSheet {
+  private equipmentOpenState: Record<string, boolean> = {};
+
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["rmrpg", "sheet", "actor"],
@@ -265,6 +267,14 @@ export class RMRPGActorSheet extends ActorSheet {
 
       const equipmentItems =
         context.actor.items?.filter((item: any) => EQUIPMENT_TYPES.includes(item.type)) ?? [];
+      equipmentItems.sort((a: any, b: any) => {
+        const aSort = Number(a.sort ?? 0);
+        const bSort = Number(b.sort ?? 0);
+        if (aSort !== bSort) {
+          return aSort - bSort;
+        }
+        return String(a.name ?? "").localeCompare(String(b.name ?? ""));
+      });
 
       const mappedEquipment = equipmentItems.map((item: any) => {
         const quantity = this.clampInteger(Number(item.system?.quantity ?? 1), 0, 9999);
@@ -296,7 +306,7 @@ export class RMRPGActorSheet extends ActorSheet {
       }));
 
       const totalWeight = mappedEquipment.reduce(
-        (sum, item) => sum + (item.status === "stowed" ? 0 : item.totalWeight),
+        (sum, item) => sum + (item.status === "dropped" ? 0 : item.totalWeight),
         0
       );
       const corpo = Number(context.system.attributes?.corpo?.value ?? 0);
@@ -431,6 +441,67 @@ export class RMRPGActorSheet extends ActorSheet {
       const item = this.actor.items?.get(id);
       if (!item) return;
       await item.delete();
+    });
+
+    html.find("[data-action='category-add']").on("click", async (event: any) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.actor.type !== "player") return;
+      const category = String(event.currentTarget.dataset.category ?? "");
+      if (!category) return;
+      const created = await this.actor.createEmbeddedDocuments("Item", [
+        {
+          name: game.i18n.localize("RMRPG.Actor.Inventory.NewItem"),
+          type: category
+        }
+      ]);
+      const item = created?.[0];
+      if (item) {
+        item.sheet?.render(true);
+      }
+    });
+
+    html.find("[data-action='category-search']").on("click", (event: any) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+
+    html.find("[data-action='item-move']").on("click", async (event: any) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const button = event.currentTarget as HTMLElement;
+      const id = String(button.dataset.id ?? "");
+      const direction = String(button.dataset.direction ?? "");
+      if (!id || (direction !== "up" && direction !== "down")) return;
+      const row = button.closest(".equipment-row") as HTMLElement | null;
+      const table = row?.closest(".equipment-table") as HTMLElement | null;
+      if (!row || !table) return;
+
+      const rows = Array.from(table.querySelectorAll(".equipment-row")) as HTMLElement[];
+      const index = rows.findIndex((entry) => entry.dataset.id === id);
+      if (index === -1) return;
+      const targetIndex = direction === "up" ? index - 1 : index + 1;
+      if (targetIndex < 0 || targetIndex >= rows.length) return;
+
+      const ordered = rows.map((entry) => entry.dataset.id ?? "").filter(Boolean);
+      const [moved] = ordered.splice(index, 1);
+      ordered.splice(targetIndex, 0, moved);
+      await this.updateItemSortOrder(ordered);
+    });
+
+    html.find(".equipment-category").each((_, element) => {
+      const details = element as HTMLDetailsElement;
+      const key = String(details.dataset.category ?? "");
+      if (!key) return;
+      const stored = this.equipmentOpenState[key];
+      if (typeof stored === "boolean") {
+        details.open = stored;
+      } else {
+        this.equipmentOpenState[key] = details.open;
+      }
+      details.addEventListener("toggle", () => {
+        this.equipmentOpenState[key] = details.open;
+      });
     });
 
     const bindReorderList = (listElement: HTMLElement, rowSelector: string, group: string) => {

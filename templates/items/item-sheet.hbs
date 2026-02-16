@@ -1,77 +1,215 @@
 <form class="rmrpg-sheet rmrpg-item-sheet flexcol{{#if isFeat}} feat-sheet{{/if}}" autocomplete="off">
-  <header class="sheet-header">
-    {{#if isFeat}}
-    <div class="header-fields">
-      <div class="feat-title-row">
-        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
-        <div class="feat-title">
-          <h1 class="charname">
-            <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'RMRPG.Item.Name'}}" />
-          </h1>
-        </div>
-      </div>
-      <div class="feat-pill-row">
-        <div class="type-pill">{{item.type}}</div>
-        <select name="system.rank" class="feat-rank-select" aria-label="{{localize 'RMRPG.Item.Feat.Rank'}}">
-          {{selectOptions rankOptions selected=system.rank valueAttr="value" labelAttr="label"}}
-        </select>
+  <header class="sheet-header item-header">
+    <div class="item-header-top">
+      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+      <div class="item-title">
+        <h1 class="charname">
+          <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'RMRPG.Item.Name'}}" />
+        </h1>
       </div>
     </div>
-    {{else}}
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
-    <div class="header-fields">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'RMRPG.Item.Name'}}" />
-      </h1>
+    <div class="item-header-tags">
       <div class="type-pill">{{item.type}}</div>
+      {{#if isFeat}}
+      <select name="system.rank" class="feat-rank-select" aria-label="{{localize 'RMRPG.Item.Feat.Rank'}}">
+        {{selectOptions rankOptions selected=system.rank valueAttr="value" labelAttr="label"}}
+      </select>
+      {{/if}}
     </div>
-    {{/if}}
   </header>
 
   <section class="sheet-body">
     {{#if isWeapon}}
-    <div class="grid-2">
-      <label>{{localize "RMRPG.Item.Weapon.Damage"}}</label>
-      <input type="text" name="system.damage.formula" value="{{system.damage.formula}}" />
-    </div>
-    {{/if}}
-
-    {{#if isAbility}}
-    <div class="grid-2">
-      <label>{{localize "RMRPG.Item.Ability.Cost"}}</label>
-      <input type="number" name="system.cost" value="{{system.cost}}" />
-    </div>
-    {{/if}}
-
-    {{#if isEquipment}}
-    <div class="grid-2 equipment-meta">
-      <label>{{localize "RMRPG.Item.Equipment.Quantity"}}</label>
-      <input type="number" name="system.quantity" value="{{system.quantity}}" min="0" step="1" />
-      <label>{{localize "RMRPG.Item.Equipment.Weight"}}</label>
-      <input type="number" name="system.weight" value="{{system.weight}}" min="0" step="0.1" />
-      <label>{{localize "RMRPG.Item.Equipment.Status"}}</label>
-      <select name="system.status">
-        {{selectOptions statusOptions selected=system.status valueAttr="value" labelAttr="label"}}
-      </select>
-    </div>
-    {{/if}}
-
-    {{#if isFeat}}
-    <div class="feat-description-grid">
-      <div class="feat-field feat-req-field">
-        <label>{{localize "RMRPG.Item.Feat.Requirements"}}</label>
-        <input type="text" name="system.requirements" value="{{system.requirements}}" />
+    <div class="weapon-layout">
+      <div class="weapon-summary">
+        <h3>{{localize "RMRPG.Item.Weapon.Summary"}}</h3>
+        <div class="weapon-summary-grid">
+          <div class="weapon-field-row">
+            <label>{{localize "RMRPG.Item.Equipment.Quantity"}}</label>
+            <input type="number" name="system.quantity" value="{{system.quantity}}" min="0" step="1" />
+          </div>
+          <div class="weapon-field-row">
+            <label>{{localize "RMRPG.Item.Equipment.Weight"}}</label>
+            <input type="number" name="system.weight" value="{{system.weight}}" min="0" step="0.1" />
+          </div>
+          <div class="weapon-field-row">
+            <label>{{localize "RMRPG.Item.Weapon.Price"}}</label>
+            <input type="number" name="system.price" value="{{system.price}}" min="0" step="1" />
+          </div>
+        </div>
       </div>
+      <div class="weapon-tabs-column">
+        <nav class="weapon-tabs tabs" data-group="weapon">
+          <a class="item" data-tab="description">{{localize "RMRPG.Item.Weapon.DescriptionTab"}}</a>
+          <a class="item" data-tab="details">{{localize "RMRPG.Item.Weapon.DetailsTab"}}</a>
+        </nav>
+        <div class="weapon-tab-content">
+          <div class="tab" data-group="weapon" data-tab="description">
+            <div class="description-block">
+              <label>{{localize "RMRPG.Common.Description"}}</label>
+              <textarea name="system.description">{{system.description}}</textarea>
+            </div>
+          </div>
+          <div class="tab" data-group="weapon" data-tab="details">
+            <div class="weapon-details">
+              <div class="weapon-field">
+                <label>{{localize "RMRPG.Item.Weapon.CategoryLabel"}}</label>
+                <select name="system.weapon.category">
+                  {{selectOptions weaponCategoryOptions selected=weapon.category valueAttr="value" labelAttr="label"}}
+                </select>
+              </div>
+              <div class="weapon-field">
+                <label>{{localize "RMRPG.Item.Weapon.RangeLabel"}}</label>
+                <select name="system.weapon.range">
+                  {{selectOptions weaponRangeOptions selected=weapon.range valueAttr="value" labelAttr="label"}}
+                </select>
+              </div>
+
+              <div class="weapon-section-title">{{localize "RMRPG.Item.Weapon.HitTitle"}}</div>
+              <div class="weapon-field">
+                <label>{{localize "RMRPG.Item.Weapon.AttributeMod"}}</label>
+                <select name="system.weapon.hit.attribute">
+                  {{selectOptions attributeOptionsWithNone selected=weapon.hit.attribute valueAttr="value" labelAttr="label"}}
+                </select>
+              </div>
+              <div class="weapon-bonus-list">
+                <div class="weapon-bonus-header">
+                  <span>{{localize "RMRPG.Item.Weapon.BonusLabel"}}</span>
+                  <span>{{localize "RMRPG.Item.Weapon.BonusValue"}}</span>
+                  <span></span>
+                </div>
+                {{#each weapon.hit.bonuses}}
+                <div class="weapon-bonus-row">
+                  <input
+                    type="text"
+                    name="system.weapon.hit.bonuses.{{@index}}.label"
+                    value="{{this.label}}"
+                    placeholder="{{localize 'RMRPG.Item.Weapon.BonusLabel'}}"
+                  />
+                  <input type="number" name="system.weapon.hit.bonuses.{{@index}}.value" value="{{this.value}}" step="1" />
+                  <button
+                    type="button"
+                    class="weapon-remove"
+                    data-action="weapon-hit-bonus-remove"
+                    data-index="{{@index}}"
+                    aria-label="{{localize 'RMRPG.Item.Weapon.Remove'}}"
+                    title="{{localize 'RMRPG.Item.Weapon.Remove'}}"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                {{/each}}
+                <button type="button" class="weapon-add" data-action="weapon-hit-bonus-add">
+                  <i class="fas fa-plus"></i>
+                  {{localize "RMRPG.Item.Weapon.AddBonus"}}
+                </button>
+              </div>
+
+              <div class="weapon-section-title">{{localize "RMRPG.Item.Weapon.DamageTitle"}}</div>
+              <div class="weapon-field">
+                <label>{{localize "RMRPG.Item.Weapon.AttributeMod"}}</label>
+                <select name="system.weapon.damage.attribute">
+                  {{selectOptions attributeOptionsWithNone selected=weapon.damage.attribute valueAttr="value" labelAttr="label"}}
+                </select>
+              </div>
+              <div class="weapon-damage-base">
+                <div class="weapon-field">
+                  <label>{{localize "RMRPG.Item.Weapon.DiceCount"}}</label>
+                  <input type="number" name="system.weapon.damage.base.dice" value="{{weapon.damage.base.dice}}" min="0" step="1" />
+                </div>
+                <div class="weapon-field">
+                  <label>{{localize "RMRPG.Item.Weapon.DieType"}}</label>
+                  <select name="system.weapon.damage.base.die">
+                    {{selectOptions weaponDieOptions selected=weapon.damage.base.die valueAttr="value" labelAttr="label"}}
+                  </select>
+                </div>
+                <div class="weapon-field">
+                  <label>{{localize "RMRPG.Item.Weapon.DamageTypeLabel"}}</label>
+                  <select name="system.weapon.damage.base.type">
+                    {{selectOptions weaponDamageTypeOptions selected=weapon.damage.base.type valueAttr="value" labelAttr="label"}}
+                  </select>
+                </div>
+              </div>
+
+              <div class="weapon-bonus-list">
+                <div class="weapon-bonus-header">
+                  <span>{{localize "RMRPG.Item.Weapon.FormulaLabel"}}</span>
+                  <span>{{localize "RMRPG.Item.Weapon.DamageTypeLabel"}}</span>
+                  <span></span>
+                </div>
+                {{#each weapon.damage.bonuses}}
+                <div class="weapon-bonus-row">
+                  <input
+                    type="text"
+                    name="system.weapon.damage.bonuses.{{@index}}.formula"
+                    value="{{this.formula}}"
+                    placeholder="1d6"
+                  />
+                  <select name="system.weapon.damage.bonuses.{{@index}}.type">
+                    {{selectOptions ../weaponDamageTypeOptions selected=this.type valueAttr="value" labelAttr="label"}}
+                  </select>
+                  <button
+                    type="button"
+                    class="weapon-remove"
+                    data-action="weapon-damage-bonus-remove"
+                    data-index="{{@index}}"
+                    aria-label="{{localize 'RMRPG.Item.Weapon.Remove'}}"
+                    title="{{localize 'RMRPG.Item.Weapon.Remove'}}"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                {{/each}}
+                <button type="button" class="weapon-add" data-action="weapon-damage-bonus-add">
+                  <i class="fas fa-plus"></i>
+                  {{localize "RMRPG.Item.Weapon.AddDamage"}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+
+    {{#unless isWeapon}}
+      {{#if isAbility}}
+      <div class="grid-2">
+        <label>{{localize "RMRPG.Item.Ability.Cost"}}</label>
+        <input type="number" name="system.cost" value="{{system.cost}}" />
+      </div>
+      {{/if}}
+
+      {{#if isEquipment}}
+      <div class="grid-2 equipment-meta">
+        <label>{{localize "RMRPG.Item.Equipment.Quantity"}}</label>
+        <input type="number" name="system.quantity" value="{{system.quantity}}" min="0" step="1" />
+        <label>{{localize "RMRPG.Item.Equipment.Weight"}}</label>
+        <input type="number" name="system.weight" value="{{system.weight}}" min="0" step="0.1" />
+        <label>{{localize "RMRPG.Item.Equipment.Status"}}</label>
+        <select name="system.status">
+          {{selectOptions statusOptions selected=system.status valueAttr="value" labelAttr="label"}}
+        </select>
+      </div>
+      {{/if}}
+
+      {{#if isFeat}}
+      <div class="feat-description-grid">
+        <div class="feat-field feat-req-field">
+          <label>{{localize "RMRPG.Item.Feat.Requirements"}}</label>
+          <input type="text" name="system.requirements" value="{{system.requirements}}" />
+        </div>
+        <div class="description-block">
+          <label>{{localize "RMRPG.Item.Feat.Description"}}</label>
+          <textarea name="system.description">{{system.description}}</textarea>
+        </div>
+      </div>
+      {{else}}
       <div class="description-block">
-        <label>{{localize "RMRPG.Item.Feat.Description"}}</label>
-        <textarea name="system.description">{{system.description}}</textarea>
+        <label>{{localize "RMRPG.Common.Description"}}</label>
+        {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
       </div>
-    </div>
-    {{else}}
-    <div class="description-block">
-      <label>{{localize "RMRPG.Common.Description"}}</label>
-      {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
-    </div>
-    {{/if}}
+      {{/if}}
+    {{/unless}}
   </section>
 </form>

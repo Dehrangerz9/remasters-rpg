@@ -66,6 +66,11 @@
         "Credits": "Credits",
         "EquipmentList": "Equipment List",
         "CarryCapacity": "Carry Capacity",
+        "AddItem": "Add item",
+        "Search": "Search",
+        "NewItem": "New item",
+        "MoveUp": "Move up",
+        "MoveDown": "Move down",
         "Delete": "Delete item",
         "Empty": "No items yet.",
         "Columns": {
@@ -173,7 +178,40 @@
         "Dropped": "Dropped"
       },
       "Weapon": {
-        "Damage": "Damage Formula"
+        "Summary": "Summary",
+        "DescriptionTab": "Description",
+        "DetailsTab": "Details",
+        "Price": "Price",
+        "CategoryLabel": "Weapon type",
+        "RangeLabel": "Range",
+        "HitTitle": "Hit",
+        "AttributeMod": "Attribute Modifier",
+        "BonusLabel": "Name",
+        "BonusValue": "Bonus",
+        "AddBonus": "Add custom bonus",
+        "DamageTitle": "Damage",
+        "NoAttribute": "No attribute",
+        "DiceCount": "Quantity",
+        "DieType": "Die",
+        "DamageTypeLabel": "Damage type",
+        "FormulaLabel": "Formula",
+        "AddDamage": "Add damage",
+        "Remove": "Remove",
+        "Category": {
+          "Melee": "Melee",
+          "Ranged": "Ranged",
+          "Thrown": "Thrown"
+        },
+        "Range": {
+          "Melee": "Melee"
+        },
+        "DamageType": {
+          "Physical": "Physical",
+          "Elemental": "Elemental",
+          "Mental": "Mental",
+          "Deteriorating": "Deteriorating",
+          "None": "No type"
+        }
       },
       "Ability": {
         "Cost": "Cost"

@@ -1,0 +1,54 @@
+.rmrpg-sheet {
+  .advancement-toolbar {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.55rem;
+  }
+
+  .advancement-summary {
+    display: flex;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .advancement-empty {
+    color: var(--rmrpg-text-soft);
+    font-style: italic;
+  }
+
+  .advancement-list {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.35rem;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 0.2rem;
+  }
+
+  .advancement-row {
+    align-items: center;
+    display: grid;
+    gap: 0.45rem;
+    grid-template-columns: 56px 1fr auto;
+  }
+
+  .advancement-code {
+    color: var(--rmrpg-accent);
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .advancement-remove {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #d7a8a8;
+    border-radius: 6px;
+    color: #a64646;
+    display: inline-flex;
+    height: 1.7rem;
+    justify-content: center;
+    width: 1.9rem;
+  }
+}

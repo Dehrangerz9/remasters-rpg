@@ -210,15 +210,30 @@
         "description": "",
         "quantity": 1,
         "weight": 0,
-        "status": "stowed"
+        "status": "stowed",
+        "price": 0
       }
     },
     "weapon": {
       "templates": [
         "common"
       ],
-      "damage": {
-        "formula": "1d6"
+      "weapon": {
+        "category": "melee",
+        "range": "melee",
+        "hit": {
+          "attribute": "corpo",
+          "bonuses": []
+        },
+        "damage": {
+          "attribute": "none",
+          "base": {
+            "dice": 1,
+            "die": "d6",
+            "type": "physical"
+          },
+          "bonuses": []
+        }
       }
     },
     "ability": {

@@ -1,0 +1,308 @@
+.rmrpg-sheet {
+  .inventory-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .inventory-top {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .credits-card {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 180px;
+
+    h3 {
+      align-items: center;
+      display: inline-flex;
+      gap: 0.35rem;
+    }
+
+    input {
+      font-size: 1.2rem;
+      font-weight: 700;
+      height: 2.2rem;
+    }
+  }
+
+  .equipment-section {
+    background: var(--rmrpg-surface);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.6rem;
+  }
+
+  .equipment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .equipment-category {
+    background: #fff;
+    border: 1px solid #e1e7ea;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .equipment-summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    list-style: none;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: "▾";
+      font-size: 0.75rem;
+      color: var(--rmrpg-text-soft);
+      transition: transform 0.15s ease;
+    }
+  }
+
+  .equipment-summary-meta {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.35rem;
+    margin-left: auto;
+  }
+
+  .equipment-category[open] .equipment-summary::after {
+    transform: rotate(180deg);
+  }
+
+  .category-count {
+    background: var(--rmrpg-accent-soft);
+    border-radius: 999px;
+    color: var(--rmrpg-accent);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+  }
+
+  .category-action {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 6px;
+    color: var(--rmrpg-text-soft);
+    display: inline-flex;
+    height: 1.55rem;
+    justify-content: center;
+    width: 1.55rem;
+
+    &:hover {
+      color: var(--rmrpg-accent);
+    }
+  }
+
+  .equipment-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0 0.55rem 0.55rem;
+  }
+
+  .equipment-header,
+  .equipment-row {
+    align-items: center;
+    display: grid;
+    gap: 0.45rem;
+    grid-template-columns: 36px minmax(0, 1fr) 90px 80px 42px 42px 42px;
+  }
+
+  .equipment-header {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .equipment-row {
+    border: 1px solid #eef2f4;
+    border-radius: 8px;
+    cursor: grab;
+    padding: 0.35rem 0.4rem;
+  }
+
+  .item-icon {
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 6px;
+    height: 32px;
+    object-fit: cover;
+    width: 32px;
+  }
+
+  .item-name {
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+    text-align: left;
+    width: fit-content;
+    justify-self: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+      color: var(--rmrpg-accent);
+    }
+  }
+
+  .item-qty {
+    align-items: center;
+    display: flex;
+    gap: 0.35rem;
+    font-weight: 700;
+  }
+
+  .qty-controls {
+    display: flex;
+    gap: 0.2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .equipment-row:hover .qty-controls {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .qty-btn {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 6px;
+    color: var(--rmrpg-accent);
+    display: inline-flex;
+    height: 1.6rem;
+    justify-content: center;
+    width: 1.6rem;
+  }
+
+  .item-weight {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .item-status {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 6px;
+    color: var(--rmrpg-text-soft);
+    display: inline-flex;
+    height: 2rem;
+    justify-content: center;
+    width: 2rem;
+  }
+
+  .item-status.status-hand {
+    border-color: var(--rmrpg-accent);
+    color: var(--rmrpg-accent);
+  }
+
+  .item-status.status-dropped {
+    border-color: #d7a8a8;
+    color: #a64646;
+  }
+
+  .item-reorder {
+    display: grid;
+    gap: 0.2rem;
+    justify-items: center;
+  }
+
+  .reorder-btn {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 6px;
+    color: var(--rmrpg-text-soft);
+    display: inline-flex;
+    height: 1.1rem;
+    justify-content: center;
+    width: 1.1rem;
+
+    &:hover {
+      color: var(--rmrpg-accent);
+    }
+  }
+
+  .item-delete {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #d7a8a8;
+    border-radius: 6px;
+    color: #a64646;
+    display: inline-flex;
+    height: 2rem;
+    justify-content: center;
+    width: 2rem;
+  }
+
+  .equipment-empty {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.75rem;
+    padding: 0.35rem 0;
+  }
+
+  .carry-capacity {
+    background: var(--rmrpg-surface);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 10px;
+    display: grid;
+    gap: 0.4rem;
+    padding: 0.55rem;
+  }
+
+  .carry-meta {
+    color: var(--rmrpg-text-soft);
+    display: flex;
+    font-size: 0.65rem;
+    font-weight: 700;
+    justify-content: space-between;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .carry-bar {
+    background: #e8edf0;
+    border-radius: 999px;
+    height: 0.6rem;
+    overflow: hidden;
+  }
+
+  .carry-fill {
+    background: var(--rmrpg-accent);
+    height: 100%;
+    width: 0;
+  }
+}

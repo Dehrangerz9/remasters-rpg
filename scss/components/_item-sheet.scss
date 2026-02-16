@@ -1,0 +1,344 @@
+.rmrpg-sheet {
+  .grid-2 {
+    align-items: center;
+    column-gap: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    row-gap: 0.5rem;
+  }
+
+  .description-block {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  &.rmrpg-item-sheet,
+  .rmrpg-item-sheet {
+    .sheet-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: flex-start;
+      justify-content: flex-start;
+      text-align: left;
+      flex: 0 0 auto;
+      min-height: 0;
+    }
+
+    .item-header-top {
+      align-items: center;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-start;
+    }
+
+    .item-header-tags {
+      align-items: center;
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .item-title {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .profile-img {
+      border: 1px solid var(--rmrpg-border);
+      border-radius: 10px;
+      height: 52px;
+      object-fit: cover;
+      width: 52px;
+    }
+
+    .sheet-body {
+      overflow-x: hidden;
+    }
+
+    .weapon-layout {
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .weapon-summary {
+      background: var(--rmrpg-surface);
+      border: 1px solid var(--rmrpg-border);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.6rem;
+      flex: 1 1 220px;
+      min-width: 200px;
+
+      h3 {
+        color: var(--rmrpg-text-soft);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        margin: 0;
+        text-transform: uppercase;
+      }
+    }
+
+    .weapon-summary-grid label,
+    .weapon-field label,
+    .weapon-bonus-header {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .weapon-summary-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .weapon-field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .weapon-summary-grid input,
+    .weapon-field input,
+    .weapon-field select,
+    .weapon-bonus-row input,
+    .weapon-bonus-row select {
+      height: 2rem;
+      width: 100%;
+    }
+
+    .weapon-tabs-column {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 0;
+      flex: 2 1 320px;
+    }
+
+    .weapon-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      width: 100%;
+    }
+
+    .weapon-tabs .item {
+      background: #fff;
+      border: 1px solid var(--rmrpg-border);
+      border-radius: 999px;
+      color: var(--rmrpg-text-soft);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.35rem 0.9rem;
+      text-transform: uppercase;
+      white-space: nowrap;
+      width: auto;
+      min-width: 0;
+      height: 1.8rem;
+      line-height: 1;
+    }
+
+    .weapon-tabs .item.active {
+      background: var(--rmrpg-accent-soft);
+      border-color: var(--rmrpg-accent-soft);
+      color: var(--rmrpg-accent);
+    }
+
+    .weapon-tab-content .tab {
+      display: none;
+      height: auto;
+      overflow: visible;
+    }
+
+    .weapon-tab-content .tab.active {
+      display: block;
+    }
+
+    .weapon-tab-content textarea {
+      min-height: 140px;
+    }
+
+    .weapon-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      max-height: clamp(240px, 45vh, 380px);
+      overflow-y: auto;
+      padding-right: 0.3rem;
+    }
+
+    .weapon-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .weapon-section-title {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-top: 0.4rem;
+      text-transform: uppercase;
+    }
+
+    .weapon-damage-base {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .weapon-damage-base .weapon-field {
+      flex: 1 1 140px;
+    }
+
+    .weapon-bonus-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .weapon-bonus-header,
+    .weapon-bonus-row {
+      align-items: center;
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .weapon-bonus-header > :nth-child(1),
+    .weapon-bonus-row > :nth-child(1) {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .weapon-bonus-header > :nth-child(2),
+    .weapon-bonus-row > :nth-child(2) {
+      flex: 0 0 110px;
+    }
+
+    .weapon-bonus-header > :nth-child(3),
+    .weapon-bonus-row > :nth-child(3) {
+      flex: 0 0 32px;
+    }
+
+    .weapon-bonus-row input,
+    .weapon-bonus-row select {
+      width: 100%;
+    }
+
+    .weapon-add {
+      align-items: center;
+      background: #fff;
+      border: 1px dashed var(--rmrpg-border);
+      border-radius: 6px;
+      color: var(--rmrpg-text-soft);
+      display: inline-flex;
+      gap: 0.35rem;
+      height: 2rem;
+      justify-content: center;
+      padding: 0 0.6rem;
+
+      &:hover {
+        color: var(--rmrpg-accent);
+      }
+    }
+
+    .weapon-remove {
+      align-items: center;
+      background: #fff;
+      border: 1px solid #d7a8a8;
+      border-radius: 6px;
+      color: #a64646;
+      display: inline-flex;
+      height: 2rem;
+      justify-content: center;
+      width: 2rem;
+    }
+  }
+
+  &.rmrpg-item-sheet.feat-sheet,
+  .rmrpg-item-sheet.feat-sheet {
+    .feat-description-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .feat-description-grid .description-block label {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .feat-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      label {
+        color: var(--rmrpg-text-soft);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      input,
+      select {
+        height: 2rem;
+      }
+    }
+
+    .feat-rank-select {
+      background: #1f2a30;
+      border: 1px solid #1f2a30;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0 0.75rem;
+      text-transform: uppercase;
+      height: 1.8rem;
+    }
+  }
+}
+@media (max-width: 740px) {
+  .rmrpg-sheet.rmrpg-item-sheet {
+    .weapon-layout {
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .weapon-damage-base {
+      flex-direction: column;
+    }
+
+    .weapon-bonus-header,
+    .weapon-bonus-row {
+      flex-wrap: wrap;
+    }
+
+    .weapon-bonus-header > :nth-child(2),
+    .weapon-bonus-row > :nth-child(2) {
+      flex: 1 1 90px;
+    }
+  }
+}

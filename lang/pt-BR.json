@@ -66,6 +66,11 @@
         "Credits": "Creditos",
         "EquipmentList": "Lista de Equipamentos",
         "CarryCapacity": "Capacidade de Carga",
+        "AddItem": "Adicionar item",
+        "Search": "Buscar",
+        "NewItem": "Novo item",
+        "MoveUp": "Mover para cima",
+        "MoveDown": "Mover para baixo",
         "Delete": "Excluir item",
         "Empty": "Nenhum item ainda.",
         "Columns": {
@@ -173,7 +178,40 @@
         "Dropped": "Largado"
       },
       "Weapon": {
-        "Damage": "Formula de Dano"
+        "Summary": "Sumario",
+        "DescriptionTab": "Descricao",
+        "DetailsTab": "Detalhes",
+        "Price": "Preco",
+        "CategoryLabel": "Tipo de arma",
+        "RangeLabel": "Alcance",
+        "HitTitle": "Acerto",
+        "AttributeMod": "Modificador de Atributo",
+        "BonusLabel": "Nome",
+        "BonusValue": "Bonus",
+        "AddBonus": "Adicionar bonus customizado",
+        "DamageTitle": "Dano",
+        "NoAttribute": "Sem atributo",
+        "DiceCount": "Quantidade",
+        "DieType": "Dado",
+        "DamageTypeLabel": "Tipo de dano",
+        "FormulaLabel": "Formula",
+        "AddDamage": "Adicionar dano",
+        "Remove": "Remover",
+        "Category": {
+          "Melee": "Corpo a corpo",
+          "Ranged": "A distancia",
+          "Thrown": "De arremesso"
+        },
+        "Range": {
+          "Melee": "Corpo a corpo"
+        },
+        "DamageType": {
+          "Physical": "Fisico",
+          "Elemental": "Elemental",
+          "Mental": "Mental",
+          "Deteriorating": "Deteriorante",
+          "None": "Sem tipo"
+        }
       },
       "Ability": {
         "Cost": "Custo"

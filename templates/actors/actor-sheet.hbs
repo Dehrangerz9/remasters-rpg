@@ -249,10 +249,32 @@
               </div>
               <div class="equipment-list">
                 {{#each equipmentCategories}}
-                <details class="equipment-category" open>
+                <details class="equipment-category" data-category="{{this.key}}" open>
                   <summary class="equipment-summary">
                     <span class="category-title">{{this.label}}</span>
-                    <span class="category-count">{{this.items.length}}</span>
+                    <span class="equipment-summary-meta">
+                      <span class="category-count">{{this.items.length}}</span>
+                      <button
+                        type="button"
+                        class="category-action"
+                        data-action="category-add"
+                        data-category="{{this.key}}"
+                        aria-label="{{localize 'RMRPG.Actor.Inventory.AddItem'}}"
+                        title="{{localize 'RMRPG.Actor.Inventory.AddItem'}}"
+                      >
+                        <i class="fas fa-plus"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="category-action"
+                        data-action="category-search"
+                        data-category="{{this.key}}"
+                        aria-label="{{localize 'RMRPG.Actor.Inventory.Search'}}"
+                        title="{{localize 'RMRPG.Actor.Inventory.Search'}}"
+                      >
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </span>
                   </summary>
                   <div class="equipment-table" data-category="{{this.key}}">
                     <div class="equipment-header">
@@ -261,6 +283,7 @@
                       <span>{{localize "RMRPG.Actor.Inventory.Columns.Quantity"}}</span>
                       <span>{{localize "RMRPG.Actor.Inventory.Columns.Weight"}}</span>
                       <span>{{localize "RMRPG.Actor.Inventory.Columns.Status"}}</span>
+                      <span></span>
                       <span></span>
                     </div>
                     {{#if this.items.length}}
@@ -290,6 +313,30 @@
                       >
                         <i class="{{this.statusIcon}}"></i>
                       </button>
+                      <div class="item-reorder">
+                        <button
+                          type="button"
+                          class="reorder-btn"
+                          data-action="item-move"
+                          data-direction="up"
+                          data-id="{{this.id}}"
+                          aria-label="{{localize 'RMRPG.Actor.Inventory.MoveUp'}}"
+                          title="{{localize 'RMRPG.Actor.Inventory.MoveUp'}}"
+                        >
+                          <i class="fas fa-chevron-up"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="reorder-btn"
+                          data-action="item-move"
+                          data-direction="down"
+                          data-id="{{this.id}}"
+                          aria-label="{{localize 'RMRPG.Actor.Inventory.MoveDown'}}"
+                          title="{{localize 'RMRPG.Actor.Inventory.MoveDown'}}"
+                        >
+                          <i class="fas fa-chevron-down"></i>
+                        </button>
+                      </div>
                       <button
                         type="button"
                         class="item-delete"
