@@ -1,54 +1,216 @@
 {
   "Actor": {
     "types": [
-      "character",
-      "npc"
+      "player",
+      "npc",
+      "summon"
     ],
     "templates": {
       "common": {
+        "hp": {
+          "value": 10,
+          "max": 10,
+          "temp": 0
+        },
         "attributes": {
-          "strength": {
+          "corpo": {
             "value": 0
           },
-          "agility": {
+          "coordenacao": {
             "value": 0
           },
-          "intellect": {
+          "agilidade": {
+            "value": 0
+          },
+          "atencao": {
+            "value": 0
+          },
+          "mente": {
+            "value": 0
+          },
+          "carisma": {
             "value": 0
           }
         },
-        "health": {
-          "value": 10,
-          "max": 10
+        "rank": {
+          "value": "D",
+          "bonus": 2
+        },
+        "derived": {
+          "reflexo": 0,
+          "vigor": 0,
+          "determinacao": 0
+        },
+        "defense": {
+          "value": 0,
+          "calculated": 0
         }
       }
     },
-    "character": {
+    "player": {
       "templates": [
         "common"
       ],
-      "resources": {
-        "heroPoints": {
-          "value": 1,
+      "player": {
+        "protagonismPoints": 1,
+        "progression": {
+          "advancementCount": 0,
+          "nextRankAt": 4
+        },
+        "personal": {
+          "appearance": {
+            "description": "",
+            "pronouns": "",
+            "species": "",
+            "height": "",
+            "weight": ""
+          },
+          "history": {
+            "description": "",
+            "age": "",
+            "origin": ""
+          },
+          "personality": {
+            "likes": "",
+            "dislikes": "",
+            "catchphrase": ""
+          },
+          "notes": {
+            "campaign": "",
+            "allies": "",
+            "enemies": "",
+            "places": ""
+          }
+        },
+        "skills": {
+          "acrobatismo": {
+            "trained": false,
+            "attribute": "agilidade",
+            "bonus": 0,
+            "label": ""
+          },
+          "atletismo": {
+            "trained": false,
+            "attribute": "corpo",
+            "bonus": 0,
+            "label": ""
+          },
+          "malandragem": {
+            "trained": false,
+            "attribute": "mente",
+            "bonus": 0,
+            "label": ""
+          },
+          "dirigir": {
+            "trained": false,
+            "attribute": "atencao",
+            "bonus": 0,
+            "label": ""
+          },
+          "enganar": {
+            "trained": false,
+            "attribute": "carisma",
+            "bonus": 0,
+            "label": ""
+          },
+          "furtividade": {
+            "trained": false,
+            "attribute": "agilidade",
+            "bonus": 0,
+            "label": ""
+          },
+          "historia": {
+            "trained": false,
+            "attribute": "mente",
+            "bonus": 0,
+            "label": ""
+          },
+          "intimidar": {
+            "trained": false,
+            "attribute": "carisma",
+            "bonus": 0,
+            "label": ""
+          },
+          "medicina": {
+            "trained": false,
+            "attribute": "mente",
+            "bonus": 0,
+            "label": ""
+          },
+          "observar": {
+            "trained": false,
+            "attribute": "atencao",
+            "bonus": 0,
+            "label": ""
+          },
+          "oficios": {
+            "trained": false,
+            "attribute": "mente",
+            "bonus": 0,
+            "label": "",
+            "specialization": ""
+          },
+          "persuadir": {
+            "trained": false,
+            "attribute": "carisma",
+            "bonus": 0,
+            "label": ""
+          },
+          "sobrevivencia": {
+            "trained": false,
+            "attribute": "atencao",
+            "bonus": 0,
+            "label": ""
+          },
+          "reiki": {
+            "trained": false,
+            "attribute": "mente",
+            "bonus": 0,
+            "label": ""
+          },
+          "tecnologia": {
+            "trained": false,
+            "attribute": "mente",
+            "bonus": 0,
+            "label": ""
+          },
+          "custom": []
+        },
+        "advancements": {},
+        "reiki": {
+          "current": 0,
           "max": 3
-        }
+        },
+        "credits": 0
       }
     },
     "npc": {
       "templates": [
         "common"
-      ],
-      "threat": 1
+      ]
+    },
+    "summon": {
+      "templates": [
+        "common"
+      ]
     }
   },
   "Item": {
     "types": [
       "weapon",
-      "ability"
+      "ability",
+      "feat",
+      "item",
+      "mystic",
+      "consumable",
+      "misc"
     ],
     "templates": {
       "common": {
-        "description": ""
+        "description": "",
+        "quantity": 1,
+        "weight": 0,
+        "status": "stowed"
       }
     },
     "weapon": {
@@ -64,6 +226,34 @@
         "common"
       ],
       "cost": 0
+    },
+    "feat": {
+      "templates": [
+        "common"
+      ],
+      "requirements": "",
+      "rank": "D",
+      "description": ""
+    },
+    "item": {
+      "templates": [
+        "common"
+      ]
+    },
+    "mystic": {
+      "templates": [
+        "common"
+      ]
+    },
+    "consumable": {
+      "templates": [
+        "common"
+      ]
+    },
+    "misc": {
+      "templates": [
+        "common"
+      ]
     }
   }
 }

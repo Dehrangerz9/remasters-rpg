@@ -1,0 +1,189 @@
+{
+  "RMRPG": {
+    "Sheets": {
+      "Actor": "Ficha de Ator Remasters",
+      "Item": "Ficha de Item Remasters"
+    },
+    "Common": {
+      "Roll": "Rolar",
+      "Description": "Descricao"
+    },
+    "Actor": {
+      "Name": "Nome do Ator",
+      "HitPoints": "Pontos de Vida",
+      "TempHPShort": "Temp",
+      "Rank": "Rank",
+      "RankBonus": "Bonus de Rank",
+      "Tabs": {
+        "Main": "Principal",
+        "Actions": "Acoes",
+        "Inventory": "Inventario",
+        "Abilities": "Habilidades",
+        "Personal": "Info Pessoal",
+        "Advancements": "Evolucoes",
+        "Effects": "Efeitos Ativos"
+      },
+      "Attributes": {
+        "Corpo": "Corpo",
+        "Coordenacao": "Coordenacao",
+        "Agilidade": "Agilidade",
+        "Atencao": "Atencao",
+        "Mente": "Mente",
+        "Carisma": "Carisma"
+      },
+      "Derived": {
+        "Title": "Derivados",
+        "Reflexo": "Reflexo",
+        "Vigor": "Vigor",
+        "Determinacao": "Determinacao"
+      },
+      "Defense": {
+        "Title": "VD",
+        "ManualValue": "Manual:"
+      },
+      "Player": {
+        "ProtagonismPoints": "Pontos de Protagonismo",
+        "ReikiCharges": "Cargas de Reiki",
+        "Evolutions": "Evolucoes"
+      },
+      "Advancements": {
+        "Placeholder": "Descreva o que foi comprado",
+        "Add": "Adicionar Evolucao",
+        "Remove": "Remover",
+        "Empty": "Nenhuma evolucao ainda. Adicione uma para iniciar a progressao."
+      },
+      "Advantages": {
+        "Title": "Vantagens"
+      },
+      "Feats": {
+        "DropHint": "Solte um talento aqui",
+        "AddLabel": "Adicionar talento",
+        "NewName": "Novo Talento",
+        "Chat": "Enviar ao chat",
+        "Delete": "Excluir talento"
+      },
+      "Inventory": {
+        "Credits": "Creditos",
+        "EquipmentList": "Lista de Equipamentos",
+        "CarryCapacity": "Capacidade de Carga",
+        "Delete": "Excluir item",
+        "Empty": "Nenhum item ainda.",
+        "Columns": {
+          "Item": "Item",
+          "Quantity": "Qtd",
+          "Weight": "Peso",
+          "Status": "Status"
+        },
+        "Category": {
+          "Weapons": "Armas",
+          "Mystic": "Itens Misticos",
+          "Consumables": "Consumiveis",
+          "Misc": "Diversos"
+        }
+      },
+      "Skills": {
+        "Title": "Treinamentos",
+        "Add": "Adicionar Treinamento",
+        "CustomDefault": "Nova Pericia",
+        "CustomLabel": "Pericia",
+        "SettingsTitle": "Treinamentos",
+        "NamesTitle": "Nomes de Pericias",
+        "OficiosSpecialization": "Especializacao de Oficios",
+        "Acrobatismo": "Acrobatismo",
+        "Atletismo": "Atletismo",
+        "Malandragem": "Malandragem",
+        "Dirigir": "Dirigir",
+        "Enganar": "Enganar",
+        "Furtividade": "Furtividade",
+        "Historia": "Historia",
+        "Intimidar": "Intimidar",
+        "Medicina": "Medicina",
+        "Observar": "Observar",
+        "Oficios": "Oficios",
+        "Persuadir": "Persuadir",
+        "Sobrevivencia": "Sobrevivencia",
+        "Reiki": "Reiki",
+        "Tecnologia": "Tecnologia"
+      },
+      "Personal": {
+        "Appearance": {
+          "Title": "Aparencia",
+          "Pronouns": "Pronomes",
+          "Species": "Especie",
+          "Height": "Altura",
+          "Weight": "Peso"
+        },
+        "History": {
+          "Title": "Historia",
+          "Age": "Idade",
+          "Origin": "Origem"
+        },
+        "Personality": {
+          "Title": "Personalidade",
+          "Likes": "Gostos",
+          "Dislikes": "Desgostos",
+          "Catchphrase": "Bordao"
+        },
+        "Notes": {
+          "Title": "Anotacoes",
+          "Campaign": "Sobre a campanha",
+          "Allies": "Aliados",
+          "Enemies": "Inimigos",
+          "Places": "Locais"
+        }
+      }
+    },
+    "Dialogs": {
+      "InvalidNumber": "Insira valores numericos validos.",
+      "Attributes": {
+        "Title": "Definir Atributos"
+      },
+      "HP": {
+        "Title": "Definir Pontos de Vida",
+        "Current": "PV Atual",
+        "Max": "PV Maximo",
+        "Temp": "PV Temporario"
+      },
+      "Defense": {
+        "Title": "Definir VD",
+        "Manual": "VD Manual",
+        "BlankForAuto": "Deixe em branco para auto"
+      },
+      "Reiki": {
+        "Title": "Definir Cargas de Reiki",
+        "Current": "Cargas Atuais",
+        "Max": "Cargas Maximas"
+      }
+    },
+    "Item": {
+      "Name": "Nome do Item",
+      "Feat": {
+        "Requirements": "Requisitos",
+        "Rank": "Rank",
+        "Description": "Descricao"
+      },
+      "Equipment": {
+        "Weight": "Peso",
+        "Quantity": "Quantidade",
+        "Status": "Status"
+      },
+      "Status": {
+        "Stowed": "Guardado",
+        "InHand": "Em Maos",
+        "Dropped": "Largado"
+      },
+      "Weapon": {
+        "Damage": "Formula de Dano"
+      },
+      "Ability": {
+        "Cost": "Custo"
+      }
+    },
+    "Settings": {
+      "PunkCity": {
+        "Name": "Tema Punk City",
+        "Hint": "Ativa o tema cyberpunk vermelho/escuro nas fichas."
+      }
+    }
+  }
+}

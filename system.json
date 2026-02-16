@@ -20,19 +20,30 @@
   ],
   "languages": [
     {
+      "lang": "pt-BR",
+      "name": "Portugues (Brasil)",
+      "path": "lang/pt-BR.json"
+    },
+    {
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
     }
   ],
   "documentTypes": {
-    "Actor": [
-      "character",
-      "npc"
-    ],
-    "Item": [
-      "weapon",
-      "ability"
-    ]
+    "Actor": {
+      "player": {},
+      "npc": {},
+      "summon": {}
+    },
+    "Item": {
+      "weapon": {},
+      "ability": {},
+      "feat": {},
+      "item": {},
+      "mystic": {},
+      "consumable": {},
+      "misc": {}
+    }
   }
 }

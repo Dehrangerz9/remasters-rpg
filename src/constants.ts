@@ -1,6 +1,16 @@
 export const SYSTEM_ID = "remasters-rpg";
 
+export const RANKS = ["D", "C", "B", "A", "S"] as const;
+
+export const RANK_BONUS_BY_RANK: Record<(typeof RANKS)[number], number> = {
+  D: 2,
+  C: 3,
+  B: 4,
+  A: 5,
+  S: 6
+};
+
 export const RMRPG = {
-  actorTypes: ["character", "npc"],
-  itemTypes: ["weapon", "ability"]
+  actorTypes: ["player", "npc", "summon"],
+  itemTypes: ["weapon", "ability", "feat", "item", "mystic", "consumable", "misc"]
 };

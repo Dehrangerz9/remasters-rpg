@@ -1,5 +1,23 @@
-<form class="rmrpg-sheet flexcol" autocomplete="off">
-  <header class="sheet-header flexrow">
+<form class="rmrpg-sheet rmrpg-item-sheet flexcol{{#if isFeat}} feat-sheet{{/if}}" autocomplete="off">
+  <header class="sheet-header">
+    {{#if isFeat}}
+    <div class="header-fields">
+      <div class="feat-title-row">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="feat-title">
+          <h1 class="charname">
+            <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'RMRPG.Item.Name'}}" />
+          </h1>
+        </div>
+      </div>
+      <div class="feat-pill-row">
+        <div class="type-pill">{{item.type}}</div>
+        <select name="system.rank" class="feat-rank-select" aria-label="{{localize 'RMRPG.Item.Feat.Rank'}}">
+          {{selectOptions rankOptions selected=system.rank valueAttr="value" labelAttr="label"}}
+        </select>
+      </div>
+    </div>
+    {{else}}
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
     <div class="header-fields">
       <h1 class="charname">
@@ -7,6 +25,7 @@
       </h1>
       <div class="type-pill">{{item.type}}</div>
     </div>
+    {{/if}}
   </header>
 
   <section class="sheet-body">
@@ -24,9 +43,35 @@
     </div>
     {{/if}}
 
+    {{#if isEquipment}}
+    <div class="grid-2 equipment-meta">
+      <label>{{localize "RMRPG.Item.Equipment.Quantity"}}</label>
+      <input type="number" name="system.quantity" value="{{system.quantity}}" min="0" step="1" />
+      <label>{{localize "RMRPG.Item.Equipment.Weight"}}</label>
+      <input type="number" name="system.weight" value="{{system.weight}}" min="0" step="0.1" />
+      <label>{{localize "RMRPG.Item.Equipment.Status"}}</label>
+      <select name="system.status">
+        {{selectOptions statusOptions selected=system.status valueAttr="value" labelAttr="label"}}
+      </select>
+    </div>
+    {{/if}}
+
+    {{#if isFeat}}
+    <div class="feat-description-grid">
+      <div class="feat-field feat-req-field">
+        <label>{{localize "RMRPG.Item.Feat.Requirements"}}</label>
+        <input type="text" name="system.requirements" value="{{system.requirements}}" />
+      </div>
+      <div class="description-block">
+        <label>{{localize "RMRPG.Item.Feat.Description"}}</label>
+        <textarea name="system.description">{{system.description}}</textarea>
+      </div>
+    </div>
+    {{else}}
     <div class="description-block">
       <label>{{localize "RMRPG.Common.Description"}}</label>
       {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
     </div>
+    {{/if}}
   </section>
 </form>

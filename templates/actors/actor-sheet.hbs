@@ -1,67 +1,448 @@
 <form class="rmrpg-sheet flexcol" autocomplete="off">
-  <header class="sheet-header flexrow">
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-    <div class="header-fields">
-      <h1 class="charname">
-        <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'RMRPG.Actor.Name'}}" />
-      </h1>
-      <div class="type-pill">{{actor.type}}</div>
-    </div>
-  </header>
+  <div class="sheet-columns">
+    <aside class="left-column">
+      <img class="profile-portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
 
-  <nav class="tabs" data-group="primary">
-    <a class="item" data-tab="attributes">{{localize "RMRPG.Actor.Tabs.Attributes"}}</a>
-    <a class="item" data-tab="details">{{localize "RMRPG.Actor.Tabs.Details"}}</a>
-  </nav>
+      <div class="status-rail">
+        <section class="status-card hp-card">
+          <button type="button" class="card-cog" data-action="set-hp" aria-label="Set HP">⚙</button>
+          <h3>{{localize "RMRPG.Actor.HitPoints"}}</h3>
 
-  <section class="sheet-body">
-    <div class="tab" data-group="primary" data-tab="attributes">
-      <div class="grid-2">
-        <label>{{localize "RMRPG.Actor.Attributes.Strength"}}</label>
-        <div class="field-with-action">
-          <input type="number" name="system.attributes.strength.value" value="{{system.attributes.strength.value}}" />
-          <button type="button" data-action="roll-attribute" data-attribute="strength">{{localize "RMRPG.Common.Roll"}}</button>
-        </div>
+          <div class="bar-row">
+            <div class="value-bar hp-bar">
+              <div class="value-fill hp-fill" style="width: {{hpPercent}}%;"></div>
+              <span class="value-text">
+                <input type="number" class="bar-input" data-action="inline-hp-value" value="{{hpValue}}" />
+                <span>/ {{hpMax}}</span>
+              </span>
+            </div>
+            <div class="temp-box">
+              <span class="temp-label">{{localize "RMRPG.Actor.TempHPShort"}}</span>
+              <input type="number" class="temp-input" data-action="inline-hp-temp" value="{{hpTemp}}" />
+            </div>
+          </div>
+        </section>
 
-        <label>{{localize "RMRPG.Actor.Attributes.Agility"}}</label>
-        <div class="field-with-action">
-          <input type="number" name="system.attributes.agility.value" value="{{system.attributes.agility.value}}" />
-          <button type="button" data-action="roll-attribute" data-attribute="agility">{{localize "RMRPG.Common.Roll"}}</button>
-        </div>
+        {{#if isPlayer}}
+        <section class="status-card reiki-card">
+          <button type="button" class="card-cog" data-action="set-reiki" aria-label="Set Reiki">⚙</button>
+          <h3>{{localize "RMRPG.Actor.Player.ReikiCharges"}}</h3>
 
-        <label>{{localize "RMRPG.Actor.Attributes.Intellect"}}</label>
-        <div class="field-with-action">
-          <input type="number" name="system.attributes.intellect.value" value="{{system.attributes.intellect.value}}" />
-          <button type="button" data-action="roll-attribute" data-attribute="intellect">{{localize "RMRPG.Common.Roll"}}</button>
-        </div>
+          <div class="value-bar reiki-bar">
+            <div class="value-fill reiki-fill" style="width: {{reikiPercent}}%;"></div>
+            <span class="value-text">
+              <input type="number" class="bar-input" data-action="inline-reiki-current" value="{{reikiCurrent}}" />
+              <span>/ {{reikiMax}}</span>
+            </span>
+          </div>
+        </section>
+        {{/if}}
 
-        <label>{{localize "RMRPG.Actor.Health"}}</label>
-        <div class="field-inline">
-          <input type="number" name="system.health.value" value="{{system.health.value}}" />
-          <span>/</span>
-          <input type="number" name="system.health.max" value="{{system.health.max}}" />
-        </div>
+        <section class="status-card vd-card">
+          <button type="button" class="card-cog" data-action="set-defense" aria-label="Set VD">⚙</button>
+          <h3>{{localize "RMRPG.Actor.Defense.Title"}}</h3>
+          <h1>{{defenseCalculated}}</h1>
+          {{#if hasManualDefense}}
+          <small>{{localize "RMRPG.Actor.Defense.ManualValue"}} {{defenseManual}}</small>
+          {{/if}}
+        </section>
+
+        <section class="status-card derived-card">
+          <h3>{{localize "RMRPG.Actor.Derived.Title"}}</h3>
+
+          <div class="derived-grid">
+            <div class="derived-item">
+              <button type="button" class="derived-roll" data-action="roll-derived" data-derived="reflexo" aria-label="Roll Reflexo">
+                <i class="fas fa-dice-d20"></i>
+              </button>
+              <span class="derived-label">{{localize "RMRPG.Actor.Derived.Reflexo"}}</span>
+              <span class="derived-value">{{derivedReflexo}}</span>
+            </div>
+
+            <div class="derived-item">
+              <button type="button" class="derived-roll" data-action="roll-derived" data-derived="vigor" aria-label="Roll Vigor">
+                <i class="fas fa-dice-d20"></i>
+              </button>
+              <span class="derived-label">{{localize "RMRPG.Actor.Derived.Vigor"}}</span>
+              <span class="derived-value">{{derivedVigor}}</span>
+            </div>
+
+            <div class="derived-item">
+              <button type="button" class="derived-roll" data-action="roll-derived" data-derived="determinacao" aria-label="Roll Determinacao">
+                <i class="fas fa-dice-d20"></i>
+              </button>
+              <span class="derived-label">{{localize "RMRPG.Actor.Derived.Determinacao"}}</span>
+              <span class="derived-value">{{derivedDeterminacao}}</span>
+            </div>
+          </div>
+        </section>
+
+        {{#unless isPlayer}}
+        <section class="status-card">
+          <h3>{{localize "RMRPG.Actor.Rank"}}</h3>
+          <select name="system.rank.value">
+            {{selectOptions rankOptions selected=system.rank.value valueAttr="value" labelAttr="label"}}
+          </select>
+        </section>
+        {{/unless}}
       </div>
-    </div>
+    </aside>
 
-    <div class="tab" data-group="primary" data-tab="details">
-      {{#if isCharacter}}
-      <div class="grid-2">
-        <label>{{localize "RMRPG.Actor.HeroPoints"}}</label>
-        <div class="field-inline">
-          <input type="number" name="system.resources.heroPoints.value" value="{{system.resources.heroPoints.value}}" />
-          <span>/</span>
-          <input type="number" name="system.resources.heroPoints.max" value="{{system.resources.heroPoints.max}}" />
+    <section class="right-column">
+      <header class="sheet-header">
+        <div class="header-top">
+          <h1 class="charname">
+            <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'RMRPG.Actor.Name'}}" />
+          </h1>
+
+          <div class="header-badges">
+            <div class="rank-meta">
+              <div class="rank-column">
+                <span class="meta-label">{{localize "RMRPG.Actor.Rank"}}</span>
+                <span class="meta-label">{{localize "RMRPG.Actor.RankBonus"}}</span>
+              </div>
+              <div class="rank-values">
+                <span class="meta-value">{{system.rank.value}}</span>
+                <span class="meta-value">+{{rankBonus}}</span>
+              </div>
+            </div>
+            {{#unless isPlayer}}
+            <span class="type-pill">{{actor.type}}</span>
+            {{/unless}}
+          </div>
         </div>
-      </div>
-      {{/if}}
 
-      {{#if isNPC}}
-      <div class="grid-2">
-        <label>{{localize "RMRPG.Actor.Threat"}}</label>
-        <input type="number" name="system.threat" value="{{system.threat}}" />
-      </div>
-      {{/if}}
-    </div>
-  </section>
+        {{#if isPlayer}}
+        <div class="protagonism-track" role="group" aria-label="{{localize 'RMRPG.Actor.Player.ProtagonismPoints'}}">
+          <span class="track-label">{{localize "RMRPG.Actor.Player.ProtagonismPoints"}}</span>
+          <div class="track-dots">
+            {{#each protagonismSlots}}
+            <button
+              type="button"
+              class="dot {{#if this.active}}is-active{{/if}}"
+              data-action="set-protagonism"
+              data-value="{{this.value}}"
+              aria-label="{{localize 'RMRPG.Actor.Player.ProtagonismPoints'}} {{this.value}}"
+              title="LMB: set, RMB: -1"
+            ></button>
+            {{/each}}
+          </div>
+        </div>
+        {{/if}}
+      </header>
+
+      <nav class="tabs" data-group="primary">
+        <a class="item" data-tab="main" title="{{localize 'RMRPG.Actor.Tabs.Main'}}"><i class="fas fa-home"></i></a>
+        {{#if isPlayer}}
+        <a class="item" data-tab="actions" title="{{localize 'RMRPG.Actor.Tabs.Actions'}}"><i class="fas fa-fist-raised"></i></a>
+        <a class="item" data-tab="inventory" title="{{localize 'RMRPG.Actor.Tabs.Inventory'}}"><i class="fas fa-shopping-bag"></i></a>
+        <a class="item" data-tab="abilities" title="{{localize 'RMRPG.Actor.Tabs.Abilities'}}"><i class="fas fa-star"></i></a>
+        <a class="item" data-tab="personal" title="{{localize 'RMRPG.Actor.Tabs.Personal'}}"><i class="fas fa-id-card"></i></a>
+        <a class="item" data-tab="advancements" title="{{localize 'RMRPG.Actor.Tabs.Advancements'}}"><i class="fas fa-medal"></i></a>
+        <a class="item" data-tab="effects" title="{{localize 'RMRPG.Actor.Tabs.Effects'}}"><i class="fas fa-skull"></i></a>
+        {{/if}}
+      </nav>
+
+      <section class="sheet-body">
+        <div class="tab" data-group="primary" data-tab="main">
+          <div class="attributes-grid">
+            {{#each attributeCards}}
+            <article class="attribute-card">
+              <button
+                type="button"
+                class="card-cog"
+                data-action="set-attribute"
+                aria-label="{{localize 'RMRPG.Dialogs.Attributes.Title'}}"
+              >
+                ⚙
+              </button>
+              <h3>{{localize this.labelKey}}</h3>
+              <h1>{{this.value}}</h1>
+            </article>
+            {{/each}}
+          </div>
+
+          {{#if isPlayer}}
+          <div class="main-sections">
+            <section class="skills-section">
+              <div class="section-header">
+                <h3>{{localize "RMRPG.Actor.Skills.Title"}}</h3>
+                <button type="button" class="section-action" data-action="edit-skills" aria-label="{{localize 'RMRPG.Actor.Skills.SettingsTitle'}}">
+                  <i class="fas fa-gear"></i>
+                </button>
+              </div>
+
+              <div class="skills-list">
+                {{#each skillEntries}}
+                <div class="skill-row">
+                  <input type="checkbox" name="{{this.trainedPath}}" {{checked this.trained}} />
+                  <span class="skill-label">
+                    {{#if this.labelKey}}
+                      {{localize this.labelKey}}
+                    {{else}}
+                      {{this.label}}
+                    {{/if}}
+                  </span>
+                  <select name="{{this.attributePath}}">
+                    {{selectOptions ../attributeOptions selected=this.attribute valueAttr="value" labelAttr="label"}}
+                  </select>
+                  <button
+                    type="button"
+                    class="skill-roll"
+                    data-action="roll-skill"
+                    data-attr="{{this.attribute}}"
+                    data-bonus="{{this.bonus}}"
+                    data-label="{{this.displayLabel}}"
+                  >
+                    +{{this.totalBonus}} <i class="fas fa-dice-d20"></i>
+                  </button>
+                </div>
+                {{/each}}
+              </div>
+
+              <button type="button" class="add-skill" data-action="add-skill">{{localize "RMRPG.Actor.Skills.Add"}}</button>
+            </section>
+
+            <section class="advantages-section">
+              <div class="section-header">
+                <h3>{{localize "RMRPG.Actor.Advantages.Title"}}</h3>
+              </div>
+              <button type="button" class="add-feat" data-action="add-feat">{{localize "RMRPG.Actor.Feats.AddLabel"}}</button>
+              {{#unless feats.length}}
+              <div class="feat-drop-zone" data-action="feat-drop">
+                <span>{{localize "RMRPG.Actor.Feats.DropHint"}}</span>
+              </div>
+              {{/unless}}
+              <div class="feats-list">
+                {{#each feats}}
+                <div class="feat-row" data-id="{{this.id}}" draggable="true">
+                  <img class="feat-icon" src="{{this.img}}" title="{{this.name}}" />
+                  <button type="button" class="feat-name" data-action="feat-open" data-id="{{this.id}}">{{this.name}}</button>
+                  <button type="button" class="feat-chat" data-action="feat-chat" data-id="{{this.id}}" aria-label="{{localize 'RMRPG.Actor.Feats.Chat'}}">
+                    <i class="fas fa-comment"></i>
+                  </button>
+                  <button type="button" class="feat-remove" data-action="feat-delete" data-id="{{this.id}}" aria-label="{{localize 'RMRPG.Actor.Feats.Delete'}}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                {{/each}}
+              </div>
+            </section>
+          </div>
+          {{/if}}
+        </div>
+
+        {{#if isPlayer}}
+        <div class="tab" data-group="primary" data-tab="actions"></div>
+        <div class="tab" data-group="primary" data-tab="inventory">
+          <div class="inventory-section">
+            <div class="inventory-top">
+              <article class="attribute-card credits-card">
+                <h3><i class="fas fa-wallet"></i> {{localize "RMRPG.Actor.Inventory.Credits"}}</h3>
+                <input type="number" name="system.player.credits" value="{{system.player.credits}}" min="0" step="1" />
+              </article>
+            </div>
+
+            <section class="equipment-section">
+              <div class="section-header">
+                <h3>{{localize "RMRPG.Actor.Inventory.EquipmentList"}}</h3>
+              </div>
+              <div class="equipment-list">
+                {{#each equipmentCategories}}
+                <details class="equipment-category" open>
+                  <summary class="equipment-summary">
+                    <span class="category-title">{{this.label}}</span>
+                    <span class="category-count">{{this.items.length}}</span>
+                  </summary>
+                  <div class="equipment-table" data-category="{{this.key}}">
+                    <div class="equipment-header">
+                      <span></span>
+                      <span>{{localize "RMRPG.Actor.Inventory.Columns.Item"}}</span>
+                      <span>{{localize "RMRPG.Actor.Inventory.Columns.Quantity"}}</span>
+                      <span>{{localize "RMRPG.Actor.Inventory.Columns.Weight"}}</span>
+                      <span>{{localize "RMRPG.Actor.Inventory.Columns.Status"}}</span>
+                      <span></span>
+                    </div>
+                    {{#if this.items.length}}
+                    {{#each this.items}}
+                    <div class="equipment-row" data-item-id="{{this.id}}" data-id="{{this.id}}" data-category="{{../key}}" draggable="true">
+                      <img class="item-icon" src="{{this.img}}" title="{{this.name}}" />
+                      <button type="button" class="item-name" data-action="item-open" data-id="{{this.id}}">{{this.name}}</button>
+                      <div class="item-qty">
+                        <span class="qty-value">{{this.quantity}}</span>
+                        <div class="qty-controls">
+                          <button type="button" class="qty-btn" data-action="item-qty" data-delta="-1" data-id="{{this.id}}" aria-label="Decrease">
+                            <i class="fas fa-minus"></i>
+                          </button>
+                          <button type="button" class="qty-btn" data-action="item-qty" data-delta="1" data-id="{{this.id}}" aria-label="Increase">
+                            <i class="fas fa-plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <span class="item-weight">{{this.totalWeight}}</span>
+                      <button
+                        type="button"
+                        class="item-status {{this.statusClass}}"
+                        data-action="item-status"
+                        data-id="{{this.id}}"
+                        aria-label="{{this.statusLabel}}"
+                        title="{{this.statusLabel}}"
+                      >
+                        <i class="{{this.statusIcon}}"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="item-delete"
+                        data-action="item-delete"
+                        data-id="{{this.id}}"
+                        aria-label="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+                        title="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <div class="equipment-empty">{{localize "RMRPG.Actor.Inventory.Empty"}}</div>
+                    {{/if}}
+                  </div>
+                </details>
+                {{/each}}
+              </div>
+            </section>
+
+            <div class="carry-capacity">
+              <div class="carry-meta">
+                <span>{{localize "RMRPG.Actor.Inventory.CarryCapacity"}}</span>
+                <span>{{carryWeight}} / {{carryCapacity}}</span>
+              </div>
+              <div class="carry-bar">
+                <div class="carry-fill" style="width: {{carryPercent}}%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab" data-group="primary" data-tab="abilities"></div>
+        <div class="tab" data-group="primary" data-tab="personal">
+          <div class="personal-info">
+            <section class="personal-section">
+              <h3>{{localize "RMRPG.Actor.Personal.Appearance.Title"}}</h3>
+              <textarea name="system.player.personal.appearance.description">{{system.player.personal.appearance.description}}</textarea>
+            </section>
+
+            <section class="personal-grid personal-grid-4">
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.Appearance.Pronouns"}}</label>
+                <input type="text" name="system.player.personal.appearance.pronouns" value="{{system.player.personal.appearance.pronouns}}" />
+              </div>
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.Appearance.Species"}}</label>
+                <input type="text" name="system.player.personal.appearance.species" value="{{system.player.personal.appearance.species}}" />
+              </div>
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.Appearance.Height"}}</label>
+                <input type="text" name="system.player.personal.appearance.height" value="{{system.player.personal.appearance.height}}" />
+              </div>
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.Appearance.Weight"}}</label>
+                <input type="text" name="system.player.personal.appearance.weight" value="{{system.player.personal.appearance.weight}}" />
+              </div>
+            </section>
+
+            <section class="personal-section">
+              <h3>{{localize "RMRPG.Actor.Personal.History.Title"}}</h3>
+              <textarea name="system.player.personal.history.description">{{system.player.personal.history.description}}</textarea>
+            </section>
+
+            <section class="personal-grid personal-grid-2">
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.History.Age"}}</label>
+                <input type="text" name="system.player.personal.history.age" value="{{system.player.personal.history.age}}" />
+              </div>
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.History.Origin"}}</label>
+                <input type="text" name="system.player.personal.history.origin" value="{{system.player.personal.history.origin}}" />
+              </div>
+            </section>
+
+            <section class="personal-section">
+              <h3>{{localize "RMRPG.Actor.Personal.Personality.Title"}}</h3>
+            </section>
+
+            <section class="personal-grid personal-grid-2">
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.Personality.Likes"}}</label>
+                <input type="text" name="system.player.personal.personality.likes" value="{{system.player.personal.personality.likes}}" />
+              </div>
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.Personality.Dislikes"}}</label>
+                <input type="text" name="system.player.personal.personality.dislikes" value="{{system.player.personal.personality.dislikes}}" />
+              </div>
+            </section>
+
+            <section class="personal-grid personal-grid-1">
+              <div class="personal-field">
+                <label>{{localize "RMRPG.Actor.Personal.Personality.Catchphrase"}}</label>
+                <input type="text" name="system.player.personal.personality.catchphrase" value="{{system.player.personal.personality.catchphrase}}" />
+              </div>
+            </section>
+
+            <section class="personal-section">
+              <h3>{{localize "RMRPG.Actor.Personal.Notes.Title"}}</h3>
+            </section>
+
+            <section class="personal-section">
+              <h4>{{localize "RMRPG.Actor.Personal.Notes.Campaign"}}</h4>
+              <textarea name="system.player.personal.notes.campaign">{{system.player.personal.notes.campaign}}</textarea>
+            </section>
+
+            <section class="personal-section">
+              <h4>{{localize "RMRPG.Actor.Personal.Notes.Allies"}}</h4>
+              <textarea name="system.player.personal.notes.allies">{{system.player.personal.notes.allies}}</textarea>
+            </section>
+
+            <section class="personal-section">
+              <h4>{{localize "RMRPG.Actor.Personal.Notes.Enemies"}}</h4>
+              <textarea name="system.player.personal.notes.enemies">{{system.player.personal.notes.enemies}}</textarea>
+            </section>
+
+            <section class="personal-section">
+              <h4>{{localize "RMRPG.Actor.Personal.Notes.Places"}}</h4>
+              <textarea name="system.player.personal.notes.places">{{system.player.personal.notes.places}}</textarea>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab" data-group="primary" data-tab="advancements">
+          <div class="advancement-toolbar">
+            <button type="button" data-action="add-advancement">{{localize "RMRPG.Actor.Advancements.Add"}}</button>
+          </div>
+
+          {{#if hasAdvancements}}
+          <div class="advancement-list">
+            {{#each advancementEntries}}
+            <div class="advancement-row">
+              <label class="advancement-code">{{this.code}}</label>
+              <input
+                type="text"
+                name="{{this.path}}"
+                value="{{this.value}}"
+                placeholder="{{localize 'RMRPG.Actor.Advancements.Placeholder'}}"
+              />
+              <button type="button" class="advancement-remove" data-action="remove-advancement" data-key="{{this.key}}" aria-label="Remove">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            {{/each}}
+          </div>
+          {{else}}
+          <p class="advancement-empty">{{localize "RMRPG.Actor.Advancements.Empty"}}</p>
+          {{/if}}
+        </div>
+
+        <div class="tab" data-group="primary" data-tab="effects"></div>
+        {{/if}}
+      </section>
+    </section>
+  </div>
 </form>

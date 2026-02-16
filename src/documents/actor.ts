@@ -1,6 +1,71 @@
-export class RMRPGActor extends Actor {
+import { RANK_BONUS_BY_RANK, RANKS } from "../constants.js";
+
+type Rank = (typeof RANKS)[number];
+
+class RMRPGGenericActor extends Actor {
+  prepareDerivedData() {
+    super.prepareDerivedData();
+
+    const system = this.system ?? {};
+    const rankState = this.resolveRankState(system);
+
+    system.rank ??= {};
+    system.rank.value = rankState.rank;
+    system.rank.bonus = rankState.bonus;
+
+    system.hp ??= {};
+    system.hp.value = Math.max(0, this.asNumber(system.hp.value));
+    system.hp.max = Math.max(1, this.asNumber(system.hp.max || 1));
+    system.hp.temp = Math.max(0, this.asNumber(system.hp.temp));
+
+    const attributes = system.attributes ?? {};
+    const corpo = this.asNumber(attributes.corpo?.value);
+    const coordenacao = this.asNumber(attributes.coordenacao?.value);
+    const agilidade = this.asNumber(attributes.agilidade?.value);
+    const atencao = this.asNumber(attributes.atencao?.value);
+    const mente = this.asNumber(attributes.mente?.value);
+    const carisma = this.asNumber(attributes.carisma?.value);
+
+    const reflexo = this.roundDown((atencao + agilidade + coordenacao) / 2 + rankState.bonus);
+    const determinacao = this.roundDown((atencao + carisma + mente) / 2 + rankState.bonus);
+    const vigor = this.roundDown((agilidade + coordenacao + corpo) / 2 + rankState.bonus);
+
+    system.derived ??= {};
+    system.derived.reflexo = reflexo;
+    system.derived.determinacao = determinacao;
+    system.derived.vigor = vigor;
+
+    const manualDefense = this.asNumber(system.defense?.value);
+    const calculatedDefense = manualDefense > 0 ? this.roundDown(manualDefense) : this.roundDown(12 + reflexo);
+
+    system.defense ??= {};
+    system.defense.calculated = calculatedDefense;
+  }
+
+  protected resolveRankState(system: any) {
+    const rank = this.normalizeRank(system.rank?.value);
+    return {
+      rank,
+      bonus: RANK_BONUS_BY_RANK[rank]
+    };
+  }
+
+  protected normalizeRank(value: unknown): Rank {
+    const rankText = String(value ?? "D").toUpperCase() as Rank;
+    return rankText in RANK_BONUS_BY_RANK ? rankText : "D";
+  }
+
+  protected asNumber(value: unknown) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  protected roundDown(value: number) {
+    return Math.floor(value);
+  }
+
   async rollAttribute(attributeKey: string) {
-    const value = Number(this.system.attributes?.[attributeKey]?.value ?? 0);
+    const value = this.asNumber(this.system.attributes?.[attributeKey]?.value);
     const roll = await new Roll("1d20 + @value", { value }).roll({ async: true });
 
     await roll.toMessage({
@@ -9,5 +74,99 @@ export class RMRPGActor extends Actor {
     });
 
     return roll;
+  }
+
+  async rollDerived(derivedKey: string) {
+    const value = this.asNumber(this.system.derived?.[derivedKey]);
+    const roll = await new Roll("1d20 + @value", { value }).roll({ async: true });
+
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this }),
+      flavor: `${this.name} rolls ${derivedKey}`
+    });
+
+    return roll;
+  }
+
+  async rollSkill(skillLabel: string, total: number) {
+    const totalBonus = this.asNumber(total);
+    const roll = await new Roll("1d20 + @total", {
+      total: totalBonus
+    }).roll({ async: true });
+
+    await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this }),
+      flavor: `${this.name} rolls ${skillLabel}`
+    });
+
+    return roll;
+  }
+}
+
+export class RMRPGPlayerActor extends RMRPGGenericActor {
+  static getProgressionState(system: any) {
+    const advancements = system.player?.advancements ?? {};
+    const advancementCount = Object.keys(advancements).length;
+
+    const rankIndex = Math.min(RANKS.length - 1, Math.floor(advancementCount / 4));
+    const rank = RANKS[rankIndex];
+    const bonus = RANK_BONUS_BY_RANK[rank];
+    const nextRankAt = rankIndex < RANKS.length - 1 ? (rankIndex + 1) * 4 : null;
+
+    return {
+      advancementCount,
+      nextRankAt,
+      rank,
+      bonus,
+      reikiDefaultMax: 1 + bonus
+    };
+  }
+}
+
+export class RMRPGNPCActor extends RMRPGGenericActor {}
+
+export class RMRPGSummonActor extends RMRPGGenericActor {}
+
+export class RMRPGActor extends RMRPGGenericActor {
+  protected resolveRankState(system: any) {
+    if (this.type !== "player") {
+      return super.resolveRankState(system);
+    }
+
+    const progression = RMRPGPlayerActor.getProgressionState(system);
+
+    system.player ??= {};
+    system.player.progression ??= {};
+    system.player.progression.advancementCount = progression.advancementCount;
+    system.player.progression.nextRankAt = progression.nextRankAt;
+
+    const protagonism = Number(system.player.protagonismPoints);
+    if (Number.isFinite(protagonism)) {
+      system.player.protagonismPoints = Math.max(0, Math.min(3, Math.floor(protagonism)));
+    } else {
+      system.player.protagonismPoints = 1;
+    }
+
+    system.player.reiki ??= {};
+
+    const rawMax = Number(system.player.reiki.max);
+    const reikiMax = Number.isFinite(rawMax) ? Math.max(0, Math.floor(rawMax)) : progression.reikiDefaultMax;
+
+    let reikiCurrent: number;
+    const rawCurrent = Number(system.player.reiki.current);
+    if (Number.isFinite(rawCurrent)) {
+      reikiCurrent = Math.max(0, Math.floor(rawCurrent));
+    } else {
+      const legacySlots = system.player.reiki.slots ?? {};
+      reikiCurrent = Object.values(legacySlots).filter(Boolean).length;
+    }
+
+    system.player.reiki.max = reikiMax;
+    system.player.reiki.current = Math.min(reikiCurrent, reikiMax);
+
+    return {
+      rank: progression.rank,
+      bonus: progression.bonus
+    };
   }
 }

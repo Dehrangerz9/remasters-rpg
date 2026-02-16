@@ -10,4 +10,8 @@ declare const ItemSheet: any;
 declare const Actor: any;
 declare const Item: any;
 declare const foundry: any;
+declare const Dialog: any;
+declare const game: any;
+declare const ui: any;
+declare const fromUuid: any;
 type JQuery = any;

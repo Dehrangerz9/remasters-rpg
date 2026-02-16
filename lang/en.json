@@ -10,26 +10,179 @@
     },
     "Actor": {
       "Name": "Actor Name",
-      "Health": "Health",
-      "HeroPoints": "Hero Points",
-      "Threat": "Threat",
+      "HitPoints": "Hit Points",
+      "TempHPShort": "Temp",
+      "Rank": "Rank",
+      "RankBonus": "Rank Bonus",
       "Tabs": {
-        "Attributes": "Attributes",
-        "Details": "Details"
+        "Main": "Main",
+        "Actions": "Actions",
+        "Inventory": "Inventory",
+        "Abilities": "Abilities",
+        "Personal": "Personal Info",
+        "Advancements": "Advancements",
+        "Effects": "Active Effects"
       },
       "Attributes": {
-        "Strength": "Strength",
-        "Agility": "Agility",
-        "Intellect": "Intellect"
+        "Corpo": "Body",
+        "Coordenacao": "Coordination",
+        "Agilidade": "Agility",
+        "Atencao": "Awareness",
+        "Mente": "Mind",
+        "Carisma": "Charisma"
+      },
+      "Derived": {
+        "Title": "Derived",
+        "Reflexo": "Reflex",
+        "Vigor": "Vigor",
+        "Determinacao": "Determination"
+      },
+      "Defense": {
+        "Title": "VD",
+        "ManualValue": "Manual:"
+      },
+      "Player": {
+        "ProtagonismPoints": "Protagonism Points",
+        "ReikiCharges": "Reiki Charges",
+        "Evolutions": "Evolutions"
+      },
+      "Advancements": {
+        "Placeholder": "Describe what was purchased",
+        "Add": "Add Evolution",
+        "Remove": "Remove",
+        "Empty": "No evolutions yet. Add one to start progression."
+      },
+      "Advantages": {
+        "Title": "Advantages"
+      },
+      "Feats": {
+        "DropHint": "Drop a feat here",
+        "AddLabel": "Add feat",
+        "NewName": "New Feat",
+        "Chat": "Send to chat",
+        "Delete": "Delete feat"
+      },
+      "Inventory": {
+        "Credits": "Credits",
+        "EquipmentList": "Equipment List",
+        "CarryCapacity": "Carry Capacity",
+        "Delete": "Delete item",
+        "Empty": "No items yet.",
+        "Columns": {
+          "Item": "Item",
+          "Quantity": "Qty",
+          "Weight": "Weight",
+          "Status": "Status"
+        },
+        "Category": {
+          "Weapons": "Weapons",
+          "Mystic": "Mystic Items",
+          "Consumables": "Consumables",
+          "Misc": "Misc"
+        }
+      },
+      "Skills": {
+        "Title": "Skills",
+        "Add": "Add Skill",
+        "CustomDefault": "New Skill",
+        "CustomLabel": "Skill",
+        "SettingsTitle": "Skills",
+        "NamesTitle": "Skill Names",
+        "OficiosSpecialization": "Trades specialization",
+        "Acrobatismo": "Acrobatics",
+        "Atletismo": "Athletics",
+        "Malandragem": "Streetwise",
+        "Dirigir": "Driving",
+        "Enganar": "Deception",
+        "Furtividade": "Stealth",
+        "Historia": "History",
+        "Intimidar": "Intimidation",
+        "Medicina": "Medicine",
+        "Observar": "Perception",
+        "Oficios": "Trades",
+        "Persuadir": "Persuasion",
+        "Sobrevivencia": "Survival",
+        "Reiki": "Reiki",
+        "Tecnologia": "Technology"
+      },
+      "Personal": {
+        "Appearance": {
+          "Title": "Appearance",
+          "Pronouns": "Pronouns",
+          "Species": "Species",
+          "Height": "Height",
+          "Weight": "Weight"
+        },
+        "History": {
+          "Title": "History",
+          "Age": "Age",
+          "Origin": "Origin"
+        },
+        "Personality": {
+          "Title": "Personality",
+          "Likes": "Likes",
+          "Dislikes": "Dislikes",
+          "Catchphrase": "Catchphrase"
+        },
+        "Notes": {
+          "Title": "Notes",
+          "Campaign": "About the campaign",
+          "Allies": "Allies",
+          "Enemies": "Enemies",
+          "Places": "Places"
+        }
+      }
+    },
+    "Dialogs": {
+      "InvalidNumber": "Please enter valid numeric values.",
+      "Attributes": {
+        "Title": "Set Attributes"
+      },
+      "HP": {
+        "Title": "Set Hit Points",
+        "Current": "Current HP",
+        "Max": "Maximum HP",
+        "Temp": "Temporary HP"
+      },
+      "Defense": {
+        "Title": "Set VD",
+        "Manual": "Manual VD",
+        "BlankForAuto": "Leave blank for auto"
+      },
+      "Reiki": {
+        "Title": "Set Reiki Charges",
+        "Current": "Current Charges",
+        "Max": "Maximum Charges"
       }
     },
     "Item": {
       "Name": "Item Name",
+      "Feat": {
+        "Requirements": "Requirements",
+        "Rank": "Rank",
+        "Description": "Description"
+      },
+      "Equipment": {
+        "Weight": "Weight",
+        "Quantity": "Quantity",
+        "Status": "Status"
+      },
+      "Status": {
+        "Stowed": "Stowed",
+        "InHand": "In Hand",
+        "Dropped": "Dropped"
+      },
       "Weapon": {
         "Damage": "Damage Formula"
       },
       "Ability": {
         "Cost": "Cost"
+      }
+    },
+    "Settings": {
+      "PunkCity": {
+        "Name": "Punk City Theme",
+        "Hint": "Enable the Punk City cyberpunk red/dark theme for sheets."
       }
     }
   }

@@ -4,6 +4,10 @@ import { RMRPGItem } from "./documents/item.js";
 import { RMRPGActorSheet } from "./sheets/actor-sheet.js";
 import { RMRPGItemSheet } from "./sheets/item-sheet.js";
 
+const applyPunkCityTheme = (enabled: boolean) => {
+  document.body?.classList.toggle("punk-city", enabled);
+};
+
 Hooks.once("init", () => {
   console.log(`${SYSTEM_ID} | Initializing system`);
 
@@ -21,6 +25,24 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "RMRPG.Sheets.Item"
   });
+
+  game.settings.register(SYSTEM_ID, "punkCityTheme", {
+    name: "RMRPG.Settings.PunkCity.Name",
+    hint: "RMRPG.Settings.PunkCity.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+    onChange: (value) => {
+      applyPunkCityTheme(Boolean(value));
+      const windows = (ui.windows ?? {}) as Record<string, any>;
+      for (const app of Object.values(windows)) {
+        if (app?.render) {
+          app.render(false);
+        }
+      }
+    }
+  });
 });
 
 Hooks.once("setup", () => {
@@ -29,4 +51,5 @@ Hooks.once("setup", () => {
 
 Hooks.once("ready", () => {
   console.log(`${SYSTEM_ID} | Ready`);
+  applyPunkCityTheme(Boolean(game.settings.get(SYSTEM_ID, "punkCityTheme")));
 });
