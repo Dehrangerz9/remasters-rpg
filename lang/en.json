@@ -100,11 +100,11 @@
         "Title": "Advantages"
       },
       "Feats": {
-        "DropHint": "Drop a feat here",
-        "AddLabel": "Add feat",
-        "NewName": "New Feat",
+        "DropHint": "Drop an advantage here",
+        "AddLabel": "Add advantage",
+        "NewName": "New Advantage",
         "Chat": "Send to chat",
-        "Delete": "Delete feat"
+        "Delete": "Delete advantage"
       },
       "Inventory": {
         "Credits": "Credits",

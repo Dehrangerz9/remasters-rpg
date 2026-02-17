@@ -100,11 +100,11 @@
         "Title": "Vantagens"
       },
       "Feats": {
-        "DropHint": "Solte um talento aqui",
-        "AddLabel": "Adicionar talento",
-        "NewName": "Novo Talento",
+        "DropHint": "Solte uma vantagem aqui",
+        "AddLabel": "Adicionar vantagem",
+        "NewName": "Nova Vantagem",
         "Chat": "Enviar ao chat",
-        "Delete": "Excluir talento"
+        "Delete": "Excluir vantagem"
       },
       "Inventory": {
         "Credits": "Créditos",

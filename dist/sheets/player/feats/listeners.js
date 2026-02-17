@@ -8,7 +8,8 @@ export const bindPlayerFeatListeners = (sheet, html) => {
         const created = await sheet.actor.createEmbeddedDocuments("Item", [
             {
                 name: game.i18n.localize("RMRPG.Actor.Feats.NewName"),
-                type: "feat"
+                type: "feat",
+                img: "systems/remasters-rpg/assets/icons/stars-stack.png"
             }
         ]);
         const feat = created?.[0];
