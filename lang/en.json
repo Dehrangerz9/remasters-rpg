@@ -63,6 +63,13 @@
         "Iniciativa": "Initiative",
         "MovementRate": "Movement Rate"
       },
+      "Resistance": {
+        "Title": "Resistance",
+        "Physical": "Physical",
+        "Elemental": "Elemental",
+        "Mental": "Mental",
+        "Deteriorating": "Deteriorating"
+      },
       "Defense": {
         "Title": "VD",
         "ManualValue": "Manual:"
@@ -197,6 +204,9 @@
       "Derived": {
         "Title": "Set Derived Stats",
         "Modifier": "Modifier"
+      },
+      "Resistance": {
+        "Title": "Set Resistances"
       },
       "Roll": {
         "Title": "Rolling {label}",

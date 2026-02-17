@@ -2,7 +2,7 @@ import { bindPlayerListeners } from "../player/listeners.js";
 import { bindNpcListeners } from "../npc/sheet.js";
 import { bindSummonListeners } from "../summon/sheet.js";
 import { bindInlineIntegerInput } from "./inputs.js";
-import { openAttributeDialog, openDefenseDialog, openDerivedDialog, openHpDialog, openReikiDialog } from "./dialogs.js";
+import { openAttributeDialog, openDefenseDialog, openDerivedDialog, openHpDialog, openReikiDialog, openResistanceDialog } from "./dialogs.js";
 import { bindReorderList, setItemDragData } from "./drag.js";
 import { clampInteger } from "../global-functions/utils.js";
 export const activateActorListeners = (sheet, html) => {
@@ -17,6 +17,10 @@ export const activateActorListeners = (sheet, html) => {
     html.find("[data-action='set-derived']").on("click", async (event) => {
         event.preventDefault();
         await openDerivedDialog(sheet);
+    });
+    html.find("[data-action='set-resistance']").on("click", async (event) => {
+        event.preventDefault();
+        await openResistanceDialog(sheet);
     });
     html.find("[data-action='set-hp']").on("click", async (event) => {
         event.preventDefault();

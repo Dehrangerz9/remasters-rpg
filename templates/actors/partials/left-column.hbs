@@ -132,6 +132,28 @@
       </div>
     </section>
 
+    <section class="status-card resistance-card">
+      <button
+        type="button"
+        class="card-cog"
+        data-action="set-resistance"
+        aria-label="{{localize 'RMRPG.Dialogs.Resistance.Title'}}"
+      >
+        ⚙
+      </button>
+      <h3>{{localize "RMRPG.Actor.Resistance.Title"}}</h3>
+
+      <div class="resistance-grid">
+        {{#each resistanceEntries}}
+        <div class="resistance-item">
+          <span class="resistance-label">{{localize this.labelKey}}</span>
+          <span class="resistance-value">{{this.value}}</span>
+        </div>
+        {{/each}}
+      </div>
+    </section>
+
+
     {{#unless isPlayer}}
     <section class="status-card">
       <h3>{{localize "RMRPG.Actor.Rank"}}</h3>

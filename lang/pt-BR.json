@@ -63,6 +63,13 @@
         "Iniciativa": "Iniciativa",
         "MovementRate": "Taxa de Movimento"
       },
+      "Resistance": {
+        "Title": "Resistencias",
+        "Physical": "Fisico",
+        "Elemental": "Elemental",
+        "Mental": "Mental",
+        "Deteriorating": "Deteriorante"
+      },
       "Defense": {
         "Title": "VD",
         "ManualValue": "Manual:"
@@ -197,6 +204,9 @@
       "Derived": {
         "Title": "Configurar Derivados",
         "Modifier": "Modificador"
+      },
+      "Resistance": {
+        "Title": "Definir Resistencias"
       },
       "Roll": {
         "Title": "Rolando {label}",

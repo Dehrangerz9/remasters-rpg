@@ -1,4 +1,4 @@
-import { ATTRIBUTE_CONFIG, DERIVED_CONFIG } from "./config.js";
+import { ATTRIBUTE_CONFIG, DERIVED_CONFIG, RESISTANCE_CONFIG } from "./config.js";
 import { clampInteger, parseNumericInput } from "../global-functions/utils.js";
 import { showDialog, readDialogNumber, readDialogRawValue } from "./dialog-utils.js";
 export const openAttributeDialog = async (sheet) => {
@@ -109,6 +109,34 @@ export const openDerivedDialog = async (sheet) => {
         if (parsed === null)
             return;
         updates[`system.derived.modifiers.${entry.key}`] = Math.floor(parsed);
+    }
+    await sheet.actor.update(updates);
+};
+export const openResistanceDialog = async (sheet) => {
+    const resistance = sheet.actor.system.resistance ?? {};
+    const dialog = await showDialog(game.i18n.localize("RMRPG.Dialogs.Resistance.Title"), `
+      <form class="rmrpg-dialog-form">
+        ${RESISTANCE_CONFIG.map((entry) => {
+        const label = game.i18n.localize(entry.labelKey);
+        const current = Number(resistance?.[entry.key] ?? 0);
+        return `
+            <div class="form-group">
+              <label>${label}</label>
+              <input type="number" name="res_${entry.key}" value="${current}" step="1" />
+            </div>
+          `;
+    }).join("")}
+      </form>
+      `);
+    if (!dialog)
+        return;
+    const updates = {};
+    for (const entry of RESISTANCE_CONFIG) {
+        const fallback = Number(resistance?.[entry.key] ?? 0);
+        const parsed = readDialogNumber(dialog, `res_${entry.key}`, fallback);
+        if (parsed === null)
+            return;
+        updates[`system.resistance.${entry.key}`] = Math.floor(parsed);
     }
     await sheet.actor.update(updates);
 };

@@ -13,6 +13,12 @@ export const DERIVED_CONFIG = [
     { key: "determinacao", labelKey: "RMRPG.Actor.Derived.Determinacao" },
     { key: "iniciativa", labelKey: "RMRPG.Actor.Derived.Iniciativa" }
 ];
+export const RESISTANCE_CONFIG = [
+    { key: "physical", labelKey: "RMRPG.Actor.Resistance.Physical" },
+    { key: "elemental", labelKey: "RMRPG.Actor.Resistance.Elemental" },
+    { key: "mental", labelKey: "RMRPG.Actor.Resistance.Mental" },
+    { key: "deteriorating", labelKey: "RMRPG.Actor.Resistance.Deteriorating" }
+];
 export const SKILL_DEFS = [
     { key: "acrobatismo", labelKey: "RMRPG.Actor.Skills.Acrobatismo", attribute: "agilidade" },
     { key: "atletismo", labelKey: "RMRPG.Actor.Skills.Atletismo", attribute: "corpo" },

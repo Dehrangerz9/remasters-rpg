@@ -1,5 +1,5 @@
 import { RANKS } from "../../constants.js";
-import { ATTRIBUTE_CONFIG } from "./config.js";
+import { ATTRIBUTE_CONFIG, RESISTANCE_CONFIG } from "./config.js";
 import { localize } from "../global-functions/utils.js";
 import { applyPlayerContext } from "../player/context.js";
 import { applyNpcContext } from "../npc/sheet.js";
@@ -26,6 +26,12 @@ export const buildActorContext = async (sheet, context) => {
     context.defenseManual = Number(context.system.defense?.value ?? 0);
     context.hasManualDefense = context.defenseManual > 0;
     context.movementRate = Number(context.system.movement?.rate ?? 0);
+    const resistance = context.system.resistance ?? {};
+    context.resistanceEntries = RESISTANCE_CONFIG.map((entry) => ({
+        key: entry.key,
+        labelKey: entry.labelKey,
+        value: Number(resistance?.[entry.key] ?? 0)
+    }));
     const hpValue = Number(context.system.hp?.value ?? 0);
     const hpMax = Math.max(1, Number(context.system.hp?.max ?? 1));
     const hpTemp = Math.max(0, Number(context.system.hp?.temp ?? 0));

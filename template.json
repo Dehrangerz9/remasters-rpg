@@ -54,6 +54,12 @@
         "defense": {
           "value": 0,
           "calculated": 0
+        },
+        "resistance": {
+          "physical": 0,
+          "elemental": 0,
+          "mental": 0,
+          "deteriorating": 0
         }
       }
     },

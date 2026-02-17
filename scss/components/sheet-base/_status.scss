@@ -237,6 +237,34 @@
     }
   }
 
+  .resistance-card {
+    .resistance-grid {
+      display: grid;
+      gap: t.$gap-xs;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    }
+
+    .resistance-item {
+      align-items: center;
+      display: flex;
+      gap: t.$gap-sm;
+      justify-content: space-between;
+    }
+
+    .resistance-label {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .resistance-value {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+  }
+
   .initiative-card {
     .initiative-row {
       align-items: center;

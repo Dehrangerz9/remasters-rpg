@@ -61,6 +61,18 @@ class RMRPGGenericActor extends Actor {
 
     system.defense ??= {};
     system.defense.calculated = calculatedDefense;
+
+    const resistance = system.resistance ?? {};
+    const physicalRes = this.asNumber(resistance.physical);
+    const elementalRes = this.asNumber(resistance.elemental);
+    const mentalRes = this.asNumber(resistance.mental);
+    const deterioratingRes = this.asNumber(resistance.deteriorating);
+
+    system.resistance ??= {};
+    system.resistance.physical = this.roundDown(physicalRes);
+    system.resistance.elemental = this.roundDown(elementalRes);
+    system.resistance.mental = this.roundDown(mentalRes);
+    system.resistance.deteriorating = this.roundDown(deterioratingRes);
   }
 
   protected resolveRankState(system: any) {

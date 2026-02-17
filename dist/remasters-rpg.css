@@ -327,6 +327,28 @@
   flex: 1 1 30%;
   min-width: 150px;
 }
+.rmrpg-sheet .resistance-card .resistance-grid {
+  display: grid;
+  gap: 0.35rem;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+}
+.rmrpg-sheet .resistance-card .resistance-item {
+  align-items: center;
+  display: flex;
+  gap: 0.45rem;
+  justify-content: space-between;
+}
+.rmrpg-sheet .resistance-card .resistance-label {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rmrpg-sheet .resistance-card .resistance-value {
+  font-size: 1rem;
+  font-weight: 700;
+}
 .rmrpg-sheet .initiative-card .initiative-row {
   align-items: center;
   display: flex;
