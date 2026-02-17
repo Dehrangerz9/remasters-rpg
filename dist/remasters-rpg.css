@@ -1529,6 +1529,58 @@
 .rmrpg-sheet .rmrpg-item-sheet .sheet-body {
   overflow-x: hidden;
 }
+.rmrpg-sheet.rmrpg-item-sheet .tabs,
+.rmrpg-sheet .rmrpg-item-sheet .tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  width: 100%;
+}
+.rmrpg-sheet.rmrpg-item-sheet .tabs .item,
+.rmrpg-sheet .rmrpg-item-sheet .tabs .item {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 999px;
+  box-shadow: none;
+  color: var(--rmrpg-text-soft);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.78rem;
+  font-weight: 700;
+  height: 1.8rem;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  min-width: 0;
+  padding: 0.35rem 0.9rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  width: auto;
+}
+.rmrpg-sheet.rmrpg-item-sheet .tabs .item.active,
+.rmrpg-sheet .rmrpg-item-sheet .tabs .item.active {
+  background: #123a63;
+  border-color: #123a63;
+  box-shadow: none;
+  color: #fff;
+}
+.rmrpg-sheet.rmrpg-item-sheet .tabs .item:focus,
+.rmrpg-sheet.rmrpg-item-sheet .tabs .item:focus-visible,
+.rmrpg-sheet .rmrpg-item-sheet .tabs .item:focus,
+.rmrpg-sheet .rmrpg-item-sheet .tabs .item:focus-visible {
+  box-shadow: none;
+  outline: none;
+}
+.rmrpg-sheet.rmrpg-item-sheet .tab,
+.rmrpg-sheet .rmrpg-item-sheet .tab {
+  display: none;
+  height: auto;
+  overflow: visible;
+}
+.rmrpg-sheet.rmrpg-item-sheet .tab.active,
+.rmrpg-sheet .rmrpg-item-sheet .tab.active {
+  display: block;
+}
 .rmrpg-sheet.rmrpg-item-sheet .sheet-body input[type=text],
 .rmrpg-sheet.rmrpg-item-sheet .sheet-body input[type=number],
 .rmrpg-sheet.rmrpg-item-sheet .sheet-body select,
@@ -1815,58 +1867,6 @@
   flex-direction: column;
   gap: 0.5rem;
   min-width: 0;
-}
-.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs,
-.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  width: 100%;
-}
-.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs .item,
-.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs .item {
-  align-items: center;
-  background: #fff;
-  border: 1px solid var(--rmrpg-border);
-  border-radius: 999px;
-  box-shadow: none;
-  color: var(--rmrpg-text-soft);
-  cursor: pointer;
-  display: inline-flex;
-  font-size: 0.78rem;
-  font-weight: 700;
-  height: 1.8rem;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  min-width: 0;
-  padding: 0.35rem 0.9rem;
-  text-transform: uppercase;
-  white-space: nowrap;
-  width: auto;
-}
-.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs .item.active,
-.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs .item.active {
-  background: #123a63;
-  border-color: #123a63;
-  box-shadow: none;
-  color: #fff;
-}
-.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs .item:focus,
-.rmrpg-sheet.rmrpg-item-sheet .weapon-tabs .item:focus-visible,
-.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs .item:focus,
-.rmrpg-sheet .rmrpg-item-sheet .weapon-tabs .item:focus-visible {
-  box-shadow: none;
-  outline: none;
-}
-.rmrpg-sheet.rmrpg-item-sheet .weapon-tab-content .tab,
-.rmrpg-sheet .rmrpg-item-sheet .weapon-tab-content .tab {
-  display: none;
-  height: auto;
-  overflow: visible;
-}
-.rmrpg-sheet.rmrpg-item-sheet .weapon-tab-content .tab.active,
-.rmrpg-sheet .rmrpg-item-sheet .weapon-tab-content .tab.active {
-  display: block;
 }
 .rmrpg-sheet.rmrpg-item-sheet .weapon-tab-content textarea,
 .rmrpg-sheet .rmrpg-item-sheet .weapon-tab-content textarea {

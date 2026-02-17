@@ -63,6 +63,57 @@
       overflow-x: hidden;
     }
 
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      width: 100%;
+    }
+
+    .tabs .item {
+      align-items: center;
+      background: #fff;
+      border: 1px solid var(--rmrpg-border);
+      border-radius: 999px;
+      box-shadow: none;
+      color: var(--rmrpg-text-soft);
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 0.78rem;
+      font-weight: 700;
+      height: 1.8rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      min-width: 0;
+      padding: 0.35rem 0.9rem;
+      text-transform: uppercase;
+      white-space: nowrap;
+      width: auto;
+    }
+
+    .tabs .item.active {
+      background: #123a63;
+      border-color: #123a63;
+      box-shadow: none;
+      color: #fff;
+    }
+
+    .tabs .item:focus,
+    .tabs .item:focus-visible {
+      box-shadow: none;
+      outline: none;
+    }
+
+    .tab {
+      display: none;
+      height: auto;
+      overflow: visible;
+    }
+
+    .tab.active {
+      display: block;
+    }
+
     .sheet-body input[type="text"],
     .sheet-body input[type="number"],
     .sheet-body select,
