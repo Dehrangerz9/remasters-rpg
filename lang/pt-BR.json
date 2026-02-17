@@ -48,6 +48,7 @@
         "DropWeapon": "Soltar"
       },
       "Attributes": {
+        "Title": "Atributos",
         "Corpo": "Corpo",
         "Coordenacao": "Coordenacao",
         "Agilidade": "Agilidade",

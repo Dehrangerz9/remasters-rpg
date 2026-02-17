@@ -64,7 +64,7 @@
   justify-content: center;
 }
 
-.rmrpg-sheet .status-card, .rmrpg-sheet .sheet-header, .rmrpg-sheet .attribute-card, .rmrpg-sheet .actions-section {
+.rmrpg-sheet .status-card, .rmrpg-sheet .sheet-header, .rmrpg-sheet .attributes-section, .rmrpg-sheet .attribute-card, .rmrpg-sheet .actions-section {
   background: var(--rmrpg-surface);
   border: 1px solid var(--rmrpg-border);
   border-radius: 10px;
@@ -393,19 +393,13 @@
 }
 .rmrpg-sheet .header-badges {
   align-items: center;
-  display: inline-flex;
   gap: 0.75rem;
 }
 .rmrpg-sheet .rank-meta {
   align-items: center;
-  display: grid;
+  display: flex;
   gap: 0.45rem;
-  grid-template-columns: auto auto;
-}
-.rmrpg-sheet .rank-column,
-.rmrpg-sheet .rank-values {
-  display: grid;
-  gap: 0.18rem;
+  flex-direction: column;
 }
 .rmrpg-sheet .meta-label {
   color: var(--rmrpg-text-soft);
@@ -493,16 +487,42 @@
   overflow-y: auto;
   padding-right: 0.15rem;
 }
+.rmrpg-sheet .attributes-section {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.65rem;
+  position: relative;
+}
+.rmrpg-sheet .attributes-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+.rmrpg-sheet .attributes-header h3 {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin: 0;
+  text-transform: uppercase;
+}
 .rmrpg-sheet .attributes-grid {
   display: grid;
   gap: 0.45rem;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
+.rmrpg-sheet .attributes-section:hover .card-cog {
+  opacity: 1;
+}
 .rmrpg-sheet .attribute-card {
   border-radius: 8px;
+  display: grid;
+  gap: 0.2rem;
+  justify-items: center;
   min-height: 92px;
   padding: 0.55rem 0.55rem 0.5rem;
   position: relative;
+  text-align: center;
 }
 .rmrpg-sheet .attribute-card h3 {
   color: var(--rmrpg-text-soft);
@@ -510,12 +530,14 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   margin: 0;
+  text-decoration: none;
   text-transform: uppercase;
 }
 .rmrpg-sheet .attribute-card h1 {
   font-size: 1.45rem;
   line-height: 1.15;
   margin: 0.2rem 0 0;
+  text-decoration: none;
 }
 .rmrpg-sheet .main-sections {
   display: grid;

@@ -1,20 +1,26 @@
 <div class="tab" data-group="primary" data-tab="main">
-  <div class="attributes-grid">
-    {{#each attributeCards}}
-    <article class="attribute-card">
-      <button
-        type="button"
-        class="card-cog"
-        data-action="set-attribute"
-        aria-label="{{localize 'RMRPG.Dialogs.Attributes.Title'}}"
-      >
-        ⚙
-      </button>
-      <h3>{{localize this.labelKey}}</h3>
-      <h1>{{this.value}}</h1>
-    </article>
-    {{/each}}
-  </div>
+  <section class="attributes-section">
+    <button
+      type="button"
+      class="card-cog attributes-cog"
+      data-action="set-attribute"
+      aria-label="{{localize 'RMRPG.Dialogs.Attributes.Title'}}"
+    >
+      ⚙
+    </button>
+    <div class="attributes-header">
+      <h3>{{localize "RMRPG.Actor.Attributes.Title"}}</h3>
+    </div>
+
+    <div class="attributes-grid">
+      {{#each attributeCards}}
+      <article class="attribute-card">
+        <h3>{{localize this.labelKey}}</h3>
+        <h1>{{this.value}}</h1>
+      </article>
+      {{/each}}
+    </div>
+  </section>
 
   {{#if isPlayer}}
   <div class="main-sections">

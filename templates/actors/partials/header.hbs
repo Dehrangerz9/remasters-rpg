@@ -7,12 +7,13 @@
     <div class="header-badges">
       <div class="rank-meta">
         <div class="rank-column">
-          <span class="meta-label">{{localize "RMRPG.Actor.Rank"}}</span>
-          <span class="meta-label">{{localize "RMRPG.Actor.RankBonus"}}</span>
+          <span class="rank-pill">
+            {{localize "RMRPG.Actor.Rank"}} {{system.rank.value}}
+          </span>
         </div>
         <div class="rank-values">
-          <span class="meta-value">{{system.rank.value}}</span>
-          <span class="meta-value">+{{rankBonus}}</span>
+          <span class="meta-label">{{localize "RMRPG.Actor.RankBonus"}}</span>
+          <span class="meta-label">+{{rankBonus}}</span>
         </div>
       </div>
       {{#unless isPlayer}}

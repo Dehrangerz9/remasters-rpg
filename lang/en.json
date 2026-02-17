@@ -48,6 +48,7 @@
         "DropWeapon": "Drop"
       },
       "Attributes": {
+        "Title": "Attributes",
         "Corpo": "Body",
         "Coordenacao": "Coordination",
         "Agilidade": "Agility",

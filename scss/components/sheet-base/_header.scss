@@ -29,21 +29,14 @@
 
   .header-badges {
     align-items: center;
-    display: inline-flex;
     gap: t.$gap-lg;
   }
 
   .rank-meta {
     align-items: center;
-    display: grid;
+    display: flex;
     gap: t.$gap-sm;
-    grid-template-columns: auto auto;
-  }
-
-  .rank-column,
-  .rank-values {
-    display: grid;
-    gap: 0.18rem;
+    flex-direction: column;
   }
 
   .meta-label {

@@ -2,18 +2,49 @@
 @use "placeholders" as p;
 
 @mixin sheet-attributes {
+  .attributes-section {
+    @extend %surface-card;
+    display: grid;
+    gap: t.$gap-sm;
+    padding: t.$pad-card;
+    position: relative;
+  }
+
+  .attributes-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin: 0;
+      text-transform: uppercase;
+    }
+  }
+
   .attributes-grid {
     display: grid;
     gap: t.$gap-sm;
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
+  .attributes-section:hover .card-cog {
+    opacity: 1;
+  }
+
   .attribute-card {
     @extend %surface-card;
     border-radius: t.$radius-md;
+    display: grid;
+    gap: 0.2rem;
+    justify-items: center;
     min-height: 92px;
     padding: t.$pad-card-tight t.$pad-card-tight 0.5rem;
     position: relative;
+    text-align: center;
 
     h3 {
       color: var(--rmrpg-text-soft);
@@ -21,6 +52,7 @@
       font-weight: 700;
       letter-spacing: 0.04em;
       margin: 0;
+      text-decoration: none;
       text-transform: uppercase;
     }
 
@@ -28,6 +60,7 @@
       font-size: 1.45rem;
       line-height: 1.15;
       margin: 0.2rem 0 0;
+      text-decoration: none;
     }
   }
 }
