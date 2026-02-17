@@ -1353,13 +1353,17 @@
   flex: 1 1 auto;
   min-width: 0;
 }
+.rmrpg-sheet.rmrpg-item-sheet .charname input,
+.rmrpg-sheet .rmrpg-item-sheet .charname input {
+  width: 100%;
+}
 .rmrpg-sheet.rmrpg-item-sheet .profile-img,
 .rmrpg-sheet .rmrpg-item-sheet .profile-img {
   border: 1px solid var(--rmrpg-border);
-  border-radius: 10px;
-  height: 52px;
+  border-radius: 0;
+  height: 64px;
   object-fit: cover;
-  width: 52px;
+  width: 64px;
 }
 .rmrpg-sheet.rmrpg-item-sheet .item-header-tags,
 .rmrpg-sheet .rmrpg-item-sheet .item-header-tags {
