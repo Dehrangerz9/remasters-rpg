@@ -99,6 +99,24 @@
       "Advantages": {
         "Title": "Advantages"
       },
+      "Abilities": {
+        "Total": "Total PCs",
+        "Spent": "PCs spent",
+        "Remaining": "PCs remaining",
+        "CDE": "CDE",
+        "CastingAttack": "Casting Attack Modifier",
+        "CastingAttribute": "Casting attribute",
+        "CastingAttributeTitle": "Set casting attribute",
+        "ListTitle": "Abilities",
+        "AddLabel": "Add ability",
+        "NewName": "New Ability",
+        "Delete": "Delete ability",
+        "Empty": "No abilities yet.",
+        "Columns": {
+          "Name": "Ability",
+          "Cost": "Cost"
+        }
+      },
       "Feats": {
         "DropHint": "Drop an advantage here",
         "AddLabel": "Add advantage",

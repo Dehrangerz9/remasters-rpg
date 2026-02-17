@@ -62,6 +62,15 @@ export const buildActorContext = async (sheet: any, context: any) => {
   context.hasAdvancements = false;
   context.advancementCount = Number(context.system.player?.progression?.advancementCount ?? 0);
   context.feats = [];
+  context.abilityItems = [];
+  context.pcTotal = 0;
+  context.pcSpent = 0;
+  context.pcRemaining = 0;
+  context.cdeValue = 0;
+  context.castingAttribute = "mente";
+  context.castingAttributeLabel = "Mente";
+  context.castingAttackMod = 0;
+  context.castingAttackModLabel = "+0";
   context.attackItems = [];
   context.actionItems = [];
   context.reactionItems = [];

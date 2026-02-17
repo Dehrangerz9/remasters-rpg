@@ -96,6 +96,19 @@ export const activateActorListeners = (sheet, html) => {
     if (featList) {
         bindReorderList(sheet, featList, ".feat-row", "feats");
     }
+    html.find(".ability-row").each((_, row) => {
+        row.addEventListener("dragstart", (event) => {
+            const dragEvent = event;
+            const id = String(row.dataset.id ?? "");
+            if (!id)
+                return;
+            setItemDragData(sheet, dragEvent, { id, group: "abilities" });
+        });
+    });
+    const abilityList = html.find(".abilities-table").get(0);
+    if (abilityList) {
+        bindReorderList(sheet, abilityList, ".ability-row", "abilities");
+    }
     html.find(".equipment-table").each((_, table) => {
         const listElement = table;
         const group = String(listElement.dataset.category ?? "");

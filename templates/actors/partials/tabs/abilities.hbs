@@ -1,1 +1,88 @@
-<div class="tab" data-group="primary" data-tab="abilities"></div>
+<div class="tab" data-group="primary" data-tab="abilities">
+  <div class="abilities-section">
+    <div class="pc-summary">
+      <div class="pc-card">
+        <span class="pc-label">{{localize "RMRPG.Actor.Abilities.Total"}}</span>
+        <input
+          type="number"
+          class="pc-input"
+          name="system.player.pc.total"
+          value="{{pcTotal}}"
+          min="0"
+          step="1"
+        />
+      </div>
+      <div class="pc-card">
+        <span class="pc-label">{{localize "RMRPG.Actor.Abilities.Spent"}}</span>
+        <span class="pc-value">{{pcSpent}}</span>
+      </div>
+      <div class="pc-card">
+        <span class="pc-label">{{localize "RMRPG.Actor.Abilities.Remaining"}}</span>
+        <span class="pc-value">{{pcRemaining}}</span>
+      </div>
+    </div>
+
+    <div class="abilities-header">
+      <h3>{{localize "RMRPG.Actor.Abilities.ListTitle"}}</h3>
+    </div>
+
+    <div class="pc-secondary">
+      <div class="pc-card pc-card-inline pc-card-casting">
+        <div class="pc-inline" data-tooltip="{{cdeBreakdown}}" data-tooltip-direction="UP">
+          <span class="pc-label-inline">{{localize "RMRPG.Actor.Abilities.CDE"}}</span>
+          <span class="pc-value-inline">{{cdeValue}}</span>
+        </div>
+        <div class="pc-inline" data-tooltip="{{castingAttackBreakdown}}" data-tooltip-direction="UP">
+          <span class="pc-label-inline">{{localize "RMRPG.Actor.Abilities.CastingAttack"}}</span>
+          <span class="pc-value-inline">{{castingAttackModLabel}}</span>
+        </div>
+        <div class="casting-select">
+          <span class="pc-label-inline">{{localize "RMRPG.Actor.Abilities.CastingAttribute"}}</span>
+          <select
+            class="casting-attr-select"
+            data-action="casting-attr"
+            name="system.player.casting.attribute"
+            aria-label="{{localize 'RMRPG.Actor.Abilities.CastingAttribute'}}"
+          >
+            {{selectOptions attributeOptions selected=castingAttribute valueAttr="value" labelAttr="label"}}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <section class="abilities-list-section">
+      <div class="equipment-table abilities-table" data-group="abilities">
+        <div class="equipment-header">
+          <span></span>
+          <span>{{localize "RMRPG.Actor.Abilities.Columns.Name"}}</span>
+          <span>{{localize "RMRPG.Actor.Abilities.Columns.Cost"}}</span>
+          <span></span>
+        </div>
+        {{#if abilityItems.length}}
+        {{#each abilityItems}}
+        <div class="equipment-row ability-row" data-item-id="{{this.id}}" data-id="{{this.id}}" draggable="true">
+          <img class="item-icon" src="{{this.img}}" title="{{this.name}}" />
+          <button type="button" class="item-name" data-action="item-open" data-id="{{this.id}}">{{this.name}}</button>
+          <span class="item-cost">{{this.cost}}</span>
+          <button
+            type="button"
+            class="item-delete"
+            data-action="item-delete"
+            data-id="{{this.id}}"
+            aria-label="{{localize 'RMRPG.Actor.Abilities.Delete'}}"
+            title="{{localize 'RMRPG.Actor.Abilities.Delete'}}"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="equipment-empty">{{localize "RMRPG.Actor.Abilities.Empty"}}</div>
+        {{/if}}
+      </div>
+      <button type="button" class="add-ability" data-action="add-ability">
+        {{localize "RMRPG.Actor.Abilities.AddLabel"}}
+      </button>
+    </section>
+  </div>
+</div>

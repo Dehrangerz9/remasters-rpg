@@ -1154,6 +1154,147 @@
   width: 0;
 }
 
+.rmrpg-sheet .abilities-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-bottom: 0.6rem;
+}
+.rmrpg-sheet .pc-summary {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+.rmrpg-sheet .pc-card {
+  background: var(--rmrpg-surface);
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 10px;
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.55rem 0.6rem;
+  position: relative;
+}
+.rmrpg-sheet .abilities-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+.rmrpg-sheet .abilities-header h3 {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-transform: uppercase;
+}
+.rmrpg-sheet .pc-secondary {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+.rmrpg-sheet .pc-card-inline {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  padding: 0.45rem 0.6rem;
+}
+.rmrpg-sheet .pc-inline {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+.rmrpg-sheet .pc-label-inline {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rmrpg-sheet .pc-value-inline {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.rmrpg-sheet .pc-meta-inline {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+.rmrpg-sheet .casting-select {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-left: auto;
+  min-width: 180px;
+}
+.rmrpg-sheet .casting-attr-select {
+  background: #fff;
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 6px;
+  color: inherit;
+  height: 1.7rem;
+  padding: 0 0.4rem;
+  margin-left: auto;
+}
+.rmrpg-sheet .pc-label {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.rmrpg-sheet .pc-value,
+.rmrpg-sheet .pc-input {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.rmrpg-sheet .pc-meta {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+.rmrpg-sheet .pc-card:hover .card-cog {
+  opacity: 1;
+}
+.rmrpg-sheet .pc-input {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  height: auto;
+  padding: 0;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.rmrpg-sheet .pc-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+.rmrpg-sheet .pc-input::-webkit-outer-spin-button, .rmrpg-sheet .pc-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.rmrpg-sheet .abilities-list-section {
+  background: var(--rmrpg-surface);
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.6rem;
+}
+.rmrpg-sheet .abilities-table .equipment-header,
+.rmrpg-sheet .abilities-table .equipment-row {
+  grid-template-columns: 36px minmax(0, 1fr) 90px 42px;
+}
+.rmrpg-sheet .item-cost {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.rmrpg-sheet .add-ability {
+  align-self: flex-start;
+}
+
 .rmrpg-sheet .personal-info {
   display: flex;
   flex-direction: column;

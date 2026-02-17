@@ -197,7 +197,13 @@
           "current": 0,
           "max": 3
         },
-        "credits": 0
+        "credits": 0,
+        "pc": {
+          "total": 0
+        },
+        "casting": {
+          "attribute": "mente"
+        }
       }
     },
     "npc": {

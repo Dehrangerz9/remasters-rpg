@@ -4,6 +4,7 @@ import { bindPlayerInventoryListeners } from "./inventory/listeners.js";
 import { bindPlayerAdvancementListeners } from "./advancements/listeners.js";
 import { bindPlayerFeatListeners } from "./feats/listeners.js";
 import { bindPlayerReikiListeners } from "./reiki/listeners.js";
+import { bindPlayerAbilityListeners } from "./abilities/listeners.js";
 export const bindPlayerListeners = (sheet, html) => {
     bindPlayerSkillListeners(sheet, html);
     bindPlayerActionListeners(sheet, html);
@@ -11,4 +12,5 @@ export const bindPlayerListeners = (sheet, html) => {
     bindPlayerAdvancementListeners(sheet, html);
     bindPlayerFeatListeners(sheet, html);
     bindPlayerReikiListeners(sheet, html);
+    bindPlayerAbilityListeners(sheet, html);
 };

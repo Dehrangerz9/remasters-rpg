@@ -99,6 +99,24 @@
       "Advantages": {
         "Title": "Vantagens"
       },
+      "Abilities": {
+        "Total": "PCs totais",
+        "Spent": "PCs gastos",
+        "Remaining": "PCs restantes",
+        "CDE": "CDE",
+        "CastingAttack": "Modificador de Ataque de Conjuração",
+        "CastingAttribute": "Atributo de Conjuração",
+        "CastingAttributeTitle": "Definir atributo de conjuração",
+        "ListTitle": "Habilidades",
+        "AddLabel": "Adicionar habilidade",
+        "NewName": "Nova Habilidade",
+        "Delete": "Excluir habilidade",
+        "Empty": "Nenhuma habilidade ainda.",
+        "Columns": {
+          "Name": "Habilidade",
+          "Cost": "Custo"
+        }
+      },
       "Feats": {
         "DropHint": "Solte uma vantagem aqui",
         "AddLabel": "Adicionar vantagem",

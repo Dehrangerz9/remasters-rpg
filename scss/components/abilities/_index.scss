@@ -1,0 +1,166 @@
+.rmrpg-sheet {
+  .abilities-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .pc-summary {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .pc-card {
+    background: var(--rmrpg-surface);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 10px;
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.55rem 0.6rem;
+    position: relative;
+  }
+
+  .abilities-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 0;
+      text-transform: uppercase;
+    }
+  }
+
+  .pc-secondary {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .pc-card-inline {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .pc-inline {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.35rem;
+    white-space: nowrap;
+  }
+
+  .pc-label-inline {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pc-value-inline {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .pc-meta-inline {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.65rem;
+    font-weight: 600;
+  }
+
+  .casting-select {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    margin-left: auto;
+    min-width: 180px;
+  }
+
+  .casting-attr-select {
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 6px;
+    color: inherit;
+    height: 1.7rem;
+    padding: 0 0.4rem;
+    margin-left: auto;
+  }
+
+  .pc-label {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pc-value,
+  .pc-input {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .pc-meta {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.65rem;
+    font-weight: 600;
+  }
+
+  .pc-card:hover .card-cog {
+    opacity: 1;
+  }
+
+  .pc-input {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    height: auto;
+    padding: 0;
+    appearance: textfield;
+    -moz-appearance: textfield;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  .abilities-list-section {
+    background: var(--rmrpg-surface);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.6rem;
+  }
+
+  .abilities-table .equipment-header,
+  .abilities-table .equipment-row {
+    grid-template-columns: 36px minmax(0, 1fr) 90px 42px;
+  }
+
+  .item-cost {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .add-ability {
+    align-self: flex-start;
+  }
+}
