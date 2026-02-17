@@ -24,10 +24,10 @@
     {{#if isPlayer}}
     <section class="status-card reiki-card">
       <button type="button" class="card-cog" data-action="set-reiki" aria-label="Set Reiki">⚙</button>
-      <button type="button" class="card-action" data-action="roll-reiki">
-        {{localize "RMRPG.Actor.Player.ReikiRoll"}}
-      </button>
-      <h3>{{localize "RMRPG.Actor.Player.ReikiCharges"}}</h3>
+      <h3 class="reiki-label reiki-roll" data-action="roll-reiki" role="button" tabindex="0">
+        <i class="fas fa-dice-d6" aria-hidden="true"></i>
+        {{localize "RMRPG.Actor.Player.ReikiCharges"}}
+      </h3>
 
       <div class="value-bar reiki-bar">
         <div class="value-fill reiki-fill" style="width: {{reikiPercent}}%;"></div>

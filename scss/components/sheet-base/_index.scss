@@ -137,6 +137,25 @@
     text-transform: uppercase;
   }
 
+  .reiki-roll {
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 0.35rem;
+    transition: color 140ms ease, text-decoration-color 140ms ease;
+
+    i {
+      font-size: 0.9em;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--rmrpg-accent);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+
   .derived-value {
     font-size: 1.05rem;
     font-weight: 700;
