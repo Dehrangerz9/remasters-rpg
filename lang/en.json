@@ -40,6 +40,7 @@
         "Drag": "Drag to reorder",
         "Attack1": "Attack 1",
         "Pra": "PRA",
+        "PraPenalty": "Multiple Attack Penalty",
         "Damage": "Damage",
         "Critical": "Critical",
         "DrawWeapon": "Draw weapon",
@@ -69,7 +70,17 @@
       "Player": {
         "ProtagonismPoints": "Protagonism Points",
         "ReikiCharges": "Reiki Charges",
+        "ReikiRoll": "Reiki Check",
         "Evolutions": "Evolutions"
+      },
+      "Reiki": {
+        "Surge": "Reiki Surge"
+      },
+      "Damage": {
+        "Normal": "Normal",
+        "Double": "Double",
+        "Half": "Half",
+        "Soak": "Soak"
       },
       "Advancements": {
         "Placeholder": "Describe what was purchased",
@@ -186,10 +197,31 @@
       "Derived": {
         "Title": "Set Derived Stats",
         "Modifier": "Modifier"
+      },
+      "Roll": {
+        "Title": "Rolling {label}",
+        "Modifier": "Modifier",
+        "Type": "Type",
+        "Value": "Value",
+        "Include": "Include",
+        "Add": "Add",
+        "ModifierPlaceholder": "Modifier",
+        "SkillBonus": "Skill Bonus",
+        "AttackBonus": "Attack Modifier",
+        "BonusFallback": "Bonus {index}",
+        "InvalidModifier": "Enter a valid modifier name and numeric value.",
+        "Types": {
+          "Attribute": "Attribute",
+          "State": "State",
+          "Skill": "Skill",
+          "Situational": "Situational",
+          "Untyped": "Untyped"
+        }
       }
     },
     "Item": {
       "Name": "Item Name",
+      "Chat": "Chat",
       "Feat": {
         "Requirements": "Requirements",
         "Rank": "Rank",
@@ -259,6 +291,15 @@
       "Ability": {
         "Cost": "Cost"
       }
+    },
+    "Chat": {
+      "ReikiLoss": "{name} rolled {total} and lost a Reiki charge.",
+      "ReikiNoLoss": "{name} rolled {total} and kept all Reiki charges.",
+      "DamageApplied": "{name} took {damage} damage.",
+      "DamageAbsorbed": "{name} absorbed {soak} damage and took {damage} damage."
+    },
+    "Errors": {
+      "SelectSingleTarget": "Select exactly one targeted or controlled token."
     },
     "Settings": {
       "PunkCity": {

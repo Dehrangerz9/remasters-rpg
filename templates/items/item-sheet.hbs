@@ -39,6 +39,9 @@
         />
         <div class="tag-suggestions"></div>
       </div>
+      <button type="button" class="item-chat" data-action="item-chat">
+        {{localize "RMRPG.Item.Chat"}}
+      </button>
       {{#if isFeat}}
       <select name="system.rank" class="feat-rank-select" aria-label="{{localize 'RMRPG.Item.Feat.Rank'}}">
         {{selectOptions rankOptions selected=system.rank valueAttr="value" labelAttr="label"}}

@@ -15,7 +15,7 @@
                 <input type="number" class="bar-input" data-action="inline-hp-value" value="{{hpValue}}" />
                 <span>/ {{hpMax}}</span>
               </span>
-            </div>
+            </divcanvas>
             <div class="temp-box">
               <span class="temp-label">{{localize "RMRPG.Actor.TempHPShort"}}</span>
               <input type="number" class="temp-input" data-action="inline-hp-temp" value="{{hpTemp}}" />
@@ -26,6 +26,9 @@
         {{#if isPlayer}}
         <section class="status-card reiki-card">
           <button type="button" class="card-cog" data-action="set-reiki" aria-label="Set Reiki">⚙</button>
+          <button type="button" class="card-action" data-action="roll-reiki">
+            {{localize "RMRPG.Actor.Player.ReikiRoll"}}
+          </button>
           <h3>{{localize "RMRPG.Actor.Player.ReikiCharges"}}</h3>
 
           <div class="value-bar reiki-bar">
@@ -250,6 +253,7 @@
                     data-action="roll-skill"
                     data-attr="{{this.attribute}}"
                     data-bonus="{{this.bonus}}"
+                    data-trained="{{this.trained}}"
                     data-label="{{this.displayLabel}}"
                   >
                     +{{this.totalBonus}} <i class="fas fa-dice-d20"></i>
@@ -347,6 +351,7 @@
                         data-action="roll-attack"
                         data-id="{{this.id}}"
                         data-mod="{{this.praMod}}"
+                        data-pra="true"
                       >
                         {{localize "RMRPG.Actor.Actions.Pra"}} {{this.praModLabel}} (MAP -5)
                       </button>

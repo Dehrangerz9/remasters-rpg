@@ -67,6 +67,11 @@ export class RMRPGItemSheet extends ItemSheet {
       await this.item.update({ "system.weapon.damage.bonuses": bonuses });
     });
 
+    html.find("[data-action='item-chat']").on("click", async (event: any) => {
+      event.preventDefault();
+      await this.sendItemToChat();
+    });
+
     this.setupTagSystem(html);
   }
 
@@ -459,5 +464,17 @@ export class RMRPGItemSheet extends ItemSheet {
     }
     this.options.classes = Array.from(classes);
     this.element?.toggleClass("punk-city", enabled);
+  }
+
+  private async sendItemToChat() {
+    const description = await TextEditor.enrichHTML(String(this.item.system?.description ?? ""), { async: true });
+    const content = `
+      <div class="rmrpg-item-chat">
+        <h2>${this.item.name}</h2>
+        <div class="rmrpg-item-chat-body">${description}</div>
+      </div>
+    `;
+    const speaker = ChatMessage.getSpeaker({ actor: this.item.parent ?? null });
+    await ChatMessage.create({ speaker, content });
   }
 }

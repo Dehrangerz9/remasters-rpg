@@ -40,6 +40,7 @@
         "Drag": "Arraste para reordenar",
         "Attack1": "Atacar 1",
         "Pra": "PRA",
+        "PraPenalty": "Penalidade por Repetir Acoes",
         "Damage": "Dano",
         "Critical": "Dano Critico",
         "DrawWeapon": "Sacar arma",
@@ -69,7 +70,17 @@
       "Player": {
         "ProtagonismPoints": "Pontos de Protagonismo",
         "ReikiCharges": "Cargas de Reiki",
+        "ReikiRoll": "Checagem de Reiki",
         "Evolutions": "Evolucoes"
+      },
+      "Reiki": {
+        "Surge": "Surto de Reiki"
+      },
+      "Damage": {
+        "Normal": "Normal",
+        "Double": "Dobro",
+        "Half": "Metade",
+        "Soak": "Resistir"
       },
       "Advancements": {
         "Placeholder": "Descreva o que foi comprado",
@@ -186,10 +197,31 @@
       "Derived": {
         "Title": "Configurar Derivados",
         "Modifier": "Modificador"
+      },
+      "Roll": {
+        "Title": "Rolando {label}",
+        "Modifier": "Modificador",
+        "Type": "Tipo",
+        "Value": "Valor",
+        "Include": "Incluir",
+        "Add": "Adicionar",
+        "ModifierPlaceholder": "Modificador",
+        "SkillBonus": "Bonus de Pericia",
+        "AttackBonus": "Modificador de Ataque",
+        "BonusFallback": "Bonus {index}",
+        "InvalidModifier": "Insira um nome e valor numerico validos para o modificador.",
+        "Types": {
+          "Attribute": "Atributo",
+          "State": "Estado",
+          "Skill": "Habilidade",
+          "Situational": "Situacional",
+          "Untyped": "Sem Tipo"
+        }
       }
     },
     "Item": {
       "Name": "Nome do Item",
+      "Chat": "Chat",
       "Feat": {
         "Requirements": "Requisitos",
         "Rank": "Rank",
@@ -259,6 +291,15 @@
       "Ability": {
         "Cost": "Custo"
       }
+    },
+    "Chat": {
+      "ReikiLoss": "{name} rolou {total} e perdeu uma carga de Reiki.",
+      "ReikiNoLoss": "{name} rolou {total} e nao perdeu carga de Reiki.",
+      "DamageApplied": "{name} recebeu {damage} de dano.",
+      "DamageAbsorbed": "{name} absorveu {soak} de dano e recebeu {damage} de dano."
+    },
+    "Errors": {
+      "SelectSingleTarget": "Selecione exatamente um alvo ou token controlado."
     },
     "Settings": {
       "PunkCity": {

@@ -1,7 +1,7 @@
 import { SYSTEM_ID } from "./constants.js";
 import { RMRPGActor } from "./documents/actor.js";
 import { RMRPGItem } from "./documents/item.js";
-import { RMRPGActorSheet } from "./sheets/actor-sheet.js";
+import { RMRPGActorSheet } from "./sheets/actor/sheet.js";
 import { RMRPGItemSheet } from "./sheets/item-sheet.js";
 
 const applyPunkCityTheme = (enabled: boolean) => {
