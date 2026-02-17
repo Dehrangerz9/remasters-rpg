@@ -62,7 +62,7 @@
     </div>
 
     <section class="status-card initiative-card">
-      <h3>
+      <div class="initiative-row">
         <button
           type="button"
           class="derived-name"
@@ -70,12 +70,8 @@
           data-derived="iniciativa"
           aria-label="Roll Iniciativa"
         >
+          <i class="fas fa-dice-d20" aria-hidden="true"></i>
           {{localize "RMRPG.Actor.Derived.Iniciativa"}}
-        </button>
-      </h3>
-      <div class="initiative-row">
-        <button type="button" class="derived-roll" data-action="roll-derived" data-derived="iniciativa" aria-label="Roll Iniciativa">
-          <i class="fas fa-dice-d20"></i>
         </button>
         <span class="derived-value">+{{derivedIniciativa}}</span>
       </div>

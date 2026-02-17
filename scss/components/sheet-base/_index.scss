@@ -292,6 +292,26 @@
       gap: 0.5rem;
       justify-content: space-between;
     }
+
+    .derived-name {
+      align-items: center;
+      display: inline-flex;
+      gap: 0.35rem;
+      text-decoration: none;
+      transition: text-decoration-color 140ms ease;
+
+      i {
+        font-size: 0.9em;
+      }
+
+      &:hover,
+      &:focus-visible {
+        box-shadow: none;
+        outline: none;
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+      }
+    }
   }
 
   .right-column {
