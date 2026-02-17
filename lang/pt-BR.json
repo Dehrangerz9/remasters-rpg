@@ -23,6 +23,29 @@
         "Advancements": "Evolucoes",
         "Effects": "Efeitos Ativos"
       },
+      "Actions": {
+        "Attacks": "Ataques",
+        "Actions": "Acoes",
+        "Reactions": "Reacoes",
+        "Placeholder": "Selecionar...",
+        "AddAttack": "Adicionar ataque",
+        "AddAction": "Adicionar acao",
+        "AddReaction": "Adicionar reacao",
+        "EmptyAttacks": "Nenhum ataque ainda.",
+        "EmptyActions": "Nenhuma acao ainda.",
+        "EmptyReactions": "Nenhuma reacao ainda.",
+        "NewAttack": "Novo Ataque",
+        "NewAction": "Nova Acao",
+        "NewReaction": "Nova Reacao",
+        "Drag": "Arraste para reordenar",
+        "Attack1": "Atacar 1",
+        "Pra": "PRA",
+        "Damage": "Dano",
+        "Critical": "Dano Critico",
+        "DrawWeapon": "Sacar arma",
+        "SheatheWeapon": "Guardar",
+        "DropWeapon": "Soltar"
+      },
       "Attributes": {
         "Corpo": "Corpo",
         "Coordenacao": "Coordenacao",
@@ -35,7 +58,9 @@
         "Title": "Derivados",
         "Reflexo": "Reflexo",
         "Vigor": "Vigor",
-        "Determinacao": "Determinacao"
+        "Determinacao": "Determinacao",
+        "Iniciativa": "Iniciativa",
+        "MovementRate": "Taxa de Movimento"
       },
       "Defense": {
         "Title": "VD",
@@ -81,7 +106,6 @@
         },
         "Category": {
           "Weapons": "Armas",
-          "Mystic": "Itens Misticos",
           "Consumables": "Consumiveis",
           "Misc": "Diversos"
         }
@@ -158,6 +182,10 @@
         "Title": "Definir Cargas de Reiki",
         "Current": "Cargas Atuais",
         "Max": "Cargas Maximas"
+      },
+      "Derived": {
+        "Title": "Configurar Derivados",
+        "Modifier": "Modificador"
       }
     },
     "Item": {
@@ -212,6 +240,21 @@
           "Deteriorating": "Deteriorante",
           "None": "Sem tipo"
         }
+      },
+      "Action": {
+        "Cost": {
+          "Label": "Custo de Acoes",
+          "Free": "Acao livre",
+          "One": "1 acao",
+          "Two": "2 acoes",
+          "Three": "3 acoes",
+          "Reaction": "Reacao"
+        }
+      },
+      "Tags": {
+        "Add": "Adicionar tag",
+        "Remove": "Remover tag",
+        "Placeholder": "Nova tag"
       },
       "Ability": {
         "Cost": "Custo"

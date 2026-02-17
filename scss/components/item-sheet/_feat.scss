@@ -1,0 +1,50 @@
+.rmrpg-sheet {
+  &.rmrpg-item-sheet.feat-sheet,
+  .rmrpg-item-sheet.feat-sheet {
+    .feat-description-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .feat-description-grid .description-block label {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .feat-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      label {
+        color: var(--rmrpg-text-soft);
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      input,
+      select {
+        height: 2rem;
+      }
+    }
+
+    .feat-rank-select {
+      background: #1f2a30;
+      border: 1px solid #1f2a30;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      height: 1.8rem;
+      letter-spacing: 0.04em;
+      padding: 0 0.75rem;
+      text-transform: uppercase;
+    }
+  }
+}

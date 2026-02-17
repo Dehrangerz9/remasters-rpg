@@ -26,14 +26,35 @@ class RMRPGGenericActor extends Actor {
     const mente = this.asNumber(attributes.mente?.value);
     const carisma = this.asNumber(attributes.carisma?.value);
 
-    const reflexo = this.roundDown((atencao + agilidade + coordenacao) / 2 + rankState.bonus);
-    const determinacao = this.roundDown((atencao + carisma + mente) / 2 + rankState.bonus);
-    const vigor = this.roundDown((agilidade + coordenacao + corpo) / 2 + rankState.bonus);
+    const derivedModifiers = system.derived?.modifiers ?? {};
+    const reflexoMod = this.asNumber(derivedModifiers.reflexo);
+    const determinacaoMod = this.asNumber(derivedModifiers.determinacao);
+    const vigorMod = this.asNumber(derivedModifiers.vigor);
+    const iniciativaMod = this.asNumber(derivedModifiers.iniciativa);
+
+    const reflexoBase = (atencao + agilidade + coordenacao) / 2 + rankState.bonus;
+    const determinacaoBase = (atencao + carisma + mente) / 2 + rankState.bonus;
+    const vigorBase = (agilidade + coordenacao + corpo) / 2 + rankState.bonus;
+    const iniciativaBase = atencao;
+
+    const reflexo = this.roundDown(reflexoBase + reflexoMod);
+    const determinacao = this.roundDown(determinacaoBase + determinacaoMod);
+    const vigor = this.roundDown(vigorBase + vigorMod);
+    const iniciativa = this.roundDown(iniciativaBase + iniciativaMod);
 
     system.derived ??= {};
+    system.derived.modifiers ??= {};
+    system.derived.modifiers.reflexo = reflexoMod;
+    system.derived.modifiers.determinacao = determinacaoMod;
+    system.derived.modifiers.vigor = vigorMod;
+    system.derived.modifiers.iniciativa = iniciativaMod;
     system.derived.reflexo = reflexo;
     system.derived.determinacao = determinacao;
     system.derived.vigor = vigor;
+    system.derived.iniciativa = iniciativa;
+
+    system.movement ??= {};
+    system.movement.rate = this.asNumber(system.movement.rate);
 
     const manualDefense = this.asNumber(system.defense?.value);
     const calculatedDefense = manualDefense > 0 ? this.roundDown(manualDefense) : this.roundDown(12 + reflexo);
@@ -66,7 +87,7 @@ class RMRPGGenericActor extends Actor {
 
   async rollAttribute(attributeKey: string) {
     const value = this.asNumber(this.system.attributes?.[attributeKey]?.value);
-    const roll = await new Roll("1d20 + @value", { value }).roll({ async: true });
+    const roll = await new Roll("1d20 + @value", { value }).evaluate();
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this }),
@@ -78,7 +99,7 @@ class RMRPGGenericActor extends Actor {
 
   async rollDerived(derivedKey: string) {
     const value = this.asNumber(this.system.derived?.[derivedKey]);
-    const roll = await new Roll("1d20 + @value", { value }).roll({ async: true });
+    const roll = await new Roll("1d20 + @value", { value }).evaluate();
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this }),
@@ -92,7 +113,7 @@ class RMRPGGenericActor extends Actor {
     const totalBonus = this.asNumber(total);
     const roll = await new Roll("1d20 + @total", {
       total: totalBonus
-    }).roll({ async: true });
+    }).evaluate();
 
     await roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this }),

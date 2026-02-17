@@ -31,6 +31,10 @@
       max-height: 250px;
     }
 
+    .status-row {
+      grid-template-columns: 1fr;
+    }
+
     .attributes-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }

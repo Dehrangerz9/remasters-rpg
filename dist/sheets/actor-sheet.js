@@ -8,6 +8,12 @@ const ATTRIBUTE_CONFIG = [
     { key: "mente", labelKey: "RMRPG.Actor.Attributes.Mente" },
     { key: "carisma", labelKey: "RMRPG.Actor.Attributes.Carisma" }
 ];
+const DERIVED_CONFIG = [
+    { key: "reflexo", labelKey: "RMRPG.Actor.Derived.Reflexo" },
+    { key: "vigor", labelKey: "RMRPG.Actor.Derived.Vigor" },
+    { key: "determinacao", labelKey: "RMRPG.Actor.Derived.Determinacao" },
+    { key: "iniciativa", labelKey: "RMRPG.Actor.Derived.Iniciativa" }
+];
 const SKILL_DEFS = [
     { key: "acrobatismo", labelKey: "RMRPG.Actor.Skills.Acrobatismo", attribute: "agilidade" },
     { key: "atletismo", labelKey: "RMRPG.Actor.Skills.Atletismo", attribute: "corpo" },
@@ -25,10 +31,9 @@ const SKILL_DEFS = [
     { key: "reiki", labelKey: "RMRPG.Actor.Skills.Reiki", attribute: "mente" },
     { key: "tecnologia", labelKey: "RMRPG.Actor.Skills.Tecnologia", attribute: "mente" }
 ];
-const EQUIPMENT_TYPES = ["weapon", "mystic", "consumable", "misc", "item"];
+const EQUIPMENT_TYPES = ["weapon", "consumable", "misc", "item"];
 const EQUIPMENT_CATEGORIES = [
     { key: "weapon", labelKey: "RMRPG.Actor.Inventory.Category.Weapons" },
-    { key: "mystic", labelKey: "RMRPG.Actor.Inventory.Category.Mystic" },
     { key: "consumable", labelKey: "RMRPG.Actor.Inventory.Category.Consumables" },
     { key: "misc", labelKey: "RMRPG.Actor.Inventory.Category.Misc" }
 ];
@@ -98,9 +103,11 @@ export class RMRPGActorSheet extends ActorSheet {
         context.derivedReflexo = Number(context.system.derived?.reflexo ?? 0);
         context.derivedVigor = Number(context.system.derived?.vigor ?? 0);
         context.derivedDeterminacao = Number(context.system.derived?.determinacao ?? 0);
+        context.derivedIniciativa = Number(context.system.derived?.iniciativa ?? 0);
         context.defenseCalculated = Number(context.system.defense?.calculated ?? 12 + context.derivedReflexo);
         context.defenseManual = Number(context.system.defense?.value ?? 0);
         context.hasManualDefense = context.defenseManual > 0;
+        context.movementRate = Number(context.system.movement?.rate ?? 0);
         const hpValue = Number(context.system.hp?.value ?? 0);
         const hpMax = Math.max(1, Number(context.system.hp?.max ?? 1));
         const hpTemp = Math.max(0, Number(context.system.hp?.temp ?? 0));
@@ -219,6 +226,131 @@ export class RMRPGActorSheet extends ActorSheet {
                 rank: item.system?.rank ?? "",
                 description: item.system?.description ?? ""
             }));
+            const allItems = context.actor.items?.contents ?? [];
+            const getItemTags = (item) => {
+                const tags = new Set();
+                const typeTag = String(item.type ?? "").trim().toLowerCase();
+                if (typeTag)
+                    tags.add(typeTag);
+                const rawTags = Array.isArray(item.system?.tags) ? item.system.tags : [];
+                for (const entry of rawTags) {
+                    if (typeof entry === "string") {
+                        const name = entry.trim().toLowerCase();
+                        if (name)
+                            tags.add(name);
+                        continue;
+                    }
+                    const name = String(entry?.name ?? "").trim().toLowerCase();
+                    if (name)
+                        tags.add(name);
+                }
+                return tags;
+            };
+            const normalizeBonusArray = (bonuses) => {
+                if (Array.isArray(bonuses))
+                    return bonuses;
+                if (bonuses && typeof bonuses === "object") {
+                    return Object.values(bonuses);
+                }
+                return [];
+            };
+            const formatSigned = (value) => (value >= 0 ? `+${value}` : `${value}`);
+            const buildDamageFormula = (item) => {
+                const damage = item.system?.weapon?.damage ?? {};
+                const baseDice = Number(damage.base?.dice ?? 0);
+                const baseDie = String(damage.base?.die ?? "d6");
+                const parts = [];
+                if (baseDice > 0) {
+                    parts.push(`${baseDice}${baseDie}`);
+                }
+                else {
+                    parts.push("0");
+                }
+                const attrKey = String(damage.attribute ?? "none");
+                const attrValue = attrKey !== "none" ? Number(context.system.attributes?.[attrKey]?.value ?? 0) : 0;
+                if (attrValue !== 0) {
+                    parts.push(formatSigned(Math.floor(attrValue)));
+                }
+                const bonusParts = normalizeBonusArray(damage.bonuses).map((bonus) => String(bonus?.formula ?? "").trim());
+                for (const formula of bonusParts) {
+                    if (!formula)
+                        continue;
+                    if (formula.startsWith("+") || formula.startsWith("-")) {
+                        parts.push(formula);
+                    }
+                    else {
+                        parts.push(`+${formula}`);
+                    }
+                }
+                return parts.join(" ");
+            };
+            const buildActionList = (items, tag, exclude = []) => {
+                return items
+                    .filter((item) => {
+                    const tags = getItemTags(item);
+                    if (!tags.has(tag))
+                        return false;
+                    return !exclude.some((excluded) => tags.has(excluded));
+                })
+                    .map((item) => ({
+                    id: String(item.id ?? ""),
+                    name: String(item.name ?? ""),
+                    sort: Number(item.sort ?? 0)
+                }))
+                    .filter((entry) => entry.id && entry.name)
+                    .sort((a, b) => {
+                    if (a.sort !== b.sort)
+                        return a.sort - b.sort;
+                    return a.name.localeCompare(b.name);
+                });
+            };
+            const rawAttackItems = allItems.filter((item) => item.type === "weapon" || getItemTags(item).has("ataque"));
+            context.attackItems = rawAttackItems
+                .map((item) => {
+                const isWeapon = item.type === "weapon";
+                const hit = item.system?.weapon?.hit ?? {};
+                const hitAttr = String(hit.attribute ?? "none");
+                const hitAttrValue = hitAttr !== "none" ? Number(context.system.attributes?.[hitAttr]?.value ?? 0) : 0;
+                const hitBonuses = normalizeBonusArray(hit.bonuses);
+                const hitBonusTotal = hitBonuses.reduce((total, bonus) => total + Number(bonus?.value ?? 0), 0);
+                const attackMod = isWeapon ? Math.floor(hitAttrValue + hitBonusTotal) : 0;
+                const praMod = attackMod - 5;
+                const damageFormula = isWeapon ? buildDamageFormula(item) : "0";
+                const critFormula = `(${damageFormula}) * 2`;
+                const status = String(item.system?.status ?? "stowed");
+                const isReady = !isWeapon || status === "hand";
+                const isStowed = isWeapon && status !== "hand";
+                const canDraw = isWeapon && status !== "hand";
+                const canSheathe = isWeapon && status === "hand";
+                const canDrop = isWeapon && status === "hand";
+                return {
+                    id: String(item.id ?? ""),
+                    name: String(item.name ?? ""),
+                    img: item.img ?? "",
+                    sort: Number(item.sort ?? 0),
+                    isWeapon,
+                    canDelete: !isWeapon,
+                    isReady,
+                    isStowed,
+                    canDraw,
+                    canSheathe,
+                    canDrop,
+                    attackMod,
+                    praMod,
+                    attackModLabel: formatSigned(attackMod),
+                    praModLabel: formatSigned(praMod),
+                    damageFormula,
+                    critFormula
+                };
+            })
+                .filter((entry) => entry.id && entry.name)
+                .sort((a, b) => {
+                if (a.sort !== b.sort)
+                    return a.sort - b.sort;
+                return a.name.localeCompare(b.name);
+            });
+            context.actionItems = buildActionList(allItems, "acao", ["ataque", "reacao"]);
+            context.reactionItems = buildActionList(allItems, "reacao");
             const statusLabels = {
                 stowed: game.i18n.localize("RMRPG.Item.Status.Stowed"),
                 hand: game.i18n.localize("RMRPG.Item.Status.InHand"),
@@ -278,6 +410,10 @@ export class RMRPGActorSheet extends ActorSheet {
         html.find("[data-action='set-defense']").on("click", async (event) => {
             event.preventDefault();
             await this.openDefenseDialog();
+        });
+        html.find("[data-action='set-derived']").on("click", async (event) => {
+            event.preventDefault();
+            await this.openDerivedDialog();
         });
         html.find("[data-action='set-hp']").on("click", async (event) => {
             event.preventDefault();
@@ -346,6 +482,115 @@ export class RMRPGActorSheet extends ActorSheet {
             if (!item)
                 return;
             item.sheet?.render(true);
+        });
+        html.find("[data-action='action-item-delete']").on("click", async (event) => {
+            event.preventDefault();
+            const id = String(event.currentTarget.dataset.id ?? "");
+            if (!id)
+                return;
+            const item = this.actor.items?.get(id);
+            if (!item)
+                return;
+            await item.delete();
+        });
+        html.find("[data-action='action-item-draw']").on("click", async (event) => {
+            event.preventDefault();
+            const id = String(event.currentTarget.dataset.id ?? "");
+            if (!id)
+                return;
+            const item = this.actor.items?.get(id);
+            if (!item)
+                return;
+            await item.update({ "system.status": "hand" });
+        });
+        html.find("[data-action='action-item-sheathe']").on("click", async (event) => {
+            event.preventDefault();
+            const id = String(event.currentTarget.dataset.id ?? "");
+            if (!id)
+                return;
+            const item = this.actor.items?.get(id);
+            if (!item)
+                return;
+            await item.update({ "system.status": "stowed" });
+        });
+        html.find("[data-action='action-item-drop']").on("click", async (event) => {
+            event.preventDefault();
+            const id = String(event.currentTarget.dataset.id ?? "");
+            if (!id)
+                return;
+            const item = this.actor.items?.get(id);
+            if (!item)
+                return;
+            await item.update({ "system.status": "dropped" });
+        });
+        html.find("[data-action='roll-attack']").on("click", async (event) => {
+            event.preventDefault();
+            const button = event.currentTarget;
+            const id = String(button.dataset.id ?? "");
+            const mod = Number(button.dataset.mod ?? 0);
+            const item = id ? this.actor.items?.get(id) : null;
+            const roll = await new Roll("1d20 + @mod", { mod }).evaluate();
+            await roll.toMessage({
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                flavor: item ? `${this.actor.name} - ${item.name}` : `${this.actor.name} Attack`
+            });
+        });
+        html.find("[data-action='roll-damage']").on("click", async (event) => {
+            event.preventDefault();
+            const button = event.currentTarget;
+            const id = String(button.dataset.id ?? "");
+            const formula = String(button.dataset.formula ?? "").trim();
+            if (!formula)
+                return;
+            const item = id ? this.actor.items?.get(id) : null;
+            const roll = await new Roll(formula).evaluate();
+            await roll.toMessage({
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                flavor: item ? `${this.actor.name} - ${item.name}` : `${this.actor.name} Damage`
+            });
+        });
+        const actionCreateMap = {
+            attack: {
+                tag: "ataque",
+                nameKey: "RMRPG.Actor.Actions.NewAttack",
+                cost: "1"
+            },
+            action: {
+                tag: "acao",
+                nameKey: "RMRPG.Actor.Actions.NewAction",
+                cost: "1"
+            },
+            reaction: {
+                tag: "reacao",
+                nameKey: "RMRPG.Actor.Actions.NewReaction",
+                cost: "reaction"
+            }
+        };
+        html.find("[data-action='action-item-add']").on("click", async (event) => {
+            event.preventDefault();
+            if (this.actor.type !== "player")
+                return;
+            const group = String(event.currentTarget.dataset.group ?? "");
+            const config = actionCreateMap[group];
+            if (!config)
+                return;
+            const itemData = {
+                name: game.i18n.localize(config.nameKey),
+                type: "acao",
+                system: {
+                    action: {
+                        cost: config.cost
+                    }
+                }
+            };
+            if (config.tag && config.tag !== "acao") {
+                itemData.system.tags = [config.tag];
+            }
+            const created = await this.actor.createEmbeddedDocuments("Item", [itemData]);
+            const item = created?.[0];
+            if (item) {
+                item.sheet?.render(true);
+            }
         });
         html.find("[data-action='item-qty']").on("click", async (event) => {
             event.preventDefault();
@@ -504,6 +749,34 @@ export class RMRPGActorSheet extends ActorSheet {
             if (!group)
                 return;
             bindReorderList(listElement, ".equipment-row", `equip:${group}`);
+        });
+        html.find(".action-list").each((_, list) => {
+            const listElement = list;
+            const group = String(listElement.dataset.group ?? "");
+            if (!group)
+                return;
+            bindReorderList(listElement, ".action-item-row", `actions:${group}`);
+            listElement.addEventListener("dragstart", (event) => {
+                const dragEvent = event;
+                const target = dragEvent.target?.closest(".action-item-row");
+                if (!target)
+                    return;
+                const id = String(target.dataset.id ?? "");
+                if (!id)
+                    return;
+                this.setItemDragData(dragEvent, { id, group: `actions:${group}` });
+            });
+        });
+        html.find(".action-item-row").each((_, row) => {
+            row.addEventListener("dragstart", (event) => {
+                const dragEvent = event;
+                const id = String(row.dataset.id ?? "");
+                const list = row.closest(".action-list");
+                const group = String(list?.dataset.group ?? "");
+                if (!id || !group)
+                    return;
+                this.setItemDragData(dragEvent, { id, group: `actions:${group}` });
+            });
         });
         html.find(".equipment-row").each((_, row) => {
             row.addEventListener("dragstart", (event) => {
@@ -772,6 +1045,35 @@ export class RMRPGActorSheet extends ActorSheet {
             return;
         }
         await this.actor.update({ "system.defense.value": Math.max(0, Math.floor(parsed)) });
+    }
+    async openDerivedDialog() {
+        const modifiers = this.actor.system.derived?.modifiers ?? {};
+        const modifierLabel = game.i18n.localize("RMRPG.Dialogs.Derived.Modifier");
+        const dialog = await this.showDialog(game.i18n.localize("RMRPG.Dialogs.Derived.Title"), `
+      <form class="rmrpg-dialog-form">
+        ${DERIVED_CONFIG.map((entry) => {
+            const label = game.i18n.localize(entry.labelKey);
+            const current = Number(modifiers?.[entry.key] ?? 0);
+            return `
+            <div class="form-group">
+              <label>${label} (${modifierLabel})</label>
+              <input type="number" name="mod_${entry.key}" value="${current}" step="1" />
+            </div>
+          `;
+        }).join("")}
+      </form>
+      `);
+        if (!dialog)
+            return;
+        const updates = {};
+        for (const entry of DERIVED_CONFIG) {
+            const fallback = Number(modifiers?.[entry.key] ?? 0);
+            const parsed = this.readDialogNumber(dialog, `mod_${entry.key}`, fallback);
+            if (parsed === null)
+                return;
+            updates[`system.derived.modifiers.${entry.key}`] = Math.floor(parsed);
+        }
+        await this.actor.update(updates);
     }
     async openReikiDialog() {
         if (this.actor.type !== "player")

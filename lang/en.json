@@ -23,6 +23,29 @@
         "Advancements": "Advancements",
         "Effects": "Active Effects"
       },
+      "Actions": {
+        "Attacks": "Attacks",
+        "Actions": "Actions",
+        "Reactions": "Reactions",
+        "Placeholder": "Select...",
+        "AddAttack": "Add attack",
+        "AddAction": "Add action",
+        "AddReaction": "Add reaction",
+        "EmptyAttacks": "No attacks yet.",
+        "EmptyActions": "No actions yet.",
+        "EmptyReactions": "No reactions yet.",
+        "NewAttack": "New Attack",
+        "NewAction": "New Action",
+        "NewReaction": "New Reaction",
+        "Drag": "Drag to reorder",
+        "Attack1": "Attack 1",
+        "Pra": "PRA",
+        "Damage": "Damage",
+        "Critical": "Critical",
+        "DrawWeapon": "Draw weapon",
+        "SheatheWeapon": "Sheathe",
+        "DropWeapon": "Drop"
+      },
       "Attributes": {
         "Corpo": "Body",
         "Coordenacao": "Coordination",
@@ -35,7 +58,9 @@
         "Title": "Derived",
         "Reflexo": "Reflex",
         "Vigor": "Vigor",
-        "Determinacao": "Determination"
+        "Determinacao": "Determination",
+        "Iniciativa": "Initiative",
+        "MovementRate": "Movement Rate"
       },
       "Defense": {
         "Title": "VD",
@@ -81,7 +106,6 @@
         },
         "Category": {
           "Weapons": "Weapons",
-          "Mystic": "Mystic Items",
           "Consumables": "Consumables",
           "Misc": "Misc"
         }
@@ -158,6 +182,10 @@
         "Title": "Set Reiki Charges",
         "Current": "Current Charges",
         "Max": "Maximum Charges"
+      },
+      "Derived": {
+        "Title": "Set Derived Stats",
+        "Modifier": "Modifier"
       }
     },
     "Item": {
@@ -212,6 +240,21 @@
           "Deteriorating": "Deteriorating",
           "None": "No type"
         }
+      },
+      "Action": {
+        "Cost": {
+          "Label": "Action Cost",
+          "Free": "Free action",
+          "One": "1 action",
+          "Two": "2 actions",
+          "Three": "3 actions",
+          "Reaction": "Reaction"
+        }
+      },
+      "Tags": {
+        "Add": "Add tag",
+        "Remove": "Remove tag",
+        "Placeholder": "New tag"
       },
       "Ability": {
         "Cost": "Cost"

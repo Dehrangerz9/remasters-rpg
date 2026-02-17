@@ -39,7 +39,17 @@
         "derived": {
           "reflexo": 0,
           "vigor": 0,
-          "determinacao": 0
+          "determinacao": 0,
+          "iniciativa": 0,
+          "modifiers": {
+            "reflexo": 0,
+            "vigor": 0,
+            "determinacao": 0,
+            "iniciativa": 0
+          }
+        },
+        "movement": {
+          "rate": 0
         },
         "defense": {
           "value": 0,
@@ -200,8 +210,8 @@
       "weapon",
       "ability",
       "feat",
+      "acao",
       "item",
-      "mystic",
       "consumable",
       "misc"
     ],
@@ -211,7 +221,8 @@
         "quantity": 1,
         "weight": 0,
         "status": "stowed",
-        "price": 0
+        "price": 0,
+        "tags": []
       }
     },
     "weapon": {
@@ -250,12 +261,15 @@
       "rank": "D",
       "description": ""
     },
-    "item": {
+    "acao": {
       "templates": [
         "common"
-      ]
+      ],
+      "action": {
+        "cost": "1"
+      }
     },
-    "mystic": {
+    "item": {
       "templates": [
         "common"
       ]

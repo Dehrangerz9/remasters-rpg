@@ -1,0 +1,22 @@
+@media (max-width: 740px) {
+  .rmrpg-sheet.rmrpg-item-sheet {
+    .weapon-layout {
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .weapon-damage-base {
+      grid-template-columns: 1fr;
+    }
+
+    .weapon-bonus-header,
+    .weapon-bonus-row {
+      flex-wrap: wrap;
+    }
+
+    .weapon-bonus-header > :nth-child(2),
+    .weapon-bonus-row > :nth-child(2) {
+      flex: 1 1 90px;
+    }
+  }
+}

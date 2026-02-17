@@ -9,7 +9,36 @@
       </div>
     </div>
     <div class="item-header-tags">
-      <div class="type-pill">{{item.type}}</div>
+      <div class="tag-pill is-locked" title="{{typeTag.tooltip}}">
+        <span class="tag-text">{{typeTag.name}}</span>
+      </div>
+      {{#each tagEntries}}
+      <div class="tag-pill" data-index="{{@index}}" title="{{this.tooltip}}">
+        <span class="tag-text">{{this.name}}</span>
+        <button
+          type="button"
+          class="tag-remove"
+          data-action="tag-remove"
+          data-index="{{@index}}"
+          aria-label="{{localize 'RMRPG.Item.Tags.Remove'}}"
+          title="{{localize 'RMRPG.Item.Tags.Remove'}}"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      {{/each}}
+      <button type="button" class="tag-add" data-action="tag-add" aria-label="{{localize 'RMRPG.Item.Tags.Add'}}">
+        <i class="fas fa-plus"></i>
+      </button>
+      <div class="tag-editor">
+        <input
+          type="text"
+          class="tag-input"
+          placeholder="{{localize 'RMRPG.Item.Tags.Placeholder'}}"
+          autocomplete="off"
+        />
+        <div class="tag-suggestions"></div>
+      </div>
       {{#if isFeat}}
       <select name="system.rank" class="feat-rank-select" aria-label="{{localize 'RMRPG.Item.Feat.Rank'}}">
         {{selectOptions rankOptions selected=system.rank valueAttr="value" labelAttr="label"}}
@@ -116,13 +145,13 @@
                   <label>{{localize "RMRPG.Item.Weapon.DiceCount"}}</label>
                   <input type="number" name="system.weapon.damage.base.dice" value="{{weapon.damage.base.dice}}" min="0" step="1" />
                 </div>
-                <div class="weapon-field">
+                <div class="weapon-field weapon-damage-die">
                   <label>{{localize "RMRPG.Item.Weapon.DieType"}}</label>
                   <select name="system.weapon.damage.base.die">
                     {{selectOptions weaponDieOptions selected=weapon.damage.base.die valueAttr="value" labelAttr="label"}}
                   </select>
                 </div>
-                <div class="weapon-field">
+                <div class="weapon-field weapon-damage-type">
                   <label>{{localize "RMRPG.Item.Weapon.DamageTypeLabel"}}</label>
                   <select name="system.weapon.damage.base.type">
                     {{selectOptions weaponDamageTypeOptions selected=weapon.damage.base.type valueAttr="value" labelAttr="label"}}
@@ -176,6 +205,15 @@
       <div class="grid-2">
         <label>{{localize "RMRPG.Item.Ability.Cost"}}</label>
         <input type="number" name="system.cost" value="{{system.cost}}" />
+      </div>
+      {{/if}}
+
+      {{#if isAction}}
+      <div class="grid-2">
+        <label>{{localize "RMRPG.Item.Action.Cost.Label"}}</label>
+        <select name="system.action.cost">
+          {{selectOptions actionCostOptions selected=action.cost valueAttr="value" labelAttr="label"}}
+        </select>
       </div>
       {{/if}}
 
