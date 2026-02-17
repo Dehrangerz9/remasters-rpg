@@ -1,6 +1,7 @@
 export const SYSTEM_ID = "remasters-rpg";
 
 export const RANKS = ["D", "C", "B", "A", "S"] as const;
+export const ADVANCEMENTS_PER_RANK = 4;
 
 export const RANK_BONUS_BY_RANK: Record<(typeof RANKS)[number], number> = {
   D: 2,

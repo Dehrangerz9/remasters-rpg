@@ -1,7 +1,14 @@
-import { RANKS } from "../../../constants.js";
+import { ADVANCEMENTS_PER_RANK, RANKS } from "../../../constants.js";
 export const getEvolutionLabel = (index) => {
-    const rankIndex = Math.min(RANKS.length - 1, Math.floor((index - 1) / 4));
-    const step = ((index - 1) % 4) + 1;
+    const zeroBasedIndex = index - 1;
+    const lastRankIndex = RANKS.length - 1;
+    const rankIndex = Math.min(lastRankIndex, Math.floor(zeroBasedIndex / ADVANCEMENTS_PER_RANK));
+    if (rankIndex === lastRankIndex) {
+        const sStartIndex = lastRankIndex * ADVANCEMENTS_PER_RANK + 1;
+        const step = index - sStartIndex + 1;
+        return `${RANKS[rankIndex]}${step}`;
+    }
+    const step = (zeroBasedIndex % ADVANCEMENTS_PER_RANK) + 1;
     return `${RANKS[rankIndex]}${step}`;
 };
 export const extractAdvancementIndex = (key) => {

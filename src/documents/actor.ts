@@ -1,4 +1,4 @@
-import { RANK_BONUS_BY_RANK, RANKS } from "../constants.js";
+import { ADVANCEMENTS_PER_RANK, RANK_BONUS_BY_RANK, RANKS } from "../constants.js";
 
 type Rank = (typeof RANKS)[number];
 
@@ -141,10 +141,12 @@ export class RMRPGPlayerActor extends RMRPGGenericActor {
     const advancements = system.player?.advancements ?? {};
     const advancementCount = Object.keys(advancements).length;
 
-    const rankIndex = Math.min(RANKS.length - 1, Math.floor(advancementCount / 4));
+    const completedSteps = Math.max(advancementCount - 1, 0);
+    const rankIndex = Math.min(RANKS.length - 1, Math.floor(completedSteps / ADVANCEMENTS_PER_RANK));
     const rank = RANKS[rankIndex];
     const bonus = RANK_BONUS_BY_RANK[rank];
-    const nextRankAt = rankIndex < RANKS.length - 1 ? (rankIndex + 1) * 4 : null;
+    const nextRankAt =
+      rankIndex < RANKS.length - 1 ? (rankIndex + 1) * ADVANCEMENTS_PER_RANK + 1 : null;
 
     return {
       advancementCount,
