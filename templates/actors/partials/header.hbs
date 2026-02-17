@@ -1,0 +1,41 @@
+<header class="sheet-header">
+  <div class="header-top">
+    <h1 class="charname">
+      <input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'RMRPG.Actor.Name'}}" />
+    </h1>
+
+    <div class="header-badges">
+      <div class="rank-meta">
+        <div class="rank-column">
+          <span class="meta-label">{{localize "RMRPG.Actor.Rank"}}</span>
+          <span class="meta-label">{{localize "RMRPG.Actor.RankBonus"}}</span>
+        </div>
+        <div class="rank-values">
+          <span class="meta-value">{{system.rank.value}}</span>
+          <span class="meta-value">+{{rankBonus}}</span>
+        </div>
+      </div>
+      {{#unless isPlayer}}
+      <span class="type-pill">{{actor.type}}</span>
+      {{/unless}}
+    </div>
+  </div>
+
+  {{#if isPlayer}}
+  <div class="protagonism-track" role="group" aria-label="{{localize 'RMRPG.Actor.Player.ProtagonismPoints'}}">
+    <span class="track-label">{{localize "RMRPG.Actor.Player.ProtagonismPoints"}}</span>
+    <div class="track-dots">
+      {{#each protagonismSlots}}
+      <button
+        type="button"
+        class="dot {{#if this.active}}is-active{{/if}}"
+        data-action="set-protagonism"
+        data-value="{{this.value}}"
+        aria-label="{{localize 'RMRPG.Actor.Player.ProtagonismPoints'}} {{this.value}}"
+        title="LMB: set, RMB: -1"
+      ></button>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+</header>

@@ -1,0 +1,210 @@
+<div class="tab" data-group="primary" data-tab="actions">
+  <section class="actions-panel">
+    <div class="actions-section">
+      <div class="section-header">
+        <h3>{{localize "RMRPG.Actor.Actions.Attacks"}}</h3>
+        <button
+          type="button"
+          class="section-action"
+          data-action="action-item-add"
+          data-group="attack"
+          aria-label="{{localize 'RMRPG.Actor.Actions.AddAttack'}}"
+          title="{{localize 'RMRPG.Actor.Actions.AddAttack'}}"
+        >
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+      {{#if attackItems.length}}
+      <div class="action-list attack-list" data-group="attack">
+        {{#each attackItems}}
+        <div class="action-item-row attack-item-row {{#if this.isStowed}}is-stowed{{/if}}" data-id="{{this.id}}" draggable="true">
+          <img class="item-icon action-item-icon" src="{{this.img}}" title="{{this.name}}" />
+          <div class="attack-item-body">
+            <div class="attack-item-header">
+              <button type="button" class="action-item-name" data-action="item-open" data-id="{{this.id}}">
+                {{this.name}}
+              </button>
+              {{#if this.canDelete}}
+              <button
+                type="button"
+                class="action-item-delete"
+                data-action="action-item-delete"
+                data-id="{{this.id}}"
+                aria-label="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+                title="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+              {{/if}}
+            </div>
+            {{#if this.isReady}}
+            <div class="attack-actions">
+              <button
+                type="button"
+                class="attack-btn attack-btn-primary"
+                data-action="roll-attack"
+                data-id="{{this.id}}"
+                data-mod="{{this.attackMod}}"
+              >
+                {{localize "RMRPG.Actor.Actions.Attack1"}} {{this.attackModLabel}}
+              </button>
+              <button
+                type="button"
+                class="attack-btn attack-btn-secondary"
+                data-action="roll-attack"
+                data-id="{{this.id}}"
+                data-mod="{{this.praMod}}"
+                data-pra="true"
+              >
+                {{localize "RMRPG.Actor.Actions.Pra"}} {{this.praModLabel}} (MAP -5)
+              </button>
+              <button
+                type="button"
+                class="attack-btn attack-btn-damage"
+                data-action="roll-damage"
+                data-id="{{this.id}}"
+                data-formula="{{this.damageFormula}}"
+                title="{{this.damageFormula}}"
+              >
+                {{localize "RMRPG.Actor.Actions.Damage"}}
+              </button>
+              <button
+                type="button"
+                class="attack-btn attack-btn-critical"
+                data-action="roll-damage"
+                data-id="{{this.id}}"
+                data-formula="{{this.critFormula}}"
+                title="{{this.critFormula}}"
+              >
+                {{localize "RMRPG.Actor.Actions.Critical"}}
+              </button>
+            </div>
+            {{/if}}
+            <div class="attack-weapon-controls">
+              {{#if this.canDraw}}
+              <button
+                type="button"
+                class="weapon-control-btn"
+                data-action="action-item-draw"
+                data-id="{{this.id}}"
+              >
+                {{localize "RMRPG.Actor.Actions.DrawWeapon"}}
+              </button>
+              {{/if}}
+              {{#if this.canSheathe}}
+              <button
+                type="button"
+                class="weapon-control-btn"
+                data-action="action-item-sheathe"
+                data-id="{{this.id}}"
+              >
+                {{localize "RMRPG.Actor.Actions.SheatheWeapon"}}
+              </button>
+              <button
+                type="button"
+                class="weapon-control-btn"
+                data-action="action-item-drop"
+                data-id="{{this.id}}"
+              >
+                {{localize "RMRPG.Actor.Actions.DropWeapon"}}
+              </button>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      {{else}}
+      <p class="action-empty">{{localize "RMRPG.Actor.Actions.EmptyAttacks"}}</p>
+      {{/if}}
+    </div>
+
+    <div class="actions-section">
+      <div class="section-header">
+        <h3>{{localize "RMRPG.Actor.Actions.Actions"}}</h3>
+        <button
+          type="button"
+          class="section-action"
+          data-action="action-item-add"
+          data-group="action"
+          aria-label="{{localize 'RMRPG.Actor.Actions.AddAction'}}"
+          title="{{localize 'RMRPG.Actor.Actions.AddAction'}}"
+        >
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+      {{#if actionItems.length}}
+      <div class="action-list" data-group="action">
+        {{#each actionItems}}
+        <div class="action-item-row" data-id="{{this.id}}" draggable="true">
+          <button type="button" class="action-item-name" data-action="item-open" data-id="{{this.id}}">
+            {{this.name}}
+          </button>
+          <div class="action-item-controls">
+            <span class="action-item-handle" title="{{localize 'RMRPG.Actor.Actions.Drag'}}">
+              <i class="fas fa-grip-vertical"></i>
+            </span>
+            <button
+              type="button"
+              class="action-item-delete"
+              data-action="action-item-delete"
+              data-id="{{this.id}}"
+              aria-label="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+              title="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      {{else}}
+      <p class="action-empty">{{localize "RMRPG.Actor.Actions.EmptyActions"}}</p>
+      {{/if}}
+    </div>
+
+    <div class="actions-section">
+      <div class="section-header">
+        <h3>{{localize "RMRPG.Actor.Actions.Reactions"}}</h3>
+        <button
+          type="button"
+          class="section-action"
+          data-action="action-item-add"
+          data-group="reaction"
+          aria-label="{{localize 'RMRPG.Actor.Actions.AddReaction'}}"
+          title="{{localize 'RMRPG.Actor.Actions.AddReaction'}}"
+        >
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+      {{#if reactionItems.length}}
+      <div class="action-list" data-group="reaction">
+        {{#each reactionItems}}
+        <div class="action-item-row" data-id="{{this.id}}" draggable="true">
+          <button type="button" class="action-item-name" data-action="item-open" data-id="{{this.id}}">
+            {{this.name}}
+          </button>
+          <div class="action-item-controls">
+            <span class="action-item-handle" title="{{localize 'RMRPG.Actor.Actions.Drag'}}">
+              <i class="fas fa-grip-vertical"></i>
+            </span>
+            <button
+              type="button"
+              class="action-item-delete"
+              data-action="action-item-delete"
+              data-id="{{this.id}}"
+              aria-label="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+              title="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      {{else}}
+      <p class="action-empty">{{localize "RMRPG.Actor.Actions.EmptyReactions"}}</p>
+      {{/if}}
+    </div>
+  </section>
+</div>

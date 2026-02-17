@@ -1,13 +1,28 @@
 import { SYSTEM_ID } from "./constants.js";
 import { RMRPGActor } from "./documents/actor.js";
 import { RMRPGItem } from "./documents/item.js";
-import { RMRPGActorSheet } from "./sheets/actor-sheet.js";
-import { RMRPGItemSheet } from "./sheets/item-sheet.js";
+import { RMRPGActorSheet } from "./sheets/actor/sheet.js";
+import { RMRPGItemSheet } from "./sheets/item/sheet.js";
 const applyPunkCityTheme = (enabled) => {
     document.body?.classList.toggle("punk-city", enabled);
 };
 Hooks.once("init", () => {
     console.log(`${SYSTEM_ID} | Initializing system`);
+    loadTemplates([
+        `systems/${SYSTEM_ID}/templates/actors/partials/left-column.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/header.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/nav-tabs.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/tabs/main.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/tabs/actions.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/tabs/inventory.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/tabs/abilities.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/tabs/personal.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/tabs/advancements.hbs`,
+        `systems/${SYSTEM_ID}/templates/actors/partials/tabs/effects.hbs`,
+        `systems/${SYSTEM_ID}/templates/items/partials/header.hbs`,
+        `systems/${SYSTEM_ID}/templates/items/partials/weapon.hbs`,
+        `systems/${SYSTEM_ID}/templates/items/partials/non-weapon.hbs`
+    ]);
     CONFIG.Actor.documentClass = RMRPGActor;
     CONFIG.Item.documentClass = RMRPGItem;
     Actors.unregisterSheet("core", ActorSheet);

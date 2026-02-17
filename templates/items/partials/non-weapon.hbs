@@ -1,0 +1,32 @@
+{{#if isAbility}}
+<div class="grid-2">
+  <label>{{localize "RMRPG.Item.Ability.Cost"}}</label>
+  <input type="number" name="system.cost" value="{{system.cost}}" />
+</div>
+{{/if}}
+
+{{#if isAction}}
+<div class="grid-2">
+  <label>{{localize "RMRPG.Item.Action.Cost.Label"}}</label>
+  <select name="system.action.cost">
+    {{selectOptions actionCostOptions selected=action.cost valueAttr="value" labelAttr="label"}}
+  </select>
+</div>
+{{/if}}
+
+{{#if isEquipment}}
+<div class="grid-2">
+  <label>{{localize "RMRPG.Item.Equipment.Quantity"}}</label>
+  <input type="number" name="system.quantity" value="{{system.quantity}}" />
+  <label>{{localize "RMRPG.Item.Equipment.Weight"}}</label>
+  <input type="number" name="system.weight" value="{{system.weight}}" />
+  <label>{{localize "RMRPG.Item.Equipment.Status"}}</label>
+  <select name="system.status">
+    {{selectOptions statusOptions selected=system.status valueAttr="value" labelAttr="label"}}
+  </select>
+</div>
+{{/if}}
+
+<div class="description-block">
+  {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
+</div>

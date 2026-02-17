@@ -1,0 +1,26 @@
+<div class="tab" data-group="primary" data-tab="advancements">
+  <div class="advancement-toolbar">
+    <button type="button" data-action="add-advancement">{{localize "RMRPG.Actor.Advancements.Add"}}</button>
+  </div>
+
+  {{#if hasAdvancements}}
+  <div class="advancement-list">
+    {{#each advancementEntries}}
+    <div class="advancement-row">
+      <label class="advancement-code">{{this.code}}</label>
+      <input
+        type="text"
+        name="{{this.path}}"
+        value="{{this.value}}"
+        placeholder="{{localize 'RMRPG.Actor.Advancements.Placeholder'}}"
+      />
+      <button type="button" class="advancement-remove" data-action="remove-advancement" data-key="{{this.key}}" aria-label="Remove">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+    {{/each}}
+  </div>
+  {{else}}
+  <p class="advancement-empty">{{localize "RMRPG.Actor.Advancements.Empty"}}</p>
+  {{/if}}
+</div>

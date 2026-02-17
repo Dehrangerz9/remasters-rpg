@@ -1,0 +1,135 @@
+<div class="tab" data-group="primary" data-tab="inventory">
+  <div class="inventory-section">
+    <div class="inventory-top">
+      <article class="attribute-card credits-card">
+        <h3><i class="fas fa-wallet"></i> {{localize "RMRPG.Actor.Inventory.Credits"}}</h3>
+        <input type="number" name="system.player.credits" value="{{system.player.credits}}" min="0" step="1" />
+      </article>
+    </div>
+
+    <section class="equipment-section">
+      <div class="section-header">
+        <h3>{{localize "RMRPG.Actor.Inventory.EquipmentList"}}</h3>
+      </div>
+      <div class="equipment-list">
+        {{#each equipmentCategories}}
+        <details class="equipment-category" data-category="{{this.key}}" open>
+          <summary class="equipment-summary">
+            <span class="category-title">{{this.label}}</span>
+            <span class="equipment-summary-meta">
+              <span class="category-count">{{this.items.length}}</span>
+              <button
+                type="button"
+                class="category-action"
+                data-action="category-add"
+                data-category="{{this.key}}"
+                aria-label="{{localize 'RMRPG.Actor.Inventory.AddItem'}}"
+                title="{{localize 'RMRPG.Actor.Inventory.AddItem'}}"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+              <button
+                type="button"
+                class="category-action"
+                data-action="category-search"
+                data-category="{{this.key}}"
+                aria-label="{{localize 'RMRPG.Actor.Inventory.Search'}}"
+                title="{{localize 'RMRPG.Actor.Inventory.Search'}}"
+              >
+                <i class="fas fa-search"></i>
+              </button>
+            </span>
+          </summary>
+          <div class="equipment-table" data-category="{{this.key}}">
+            <div class="equipment-header">
+              <span></span>
+              <span>{{localize "RMRPG.Actor.Inventory.Columns.Item"}}</span>
+              <span>{{localize "RMRPG.Actor.Inventory.Columns.Quantity"}}</span>
+              <span>{{localize "RMRPG.Actor.Inventory.Columns.Weight"}}</span>
+              <span>{{localize "RMRPG.Actor.Inventory.Columns.Status"}}</span>
+              <span></span>
+              <span></span>
+            </div>
+            {{#if this.items.length}}
+            {{#each this.items}}
+            <div class="equipment-row" data-item-id="{{this.id}}" data-id="{{this.id}}" data-category="{{../key}}" draggable="true">
+              <img class="item-icon" src="{{this.img}}" title="{{this.name}}" />
+              <button type="button" class="item-name" data-action="item-open" data-id="{{this.id}}">{{this.name}}</button>
+              <div class="item-qty">
+                <span class="qty-value">{{this.quantity}}</span>
+                <div class="qty-controls">
+                  <button type="button" class="qty-btn" data-action="item-qty" data-delta="-1" data-id="{{this.id}}" aria-label="Decrease">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="qty-btn" data-action="item-qty" data-delta="1" data-id="{{this.id}}" aria-label="Increase">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              <span class="item-weight">{{this.totalWeight}}</span>
+              <button
+                type="button"
+                class="item-status {{this.statusClass}}"
+                data-action="item-status"
+                data-id="{{this.id}}"
+                aria-label="{{this.statusLabel}}"
+                title="{{this.statusLabel}}"
+              >
+                <i class="{{this.statusIcon}}"></i>
+              </button>
+              <div class="item-reorder">
+                <button
+                  type="button"
+                  class="reorder-btn"
+                  data-action="item-move"
+                  data-direction="up"
+                  data-id="{{this.id}}"
+                  aria-label="{{localize 'RMRPG.Actor.Inventory.MoveUp'}}"
+                  title="{{localize 'RMRPG.Actor.Inventory.MoveUp'}}"
+                >
+                  <i class="fas fa-chevron-up"></i>
+                </button>
+                <button
+                  type="button"
+                  class="reorder-btn"
+                  data-action="item-move"
+                  data-direction="down"
+                  data-id="{{this.id}}"
+                  aria-label="{{localize 'RMRPG.Actor.Inventory.MoveDown'}}"
+                  title="{{localize 'RMRPG.Actor.Inventory.MoveDown'}}"
+                >
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+              </div>
+              <button
+                type="button"
+                class="item-delete"
+                data-action="item-delete"
+                data-id="{{this.id}}"
+                aria-label="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+                title="{{localize 'RMRPG.Actor.Inventory.Delete'}}"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            {{/each}}
+            {{else}}
+            <div class="equipment-empty">{{localize "RMRPG.Actor.Inventory.Empty"}}</div>
+            {{/if}}
+          </div>
+        </details>
+        {{/each}}
+      </div>
+    </section>
+
+    <div class="carry-capacity">
+      <div class="carry-meta">
+        <span>{{localize "RMRPG.Actor.Inventory.CarryCapacity"}}</span>
+        <span>{{carryWeight}} / {{carryCapacity}}</span>
+      </div>
+      <div class="carry-bar">
+        <div class="carry-fill" style="width: {{carryPercent}}%;"></div>
+      </div>
+    </div>
+  </div>
+</div>

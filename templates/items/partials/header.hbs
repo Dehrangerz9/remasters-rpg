@@ -1,0 +1,50 @@
+<header class="sheet-header item-header">
+  <div class="item-header-top">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="item-title">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'RMRPG.Item.Name'}}" />
+      </h1>
+    </div>
+  </div>
+  <div class="item-header-tags">
+    <div class="tag-pill is-locked" title="{{typeTag.tooltip}}">
+      <span class="tag-text">{{typeTag.name}}</span>
+    </div>
+    {{#each tagEntries}}
+    <div class="tag-pill" data-index="{{@index}}" title="{{this.tooltip}}">
+      <span class="tag-text">{{this.name}}</span>
+      <button
+        type="button"
+        class="tag-remove"
+        data-action="tag-remove"
+        data-index="{{@index}}"
+        aria-label="{{localize 'RMRPG.Item.Tags.Remove'}}"
+        title="{{localize 'RMRPG.Item.Tags.Remove'}}"
+      >
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    {{/each}}
+    <button type="button" class="tag-add" data-action="tag-add" aria-label="{{localize 'RMRPG.Item.Tags.Add'}}">
+      <i class="fas fa-plus"></i>
+    </button>
+    <div class="tag-editor">
+      <input
+        type="text"
+        class="tag-input"
+        placeholder="{{localize 'RMRPG.Item.Tags.Placeholder'}}"
+        autocomplete="off"
+      />
+      <div class="tag-suggestions"></div>
+    </div>
+    <button type="button" class="item-chat" data-action="item-chat">
+      {{localize "RMRPG.Item.Chat"}}
+    </button>
+    {{#if isFeat}}
+    <select name="system.rank" class="feat-rank-select" aria-label="{{localize 'RMRPG.Item.Feat.Rank'}}">
+      {{selectOptions rankOptions selected=system.rank valueAttr="value" labelAttr="label"}}
+    </select>
+    {{/if}}
+  </div>
+</header>

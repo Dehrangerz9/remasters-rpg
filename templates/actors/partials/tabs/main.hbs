@@ -1,0 +1,88 @@
+<div class="tab" data-group="primary" data-tab="main">
+  <div class="attributes-grid">
+    {{#each attributeCards}}
+    <article class="attribute-card">
+      <button
+        type="button"
+        class="card-cog"
+        data-action="set-attribute"
+        aria-label="{{localize 'RMRPG.Dialogs.Attributes.Title'}}"
+      >
+        ⚙
+      </button>
+      <h3>{{localize this.labelKey}}</h3>
+      <h1>{{this.value}}</h1>
+    </article>
+    {{/each}}
+  </div>
+
+  {{#if isPlayer}}
+  <div class="main-sections">
+    <section class="skills-section">
+      <div class="section-header">
+        <h3>{{localize "RMRPG.Actor.Skills.Title"}}</h3>
+        <button type="button" class="section-action" data-action="edit-skills" aria-label="{{localize 'RMRPG.Actor.Skills.SettingsTitle'}}">
+          <i class="fas fa-gear"></i>
+        </button>
+      </div>
+
+      <div class="skills-list">
+        {{#each skillEntries}}
+        <div class="skill-row">
+          <input type="checkbox" name="{{this.trainedPath}}" {{checked this.trained}} />
+          <span class="skill-label">
+            {{#if this.labelKey}}
+              {{localize this.labelKey}}
+            {{else}}
+              {{this.label}}
+            {{/if}}
+          </span>
+          <select name="{{this.attributePath}}">
+            {{selectOptions ../attributeOptions selected=this.attribute valueAttr="value" labelAttr="label"}}
+          </select>
+          <button
+            type="button"
+            class="skill-roll"
+            data-action="roll-skill"
+            data-attr="{{this.attribute}}"
+            data-bonus="{{this.bonus}}"
+            data-trained="{{this.trained}}"
+            data-label="{{this.displayLabel}}"
+          >
+            +{{this.totalBonus}} <i class="fas fa-dice-d20"></i>
+          </button>
+        </div>
+        {{/each}}
+      </div>
+
+      <button type="button" class="add-skill" data-action="add-skill">{{localize "RMRPG.Actor.Skills.Add"}}</button>
+    </section>
+
+    <section class="advantages-section">
+      <div class="section-header">
+        <h3>{{localize "RMRPG.Actor.Advantages.Title"}}</h3>
+      </div>
+      <button type="button" class="add-feat" data-action="add-feat">{{localize "RMRPG.Actor.Feats.AddLabel"}}</button>
+      {{#unless feats.length}}
+      <div class="feat-drop-zone" data-action="feat-drop">
+        <span>{{localize "RMRPG.Actor.Feats.DropHint"}}</span>
+      </div>
+      {{/unless}}
+      <div class="feats-list">
+        {{#each feats}}
+        <div class="feat-row" data-id="{{this.id}}" draggable="true">
+          <img class="feat-icon" src="{{this.img}}" title="{{this.name}}" />
+          <button type="button" class="feat-name" data-action="feat-open" data-id="{{this.id}}">{{this.name}}</button>
+          <button type="button" class="feat-chat" data-action="feat-chat" data-id="{{this.id}}" aria-label="{{localize 'RMRPG.Actor.Feats.Chat'}}">
+            <i class="fas fa-comment"></i>
+          </button>
+          <button type="button" class="feat-remove" data-action="feat-delete" data-id="{{this.id}}" aria-label="{{localize 'RMRPG.Actor.Feats.Delete'}}">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        {{/each}}
+      </div>
+    </section>
+  </div>
+  {{/if}}
+</div>

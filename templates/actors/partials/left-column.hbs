@@ -1,0 +1,148 @@
+<aside class="left-column">
+  <img class="profile-portrait" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+
+  <div class="status-rail">
+    <section class="status-card hp-card">
+      <button type="button" class="card-cog" data-action="set-hp" aria-label="Set HP">⚙</button>
+      <h3>{{localize "RMRPG.Actor.HitPoints"}}</h3>
+
+      <div class="bar-row">
+        <div class="value-bar hp-bar">
+          <div class="value-fill hp-fill" style="width: {{hpPercent}}%;"></div>
+          <span class="value-text">
+            <input type="number" class="bar-input" data-action="inline-hp-value" value="{{hpValue}}" />
+            <span>/ {{hpMax}}</span>
+          </span>
+        </divcanvas>
+        <div class="temp-box">
+          <span class="temp-label">{{localize "RMRPG.Actor.TempHPShort"}}</span>
+          <input type="number" class="temp-input" data-action="inline-hp-temp" value="{{hpTemp}}" />
+        </div>
+      </div>
+    </section>
+
+    {{#if isPlayer}}
+    <section class="status-card reiki-card">
+      <button type="button" class="card-cog" data-action="set-reiki" aria-label="Set Reiki">⚙</button>
+      <button type="button" class="card-action" data-action="roll-reiki">
+        {{localize "RMRPG.Actor.Player.ReikiRoll"}}
+      </button>
+      <h3>{{localize "RMRPG.Actor.Player.ReikiCharges"}}</h3>
+
+      <div class="value-bar reiki-bar">
+        <div class="value-fill reiki-fill" style="width: {{reikiPercent}}%;"></div>
+        <span class="value-text">
+          <input type="number" class="bar-input" data-action="inline-reiki-current" value="{{reikiCurrent}}" />
+          <span>/ {{reikiMax}}</span>
+        </span>
+      </div>
+    </section>
+    {{/if}}
+
+    <div class="status-row">
+      <section class="status-card vd-card">
+        <button type="button" class="card-cog" data-action="set-defense" aria-label="Set VD">⚙</button>
+        <h3>{{localize "RMRPG.Actor.Defense.Title"}}</h3>
+        <h1>{{defenseCalculated}}</h1>
+        {{#if hasManualDefense}}
+        <small>{{localize "RMRPG.Actor.Defense.ManualValue"}} {{defenseManual}}</small>
+        {{/if}}
+      </section>
+
+      <section class="status-card movement-card">
+        <h3>{{localize "RMRPG.Actor.Derived.MovementRate"}}</h3>
+        <input
+          type="number"
+          class="stat-input"
+          name="system.movement.rate"
+          value="{{movementRate}}"
+          step="1"
+        />
+      </section>
+    </div>
+
+    <section class="status-card initiative-card">
+      <h3>
+        <button
+          type="button"
+          class="derived-name"
+          data-action="roll-derived"
+          data-derived="iniciativa"
+          aria-label="Roll Iniciativa"
+        >
+          {{localize "RMRPG.Actor.Derived.Iniciativa"}}
+        </button>
+      </h3>
+      <div class="initiative-row">
+        <button type="button" class="derived-roll" data-action="roll-derived" data-derived="iniciativa" aria-label="Roll Iniciativa">
+          <i class="fas fa-dice-d20"></i>
+        </button>
+        <span class="derived-value">+{{derivedIniciativa}}</span>
+      </div>
+    </section>
+
+    <section class="status-card derived-card">
+      <button type="button" class="card-cog" data-action="set-derived" aria-label="{{localize 'RMRPG.Dialogs.Derived.Title'}}">⚙</button>
+      <h3>{{localize "RMRPG.Actor.Derived.Title"}}</h3>
+
+      <div class="derived-grid">
+        <div class="derived-item">
+          <button type="button" class="derived-roll" data-action="roll-derived" data-derived="reflexo" aria-label="Roll Reflexo">
+            <i class="fas fa-dice-d20"></i>
+          </button>
+          <button
+            type="button"
+            class="derived-name"
+            data-action="roll-derived"
+            data-derived="reflexo"
+            aria-label="Roll Reflexo"
+          >
+            {{localize "RMRPG.Actor.Derived.Reflexo"}}
+          </button>
+          <span class="derived-value">+{{derivedReflexo}}</span>
+        </div>
+
+        <div class="derived-item">
+          <button type="button" class="derived-roll" data-action="roll-derived" data-derived="vigor" aria-label="Roll Vigor">
+            <i class="fas fa-dice-d20"></i>
+          </button>
+          <button
+            type="button"
+            class="derived-name"
+            data-action="roll-derived"
+            data-derived="vigor"
+            aria-label="Roll Vigor"
+          >
+            {{localize "RMRPG.Actor.Derived.Vigor"}}
+          </button>
+          <span class="derived-value">+{{derivedVigor}}</span>
+        </div>
+
+        <div class="derived-item">
+          <button type="button" class="derived-roll" data-action="roll-derived" data-derived="determinacao" aria-label="Roll Determinacao">
+            <i class="fas fa-dice-d20"></i>
+          </button>
+          <button
+            type="button"
+            class="derived-name"
+            data-action="roll-derived"
+            data-derived="determinacao"
+            aria-label="Roll Determinacao"
+          >
+            {{localize "RMRPG.Actor.Derived.Determinacao"}}
+          </button>
+          <span class="derived-value">+{{derivedDeterminacao}}</span>
+        </div>
+      </div>
+    </section>
+
+    {{#unless isPlayer}}
+    <section class="status-card">
+      <h3>{{localize "RMRPG.Actor.Rank"}}</h3>
+      <select name="system.rank.value">
+        {{selectOptions rankOptions selected=system.rank.value valueAttr="value" labelAttr="label"}}
+      </select>
+    </section>
+    {{/unless}}
+  </div>
+</aside>
