@@ -221,7 +221,7 @@
     "types": [
       "weapon",
       "ability",
-      "ability-category",
+      "category-effect",
       "feat",
       "acao",
       "item",
@@ -277,7 +277,7 @@
         }
       }
     },
-    "ability-category": {
+    "category-effect": {
       "templates": [
         "common"
       ],

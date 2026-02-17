@@ -215,7 +215,9 @@ export const setupTagSystem = (sheet: any, html: JQuery) => {
     const target = event.target as HTMLElement;
     if (target.closest(".tag-remove")) return;
     event.preventDefault();
-    const index = Number(event.currentTarget.dataset.index);
+    const currentTarget = event.currentTarget as HTMLElement;
+    if (currentTarget.dataset.locked === "true") return;
+    const index = Number(currentTarget.dataset.index);
     if (!Number.isFinite(index) || index < 0) return;
     const current = readTags();
     const tag = current[index];

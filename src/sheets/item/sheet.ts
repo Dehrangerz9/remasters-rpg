@@ -1,6 +1,7 @@
 import { SYSTEM_ID } from "../../constants.js";
 import { normalizeBonusArray } from "../global-functions/utils.js";
 import { calculateAbilityCost, sanitizeAbilityData } from "../../abilities/rules.js";
+import { syncAbilitiesForCategoryEffect } from "../../abilities/category-effects.js";
 import { applyItemThemeClass } from "./theme.js";
 import { buildItemContext } from "./context.js";
 import { activateItemListeners } from "./listeners.js";
@@ -57,7 +58,11 @@ export class RMRPGItemSheet extends ItemSheet {
       expanded.system.ability = ability;
       expanded.system.cost = calculateAbilityCost(ability).totalCost;
     }
-    return super._updateObject(event, expanded);
+    const result = await super._updateObject(event, expanded);
+    if (this.item.type === "category-effect") {
+      await syncAbilitiesForCategoryEffect(this.item);
+    }
+    return result;
   }
 
   get template() {

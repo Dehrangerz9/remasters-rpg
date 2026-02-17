@@ -334,13 +334,13 @@
           "Reaction": "Reaction"
         },
         "Categories": {
-          "Title": "Categories",
-          "Add": "Add Category Option",
-          "TableName": "Option",
+          "Title": "Category Effects",
+          "Add": "Add Category Effect",
+          "TableName": "Effect",
           "TableCategory": "Category",
           "TableCost": "PC Cost",
-          "Empty": "No category options yet.",
-          "DropHint": "Drag category option items here."
+          "Empty": "No category effects yet.",
+          "DropHint": "Drag category effect items here."
         },
         "Category": {
           "Criacao": "Creation",
@@ -407,9 +407,9 @@
         }
       },
       "AbilityCategory": {
-        "CategoryLabel": "Ability Category",
+        "CategoryLabel": "Category Effect",
         "CostLabel": "PC Cost",
-        "NewName": "New Category Option"
+        "NewName": "New Category Effect"
       }
     },
     "Chat": {
@@ -426,6 +426,11 @@
         "Name": "Punk City Theme",
         "Hint": "Enable the Punk City cyberpunk red/dark theme for sheets."
       }
+    }
+  },
+  "TYPES": {
+    "Item": {
+      "category-effect": "Category Effect"
     }
   }
 }

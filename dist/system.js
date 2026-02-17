@@ -3,6 +3,7 @@ import { RMRPGActor } from "./documents/actor.js";
 import { RMRPGItem } from "./documents/item.js";
 import { RMRPGActorSheet } from "./sheets/actor/sheet.js";
 import { RMRPGItemSheet } from "./sheets/item/sheet.js";
+import { syncAbilitiesForCategoryEffect } from "./abilities/category-effects.js";
 const applyPunkCityTheme = (enabled) => {
     document.body?.classList.toggle("punk-city", enabled);
 };
@@ -61,4 +62,7 @@ Hooks.once("setup", () => {
 Hooks.once("ready", () => {
     console.log(`${SYSTEM_ID} | Ready`);
     applyPunkCityTheme(Boolean(game.settings.get(SYSTEM_ID, "punkCityTheme")));
+});
+Hooks.on("updateItem", (item) => {
+    void syncAbilitiesForCategoryEffect(item);
 });

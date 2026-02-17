@@ -6,7 +6,9 @@ import {
   describeCharacteristicLimits,
   describeEnhancement,
   getCategoryLabel,
+  getCategoryTag,
   getCategoryTooltip,
+  listCategoryTags,
   normalizeAbilityData
 } from "../../abilities/rules.js";
 import { buildTagContext } from "./tags.js";
@@ -15,7 +17,7 @@ export const buildItemContext = async (sheet: any, context: any) => {
   context.system = context.item.system;
   context.isWeapon = context.item.type === "weapon";
   context.isAbility = context.item.type === "ability";
-  context.isAbilityCategory = context.item.type === "ability-category";
+  context.isAbilityCategory = context.item.type === "category-effect";
   context.isFeat = context.item.type === "feat";
   context.isAction = context.item.type === "acao";
   context.isEquipment = ["weapon", "consumable", "misc", "item"].includes(context.item.type);
@@ -121,12 +123,39 @@ export const buildItemContext = async (sheet: any, context: any) => {
       return context;
     }
     const ability = normalizeAbilityData(context.system?.ability);
+    const resolveCategoryEntries = async () =>
+      Promise.all(
+        ability.categories.map(async (entry) => {
+          if (entry.uuid) {
+            const item = await fromUuid(entry.uuid);
+            if (item) {
+              const data = item.toObject();
+              const system = data.system ?? {};
+              return {
+                uuid: item.uuid,
+                name: String(data.name ?? ""),
+                img: String(data.img ?? ""),
+                category: String(system.category ?? entry.category ?? ""),
+                cost: Number(system.cost ?? entry.cost ?? 0),
+                description: String(system.description ?? entry.description ?? "")
+              };
+            }
+          }
+          return { ...entry };
+        })
+      );
+
+    const resolvedCategories = await resolveCategoryEntries();
+    const resolvedAbility = {
+      ...ability,
+      categories: resolvedCategories
+    };
     const modifiers = collectAbilityModifiers(ability.enhancements);
-    const costInfo = calculateAbilityCost(ability);
+    const costInfo = calculateAbilityCost(resolvedAbility);
 
     const characteristicLabels = new Map(abilityOptions.characteristics.map((entry) => [entry.value, entry.label]));
 
-    const categories = ability.categories.map((entry) => {
+    const categories = resolvedCategories.map((entry) => {
       const categoryLabel = getCategoryLabel(entry.category, localize);
       return {
         ...entry,
@@ -164,7 +193,7 @@ export const buildItemContext = async (sheet: any, context: any) => {
         : String(ability.restrictions.advancesTarget);
 
     context.ability = {
-      ...ability,
+      ...resolvedAbility,
       restrictions: {
         ...ability.restrictions,
         advancesTarget: advancesTargetValue
@@ -179,8 +208,43 @@ export const buildItemContext = async (sheet: any, context: any) => {
     context.abilityEnhancementOptions = abilityOptions.enhancements;
     context.abilityCategoryLimit = costInfo.limits.categories;
     context.abilityCategoriesMaxed =
-      costInfo.limits.categories !== null && ability.categories.length >= costInfo.limits.categories;
+      costInfo.limits.categories !== null && resolvedCategories.length >= costInfo.limits.categories;
     context.abilityRestrictionTargets = restrictionTargets;
+
+    const categoryTags = categories
+      .map((entry) => ({
+        name: getCategoryTag(entry.category, localize),
+        tooltip: getCategoryTooltip(entry.category, localize)
+      }))
+      .filter((entry) => entry.name);
+
+    if (categoryTags.length) {
+      const categoryTagNames = new Set(listCategoryTags(localize).map((tag) => tag.toLowerCase()));
+      const tagMap = new Map(categoryTags.map((entry) => [entry.name.toLowerCase(), entry]));
+      const merged: any[] = [];
+      const seen = new Set<string>();
+
+      for (const entry of context.tagEntries ?? []) {
+        const key = String(entry.name ?? "").toLowerCase();
+        if (!key || seen.has(key)) continue;
+        if (categoryTagNames.has(key)) continue;
+        merged.push(entry);
+        seen.add(key);
+      }
+
+      for (const [key, categoryTag] of tagMap.entries()) {
+        if (seen.has(key)) continue;
+        merged.push({
+          name: categoryTag.name,
+          tooltip: categoryTag.tooltip,
+          locked: true,
+          isCategory: true
+        });
+        seen.add(key);
+      }
+
+      context.tagEntries = merged;
+    }
   }
 
   return context;

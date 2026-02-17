@@ -334,13 +334,13 @@
           "Reaction": "Reação"
         },
         "Categories": {
-          "Title": "Categorias",
-          "Add": "Adicionar Categoria Opcional",
-          "TableName": "Opção",
+          "Title": "Efeitos de Categoria",
+          "Add": "Adicionar Efeito de Categoria",
+          "TableName": "Efeito",
           "TableCategory": "Categoria",
           "TableCost": "Custo PC",
-          "Empty": "Nenhuma categoria opcional ainda.",
-          "DropHint": "Arraste itens de categoria aqui."
+          "Empty": "Nenhum efeito de categoria ainda.",
+          "DropHint": "Arraste itens de efeito de categoria aqui."
         },
         "Category": {
           "Criacao": "Criação",
@@ -407,9 +407,9 @@
         }
       },
       "AbilityCategory": {
-        "CategoryLabel": "Categoria da Habilidade",
+        "CategoryLabel": "Efeito de Categoria",
         "CostLabel": "Custo PC",
-        "NewName": "Nova Categoria Opcional"
+        "NewName": "Novo Efeito de Categoria"
       }
     },
     "Chat": {
@@ -426,6 +426,11 @@
         "Name": "Tema Punk City",
         "Hint": "Ativa o tema cyberpunk vermelho/escuro nas fichas."
       }
+    }
+  },
+  "TYPES": {
+    "Item": {
+      "category-effect": "Efeito de Categoria"
     }
   }
 }

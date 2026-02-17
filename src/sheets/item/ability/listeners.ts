@@ -11,6 +11,41 @@ import {
   calculateAbilityCost,
   sanitizeAbilityData
 } from "../../../abilities/rules.js";
+import { SYSTEM_ID } from "../../../constants.js";
+
+const CATEGORY_EFFECT_PACK_NAME = "rmrpg-category-effects";
+const CATEGORY_EFFECT_PACK_ID = `world.${CATEGORY_EFFECT_PACK_NAME}`;
+
+const getCompendiumFactory = () => {
+  const globalCtor = (globalThis as any)?.CompendiumCollection;
+  if (globalCtor?.createCompendium) return globalCtor;
+  const packsCtor = (game as any)?.packs?.constructor;
+  if (packsCtor?.createCompendium) return packsCtor;
+  return null;
+};
+
+const ensureCategoryEffectPack = async (localize: (key: string) => string) => {
+  let pack = game.packs?.get(CATEGORY_EFFECT_PACK_ID);
+  if (pack) return pack;
+
+  const compendiumFactory = getCompendiumFactory();
+  if (!compendiumFactory) return null;
+
+  try {
+    pack = await compendiumFactory.createCompendium({
+      name: CATEGORY_EFFECT_PACK_NAME,
+      label: localize("RMRPG.Item.Ability.Categories.Title"),
+      type: "Item",
+      package: "world",
+      system: SYSTEM_ID
+    });
+  } catch (error) {
+    console.error(`${SYSTEM_ID} | Failed to create Category Effects compendium`, error);
+    return null;
+  }
+
+  return pack ?? null;
+};
 
 const normalizeTags = (raw: unknown) => {
   if (!Array.isArray(raw)) return [] as { name: string; tooltip: string }[];
@@ -91,21 +126,21 @@ export const setupAbilityListeners = (sheet: any, html: JQuery) => {
     const ability = normalizeAbilityData(sheet.item.system?.ability);
     const limit = calculateAbilityCost(ability).limits.categories;
     if (limit !== null && ability.categories.length >= limit) return;
+    const pack = await ensureCategoryEffectPack(localize);
+    if (!pack) return;
     const defaultCategory = options.categories[0]?.value ?? "";
     const rule = getAbilityCategoryRule(defaultCategory);
     const defaultCost = resolveCost(rule?.cost, 1);
-    const created = await Item.create(
-      {
-        name: localize("RMRPG.Item.AbilityCategory.NewName"),
-        type: "ability-category",
-        system: {
-          category: defaultCategory,
-          cost: defaultCost
-        }
-      },
-      { renderSheet: true }
-    );
+    const created = await pack.createDocument({
+      name: localize("RMRPG.Item.AbilityCategory.NewName"),
+      type: "category-effect",
+      system: {
+        category: defaultCategory,
+        cost: defaultCost
+      }
+    });
     if (!created) return;
+    created.sheet?.render(true);
     await addCategoryEntry(ability, buildCategoryEntry(created.toObject(), created.uuid));
   });
 
@@ -159,7 +194,7 @@ export const setupAbilityListeners = (sheet: any, html: JQuery) => {
         }
       }
 
-      if (!itemData || itemData.type !== "ability-category") return;
+      if (!itemData || itemData.type !== "category-effect") return;
 
       const ability = normalizeAbilityData(sheet.item.system?.ability);
       const limit = calculateAbilityCost(ability).limits.categories;

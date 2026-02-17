@@ -18,18 +18,20 @@
       <span class="tag-text">{{typeTag.name}}</span>
     </div>
     {{#each tagEntries}}
-    <div class="tag-pill" data-index="{{@index}}" title="{{this.tooltip}}">
+    <div class="tag-pill{{#if this.locked}} is-locked{{/if}}{{#if this.isCategory}} is-category{{/if}}" data-index="{{@index}}" data-locked="{{this.locked}}" title="{{this.tooltip}}">
       <span class="tag-text">{{this.name}}</span>
-      <button
-        type="button"
-        class="tag-remove"
-        data-action="tag-remove"
-        data-index="{{@index}}"
-        aria-label="{{localize 'RMRPG.Item.Tags.Remove'}}"
-        title="{{localize 'RMRPG.Item.Tags.Remove'}}"
-      >
-        <i class="fas fa-times"></i>
-      </button>
+      {{#unless this.locked}}
+        <button
+          type="button"
+          class="tag-remove"
+          data-action="tag-remove"
+          data-index="{{@index}}"
+          aria-label="{{localize 'RMRPG.Item.Tags.Remove'}}"
+          title="{{localize 'RMRPG.Item.Tags.Remove'}}"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      {{/unless}}
     </div>
     {{/each}}
     <button type="button" class="tag-add" data-action="tag-add" aria-label="{{localize 'RMRPG.Item.Tags.Add'}}">

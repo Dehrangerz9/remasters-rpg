@@ -1641,6 +1641,12 @@
   background: var(--rmrpg-accent-soft);
   color: var(--rmrpg-accent);
 }
+.rmrpg-sheet.rmrpg-item-sheet .tag-pill.is-category,
+.rmrpg-sheet .rmrpg-item-sheet .tag-pill.is-category {
+  background: #e7f6e8;
+  border-color: #8fd3a1;
+  color: #2a7a39;
+}
 .rmrpg-sheet.rmrpg-item-sheet .tag-text,
 .rmrpg-sheet .rmrpg-item-sheet .tag-text {
   line-height: 1;
