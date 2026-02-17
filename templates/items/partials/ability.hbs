@@ -33,10 +33,10 @@
             </div>
             {{#if ability.categories.length}}
             {{#each ability.categories}}
-            <div class="ability-category-row" data-index="{{@index}}" data-uuid="{{this.uuid}}">
+            <div class="ability-category-row" data-index="{{@index}}" data-id="{{this.id}}" data-uuid="{{this.uuid}}">
               <img class="item-icon" src="{{this.img}}" title="{{this.name}}" />
               <div class="ability-category-main">
-                <button type="button" class="item-name" data-action="ability-category-open" data-uuid="{{this.uuid}}">
+                <button type="button" class="item-name" data-action="ability-category-open" data-id="{{this.id}}" data-uuid="{{this.uuid}}">
                   {{this.name}}
                 </button>
                 {{#if this.description}}

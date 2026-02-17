@@ -1,4 +1,4 @@
-import { SYSTEM_ID } from "./constants.js";
+import { ABILITY_PARENT_FLAG, SYSTEM_ID } from "./constants.js";
 import { RMRPGActor } from "./documents/actor.js";
 import { RMRPGItem } from "./documents/item.js";
 import { RMRPGActorSheet } from "./sheets/actor/sheet.js";
@@ -7,6 +7,24 @@ import { syncAbilitiesForCategoryEffect } from "./abilities/category-effects.js"
 
 const applyPunkCityTheme = (enabled: boolean) => {
   document.body?.classList.toggle("punk-city", enabled);
+};
+
+const deleteLinkedCategoryEffectsForAbility = async (abilityItem: any) => {
+  if (!abilityItem || abilityItem.type !== "ability") return;
+  const actor = abilityItem.parent;
+  if (actor?.documentName !== "Actor") return;
+  const abilityId = String(abilityItem.id ?? "");
+  if (!abilityId) return;
+  const linkedIds = actor.items
+    ?.filter(
+      (item: any) =>
+        item.type === "category-effect" &&
+        String(item.getFlag?.(SYSTEM_ID, ABILITY_PARENT_FLAG) ?? "") === abilityId
+    )
+    .map((item: any) => item.id)
+    .filter(Boolean) ?? [];
+  if (!linkedIds.length) return;
+  await actor.deleteEmbeddedDocuments("Item", linkedIds);
 };
 
 Hooks.once("init", () => {
@@ -75,4 +93,13 @@ Hooks.once("ready", () => {
 
 Hooks.on("updateItem", (item: any) => {
   void syncAbilitiesForCategoryEffect(item);
+});
+
+Hooks.on("createItem", (item: any) => {
+  void syncAbilitiesForCategoryEffect(item);
+});
+
+Hooks.on("deleteItem", (item: any) => {
+  void syncAbilitiesForCategoryEffect(item);
+  void deleteLinkedCategoryEffectsForAbility(item);
 });

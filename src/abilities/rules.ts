@@ -47,6 +47,7 @@ export type AbilityCastingTimeRule = {
 };
 
 export type AbilityCategoryEntry = {
+  id: string;
   uuid: string;
   name: string;
   img: string;
@@ -283,6 +284,7 @@ export const normalizeAbilityData = (raw: any): AbilityData => {
   return {
     castingTime: String(ability.castingTime ?? ABILITY_RULES.castingTimes[0]?.id ?? "1-action"),
     categories: normalizeEntries(ability.categories, {
+      id: "",
       uuid: "",
       name: "",
       img: "",
@@ -296,6 +298,7 @@ export const normalizeAbilityData = (raw: any): AbilityData => {
       const fallbackCost = resolveCost(rule?.cost, 1);
       const cost = Number.isFinite(rawCost) ? rawCost : fallbackCost;
       return {
+        id: String(entry.id ?? ""),
         uuid: String(entry.uuid ?? ""),
         name: String(entry.name ?? ""),
         img: String(entry.img ?? ""),
@@ -363,6 +366,7 @@ export const sanitizeAbilityData = (raw: any): AbilityData => {
       const fallbackCost = resolveCost(rule?.cost, 1);
       const cost = Number.isFinite(rawCost) ? rawCost : fallbackCost;
       return {
+        id: String((entry as any).id ?? ""),
         uuid: String((entry as any).uuid ?? ""),
         name: String((entry as any).name ?? ""),
         img: String((entry as any).img ?? ""),

@@ -1,4 +1,5 @@
 export const SYSTEM_ID = "remasters-rpg";
+export const ABILITY_PARENT_FLAG = "parentAbilityId";
 
 export const RANKS = ["D", "C", "B", "A", "S"] as const;
 export const ADVANCEMENTS_PER_RANK = 4;

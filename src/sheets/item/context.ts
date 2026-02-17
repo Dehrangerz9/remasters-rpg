@@ -11,18 +11,22 @@ import {
   listCategoryTags,
   normalizeAbilityData
 } from "../../abilities/rules.js";
+import { resolveAbilityCategories } from "../../abilities/category-links.js";
 import { buildTagContext } from "./tags.js";
 
 export const buildItemContext = async (sheet: any, context: any) => {
-  context.system = context.item.system;
-  context.isWeapon = context.item.type === "weapon";
-  context.isAbility = context.item.type === "ability";
-  context.isAbilityCategory = context.item.type === "category-effect";
-  context.isFeat = context.item.type === "feat";
-  context.isAction = context.item.type === "acao";
-  context.isEquipment = ["weapon", "consumable", "misc", "item"].includes(context.item.type);
+  const item = context.item ?? sheet.item ?? sheet.document ?? sheet.object;
+  if (!item) return context;
+  context.item = item;
+  context.system = item.system ?? {};
+  context.isWeapon = item.type === "weapon";
+  context.isAbility = item.type === "ability";
+  context.isAbilityCategory = item.type === "category-effect";
+  context.isFeat = item.type === "feat";
+  context.isAction = item.type === "acao";
+  context.isEquipment = ["weapon", "consumable", "misc", "item"].includes(item.type);
 
-  const tagContext = buildTagContext(context.item, context.system);
+  const tagContext = buildTagContext(item, context.system);
   context.typeTag = tagContext.typeTag;
   context.tagEntries = tagContext.tagEntries;
 
@@ -123,29 +127,7 @@ export const buildItemContext = async (sheet: any, context: any) => {
       return context;
     }
     const ability = normalizeAbilityData(context.system?.ability);
-    const resolveCategoryEntries = async () =>
-      Promise.all(
-        ability.categories.map(async (entry) => {
-          if (entry.uuid) {
-            const item = await fromUuid(entry.uuid);
-            if (item) {
-              const data = item.toObject();
-              const system = data.system ?? {};
-              return {
-                uuid: item.uuid,
-                name: String(data.name ?? ""),
-                img: String(data.img ?? ""),
-                category: String(system.category ?? entry.category ?? ""),
-                cost: Number(system.cost ?? entry.cost ?? 0),
-                description: String(system.description ?? entry.description ?? "")
-              };
-            }
-          }
-          return { ...entry };
-        })
-      );
-
-    const resolvedCategories = await resolveCategoryEntries();
+    const resolvedCategories = resolveAbilityCategories(item, ability);
     const resolvedAbility = {
       ...ability,
       categories: resolvedCategories
@@ -220,11 +202,13 @@ export const buildItemContext = async (sheet: any, context: any) => {
 
     if (categoryTags.length) {
       const categoryTagNames = new Set(listCategoryTags(localize).map((tag) => tag.toLowerCase()));
-      const tagMap = new Map(categoryTags.map((entry) => [entry.name.toLowerCase(), entry]));
+      const tagMap = new Map<string, { name: string; tooltip: string }>(
+        categoryTags.map((entry) => [String(entry.name ?? "").toLowerCase(), entry])
+      );
       const merged: any[] = [];
       const seen = new Set<string>();
 
-      for (const entry of context.tagEntries ?? []) {
+      for (const entry of (context.tagEntries as any[]) ?? []) {
         const key = String(entry.name ?? "").toLowerCase();
         if (!key || seen.has(key)) continue;
         if (categoryTagNames.has(key)) continue;

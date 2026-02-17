@@ -2,6 +2,7 @@ import { SYSTEM_ID } from "../../constants.js";
 import { normalizeBonusArray } from "../global-functions/utils.js";
 import { calculateAbilityCost, sanitizeAbilityData } from "../../abilities/rules.js";
 import { syncAbilitiesForCategoryEffect } from "../../abilities/category-effects.js";
+import { resolveAbilityCategories } from "../../abilities/category-links.js";
 import { applyItemThemeClass } from "./theme.js";
 import { buildItemContext } from "./context.js";
 import { activateItemListeners } from "./listeners.js";
@@ -51,8 +52,10 @@ export class RMRPGItemSheet extends ItemSheet {
                 overwrite: true
             });
             const ability = sanitizeAbilityData(mergedAbility);
-            expanded.system.ability = ability;
-            expanded.system.cost = calculateAbilityCost(ability).totalCost;
+            const resolvedCategories = resolveAbilityCategories(this.item, ability);
+            const resolvedAbility = sanitizeAbilityData({ ...ability, categories: resolvedCategories });
+            expanded.system.ability = resolvedAbility;
+            expanded.system.cost = calculateAbilityCost(resolvedAbility).totalCost;
         }
         const result = await super._updateObject(event, expanded);
         if (this.item.type === "category-effect") {

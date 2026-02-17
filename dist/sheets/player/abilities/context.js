@@ -1,5 +1,6 @@
 import { clampInteger, formatSigned } from "../../global-functions/utils.js";
-import { calculateAbilityCost } from "../../../abilities/rules.js";
+import { calculateAbilityCost, normalizeAbilityData } from "../../../abilities/rules.js";
+import { resolveAbilityCategories } from "../../../abilities/category-links.js";
 export const applyPlayerAbilitiesContext = (context) => {
     const abilities = context.actor.items?.filter((item) => item.type === "ability") ?? [];
     abilities.sort((a, b) => {
@@ -11,9 +12,12 @@ export const applyPlayerAbilitiesContext = (context) => {
     });
     context.abilityItems = abilities.map((item) => {
         const rawAbility = item.system?.ability;
-        const computedCost = rawAbility && typeof rawAbility === "object"
-            ? calculateAbilityCost(rawAbility).totalCost
-            : Number(item.system?.cost ?? 0);
+        let computedCost = Number(item.system?.cost ?? 0);
+        if (rawAbility && typeof rawAbility === "object") {
+            const ability = normalizeAbilityData(rawAbility);
+            const resolvedCategories = resolveAbilityCategories(item, ability);
+            computedCost = calculateAbilityCost({ ...ability, categories: resolvedCategories }).totalCost;
+        }
         return {
             id: String(item.id ?? ""),
             name: String(item.name ?? ""),

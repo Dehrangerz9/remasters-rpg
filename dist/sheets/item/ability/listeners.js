@@ -1,38 +1,6 @@
 import { buildAbilityOptions, getAbilityCategoryRule, getAbilityCharacteristicRule, getCategoryLabel, getCategoryTag, getCategoryTooltip, resolveCost, listCategoryTags, normalizeAbilityData, calculateAbilityCost, sanitizeAbilityData } from "../../../abilities/rules.js";
-import { SYSTEM_ID } from "../../../constants.js";
-const CATEGORY_EFFECT_PACK_NAME = "rmrpg-category-effects";
-const CATEGORY_EFFECT_PACK_ID = `world.${CATEGORY_EFFECT_PACK_NAME}`;
-const getCompendiumFactory = () => {
-    const globalCtor = globalThis?.CompendiumCollection;
-    if (globalCtor?.createCompendium)
-        return globalCtor;
-    const packsCtor = game?.packs?.constructor;
-    if (packsCtor?.createCompendium)
-        return packsCtor;
-    return null;
-};
-const ensureCategoryEffectPack = async (localize) => {
-    let pack = game.packs?.get(CATEGORY_EFFECT_PACK_ID);
-    if (pack)
-        return pack;
-    const compendiumFactory = getCompendiumFactory();
-    if (!compendiumFactory)
-        return null;
-    try {
-        pack = await compendiumFactory.createCompendium({
-            name: CATEGORY_EFFECT_PACK_NAME,
-            label: localize("RMRPG.Item.Ability.Categories.Title"),
-            type: "Item",
-            package: "world",
-            system: SYSTEM_ID
-        });
-    }
-    catch (error) {
-        console.error(`${SYSTEM_ID} | Failed to create Category Effects compendium`, error);
-        return null;
-    }
-    return pack ?? null;
-};
+import { ABILITY_PARENT_FLAG, SYSTEM_ID } from "../../../constants.js";
+import { resolveAbilityCategories, getLinkedCategoryItems } from "../../../abilities/category-links.js";
 const normalizeTags = (raw) => {
     if (!Array.isArray(raw))
         return [];
@@ -56,6 +24,63 @@ const dedupeTags = (entries) => {
         return true;
     });
 };
+const isActorOwnedAbility = (sheet) => sheet.item.type === "ability" && sheet.item.parent?.documentName === "Actor";
+const findLinkedCategoryItem = (sheet, entry) => {
+    if (!isActorOwnedAbility(sheet))
+        return null;
+    const actor = sheet.item.parent;
+    const linkedItems = getLinkedCategoryItems(sheet.item);
+    const entryId = String(entry?.id ?? "");
+    const entryUuid = String(entry?.uuid ?? "");
+    for (const item of linkedItems) {
+        if (entryId && String(item.id ?? "") === entryId)
+            return item;
+        if (entryUuid && String(item.uuid ?? "") === entryUuid)
+            return item;
+    }
+    return null;
+};
+const removeStoredCategoryEntry = (ability, entry, fallbackIndex, useFallback = true) => {
+    const entryId = String(entry?.id ?? "");
+    const entryUuid = String(entry?.uuid ?? "");
+    let index = -1;
+    if (entryId) {
+        index = ability.categories.findIndex((candidate) => String(candidate?.id ?? "") === entryId);
+    }
+    if (index < 0 && entryUuid) {
+        index = ability.categories.findIndex((candidate) => String(candidate?.uuid ?? "") === entryUuid);
+    }
+    if (index < 0 && useFallback) {
+        index = fallbackIndex;
+    }
+    if (index < 0 || index >= ability.categories.length)
+        return;
+    ability.categories.splice(index, 1);
+};
+const createLinkedCategoryEffect = async (sheet, data) => {
+    if (!isActorOwnedAbility(sheet))
+        return null;
+    const actor = sheet.item.parent;
+    const parentAbilityId = String(sheet.item.id ?? "");
+    const created = await actor.createEmbeddedDocuments("Item", [
+        {
+            name: data.name,
+            type: "category-effect",
+            img: data.img || "icons/svg/book.svg",
+            system: {
+                category: data.category,
+                cost: data.cost,
+                description: data.description
+            },
+            flags: {
+                [SYSTEM_ID]: {
+                    [ABILITY_PARENT_FLAG]: parentAbilityId
+                }
+            }
+        }
+    ]);
+    return created?.[0] ?? null;
+};
 const syncCategoryTags = async (sheet, ability) => {
     const localize = (key) => game.i18n.localize(key);
     const categoryTagNames = new Set(listCategoryTags(localize).map((tag) => tag.toLowerCase()));
@@ -78,52 +103,50 @@ export const setupAbilityListeners = (sheet, html) => {
         return;
     const localize = (key) => game.i18n.localize(key);
     const options = buildAbilityOptions(localize);
-    const resolveCategoryLabel = (category) => getCategoryLabel(category, localize);
-    const buildCategoryEntry = (itemData, uuid) => {
-        const system = itemData?.system ?? {};
-        const category = String(system.category ?? "");
-        const cost = Number(system.cost ?? 0);
-        return {
-            uuid,
-            name: String(itemData?.name ?? resolveCategoryLabel(category)),
-            img: String(itemData?.img ?? ""),
-            category,
-            cost: Number.isFinite(cost) ? cost : 0,
-            description: String(system.description ?? "")
-        };
-    };
-    const addCategoryEntry = async (ability, entry) => {
-        ability.categories.push(entry);
-        const sanitized = sanitizeAbilityData(ability);
+    const resolveCategoryLabel = (category) => getCategoryLabel(category, localize) || category;
+    const persistAbility = async (ability) => {
+        const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
+        const sanitized = sanitizeAbilityData({ ...ability, categories: resolvedCategories });
         const cost = calculateAbilityCost(sanitized).totalCost;
         await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
         await syncCategoryTags(sheet, sanitized);
+        return sanitized;
     };
     html.find("[data-action='ability-category-add']").on("click", async (event) => {
         event.preventDefault();
         await sheet._onSubmit(event, { preventClose: true, preventRender: true });
         const ability = normalizeAbilityData(sheet.item.system?.ability);
-        const limit = calculateAbilityCost(ability).limits.categories;
-        if (limit !== null && ability.categories.length >= limit)
-            return;
-        const pack = await ensureCategoryEffectPack(localize);
-        if (!pack)
+        const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
+        const limit = calculateAbilityCost({ ...ability, categories: resolvedCategories }).limits.categories;
+        if (limit !== null && resolvedCategories.length >= limit)
             return;
         const defaultCategory = options.categories[0]?.value ?? "";
         const rule = getAbilityCategoryRule(defaultCategory);
         const defaultCost = resolveCost(rule?.cost, 1);
-        const created = await pack.createDocument({
-            name: localize("RMRPG.Item.AbilityCategory.NewName"),
-            type: "category-effect",
-            system: {
+        if (isActorOwnedAbility(sheet)) {
+            const created = await createLinkedCategoryEffect(sheet, {
+                name: localize("RMRPG.Item.AbilityCategory.NewName"),
+                img: "icons/svg/book.svg",
                 category: defaultCategory,
-                cost: defaultCost
+                cost: defaultCost,
+                description: ""
+            });
+            if (created?.sheet) {
+                created.sheet.render(true);
             }
-        });
-        if (!created)
+            await persistAbility(ability);
             return;
-        created.sheet?.render(true);
-        await addCategoryEntry(ability, buildCategoryEntry(created.toObject(), created.uuid));
+        }
+        ability.categories.push({
+            id: "",
+            uuid: "",
+            name: resolveCategoryLabel(defaultCategory),
+            img: "icons/svg/book.svg",
+            category: defaultCategory,
+            cost: defaultCost,
+            description: ""
+        });
+        await persistAbility(ability);
     });
     html.find("[data-action='ability-category-remove']").on("click", async (event) => {
         event.preventDefault();
@@ -132,16 +155,27 @@ export const setupAbilityListeners = (sheet, html) => {
             return;
         await sheet._onSubmit(event, { preventClose: true, preventRender: true });
         const ability = normalizeAbilityData(sheet.item.system?.ability);
-        if (index >= ability.categories.length)
+        const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
+        if (index >= resolvedCategories.length)
             return;
-        ability.categories.splice(index, 1);
-        const sanitized = sanitizeAbilityData(ability);
-        const cost = calculateAbilityCost(sanitized).totalCost;
-        await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
-        await syncCategoryTags(sheet, sanitized);
+        const entry = resolvedCategories[index];
+        const linkedItem = findLinkedCategoryItem(sheet, entry);
+        if (linkedItem) {
+            await sheet.item.parent.deleteEmbeddedDocuments("Item", [linkedItem.id]);
+        }
+        removeStoredCategoryEntry(ability, entry, index, !linkedItem);
+        await persistAbility(ability);
     });
     html.find("[data-action='ability-category-open']").on("click", async (event) => {
         event.preventDefault();
+        const id = String(event.currentTarget.dataset.id ?? "");
+        if (id && isActorOwnedAbility(sheet)) {
+            const item = sheet.item.parent.items?.get(id);
+            if (item?.sheet) {
+                item.sheet.render(true);
+            }
+            return;
+        }
         const uuid = String(event.currentTarget.dataset.uuid ?? "");
         if (!uuid)
             return;
@@ -178,10 +212,36 @@ export const setupAbilityListeners = (sheet, html) => {
             if (!itemData || itemData.type !== "category-effect")
                 return;
             const ability = normalizeAbilityData(sheet.item.system?.ability);
-            const limit = calculateAbilityCost(ability).limits.categories;
-            if (limit !== null && ability.categories.length >= limit)
+            const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
+            const limit = calculateAbilityCost({ ...ability, categories: resolvedCategories }).limits.categories;
+            if (limit !== null && resolvedCategories.length >= limit)
                 return;
-            await addCategoryEntry(ability, buildCategoryEntry(itemData, uuid));
+            const rawSystem = itemData.system ?? {};
+            const entryData = {
+                name: String(itemData.name ?? localize("RMRPG.Item.AbilityCategory.NewName")),
+                img: String(itemData.img ?? "icons/svg/book.svg"),
+                category: String(rawSystem.category ?? ""),
+                cost: Number(rawSystem.cost ?? 0),
+                description: String(rawSystem.description ?? "")
+            };
+            if (isActorOwnedAbility(sheet)) {
+                await createLinkedCategoryEffect(sheet, {
+                    ...entryData,
+                    cost: Number.isFinite(entryData.cost) ? entryData.cost : 0
+                });
+                await persistAbility(ability);
+                return;
+            }
+            ability.categories.push({
+                id: "",
+                uuid,
+                name: entryData.name || resolveCategoryLabel(entryData.category),
+                img: entryData.img,
+                category: entryData.category,
+                cost: Number.isFinite(entryData.cost) ? entryData.cost : 0,
+                description: entryData.description
+            });
+            await persistAbility(ability);
         });
     }
     html.find("[data-action='ability-characteristic-add']").on("click", async (event) => {

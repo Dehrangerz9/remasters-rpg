@@ -1,4 +1,6 @@
 import { ADVANCEMENTS_PER_RANK, RANK_BONUS_BY_RANK, RANKS } from "../constants.js";
+import { calculateAbilityCost, normalizeAbilityData, sanitizeAbilityData } from "../abilities/rules.js";
+import { resolveAbilityCategories } from "../abilities/category-links.js";
 
 type Rank = (typeof RANKS)[number];
 
@@ -73,6 +75,16 @@ class RMRPGGenericActor extends Actor {
     system.resistance.elemental = this.roundDown(elementalRes);
     system.resistance.mental = this.roundDown(mentalRes);
     system.resistance.deteriorating = this.roundDown(deterioratingRes);
+
+    // Resolve linked category-effect items before ability totals are consumed elsewhere.
+    const abilityItems = this.items?.filter((item: any) => item.type === "ability") ?? [];
+    for (const abilityItem of abilityItems) {
+      const ability = normalizeAbilityData(abilityItem.system?.ability);
+      const resolvedCategories = resolveAbilityCategories(abilityItem, ability);
+      const sanitized = sanitizeAbilityData({ ...ability, categories: resolvedCategories });
+      abilityItem.system.ability = sanitized;
+      abilityItem.system.cost = calculateAbilityCost(sanitized).totalCost;
+    }
   }
 
   protected resolveRankState(system: any) {
