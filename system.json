@@ -39,6 +39,7 @@
     "Item": {
       "weapon": {},
       "ability": {},
+      "ability-category": {},
       "feat": {},
       "acao": {},
       "item": {},

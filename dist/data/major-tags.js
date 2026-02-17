@@ -2,6 +2,7 @@
 export const MAJOR_TAGS = [
     { name: "weapon", tooltip: "Marks weapon items." },
     { name: "ability", tooltip: "Marks ability items." },
+    { name: "ability-category", tooltip: "Marks ability category items." },
     { name: "feat", tooltip: "Marks feat items." },
     { name: "acao", tooltip: "Marks action items." },
     { name: "ataque", tooltip: "Marks attack actions." },

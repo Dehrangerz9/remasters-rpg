@@ -24,6 +24,8 @@ Hooks.once("init", () => {
     `systems/${SYSTEM_ID}/templates/actors/partials/tabs/effects.hbs`,
     `systems/${SYSTEM_ID}/templates/items/partials/header.hbs`,
     `systems/${SYSTEM_ID}/templates/items/partials/weapon.hbs`,
+    `systems/${SYSTEM_ID}/templates/items/partials/ability.hbs`,
+    `systems/${SYSTEM_ID}/templates/items/partials/ability-category.hbs`,
     `systems/${SYSTEM_ID}/templates/items/partials/non-weapon.hbs`
   ]);
 

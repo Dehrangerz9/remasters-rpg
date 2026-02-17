@@ -1,4 +1,4 @@
-<form class="rmrpg-sheet rmrpg-item-sheet flexcol{{#if isFeat}} feat-sheet{{/if}}" autocomplete="off">
+<form class="rmrpg-sheet rmrpg-item-sheet flexcol{{#if isFeat}} feat-sheet{{/if}}{{#if isAbility}} ability-sheet{{/if}}" autocomplete="off">
   {{> "systems/remasters-rpg/templates/items/partials/header.hbs"}}
 
   <section class="sheet-body">
@@ -6,8 +6,20 @@
       {{> "systems/remasters-rpg/templates/items/partials/weapon.hbs"}}
     {{/if}}
 
+    {{#if isAbility}}
+      {{> "systems/remasters-rpg/templates/items/partials/ability.hbs"}}
+    {{/if}}
+
+    {{#if isAbilityCategory}}
+      {{> "systems/remasters-rpg/templates/items/partials/ability-category.hbs"}}
+    {{/if}}
+
     {{#unless isWeapon}}
+      {{#unless isAbility}}
+      {{#unless isAbilityCategory}}
       {{> "systems/remasters-rpg/templates/items/partials/non-weapon.hbs"}}
+      {{/unless}}
+      {{/unless}}
     {{/unless}}
   </section>
 </form>

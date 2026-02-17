@@ -318,7 +318,98 @@
         "Placeholder": "New tag"
       },
       "Ability": {
-        "Cost": "Cost"
+        "Cost": "Cost",
+        "TotalCost": "Total PC Cost",
+        "TotalCostShort": "PC",
+        "DescriptionTab": "Description",
+        "DetailsTab": "Details",
+        "Remove": "Remove",
+        "CastingTime": {
+          "Title": "Casting Time",
+          "Label": "Casting Time",
+          "OneAction": "1 Action",
+          "TwoActions": "2 Actions",
+          "ThreeActions": "3 Actions",
+          "FreeAction": "Free Action",
+          "Reaction": "Reaction"
+        },
+        "Categories": {
+          "Title": "Categories",
+          "Add": "Add Category Option",
+          "TableName": "Option",
+          "TableCategory": "Category",
+          "TableCost": "PC Cost",
+          "Empty": "No category options yet.",
+          "DropHint": "Drag category option items here."
+        },
+        "Category": {
+          "Criacao": "Creation",
+          "Evocao": "Evocation",
+          "Identificacao": "Identification",
+          "Omissao": "Omission",
+          "ManipulacaoMental": "Mental Manipulation",
+          "Reforco": "Reinforcement",
+          "Recuperacao": "Recovery"
+        },
+        "CategoryTooltip": {
+          "Criacao": "Placeholder tooltip for Creation.",
+          "Evocao": "Placeholder tooltip for Evocation.",
+          "Identificacao": "Placeholder tooltip for Identification.",
+          "Omissao": "Placeholder tooltip for Omission.",
+          "ManipulacaoMental": "Placeholder tooltip for Mental Manipulation.",
+          "Reforco": "Placeholder tooltip for Reinforcement.",
+          "Recuperacao": "Placeholder tooltip for Recovery."
+        },
+        "Characteristics": {
+          "Title": "Characteristics",
+          "Add": "Add Characteristic"
+        },
+        "Characteristic": {
+          "Alvos": "Targets",
+          "Area": "Area",
+          "Condicao": "Condition",
+          "Destruicao": "Destruction",
+          "Distancia": "Distance",
+          "Duracao": "Duration"
+        },
+        "Enhancements": {
+          "Title": "Enhancements",
+          "Add": "Add Enhancement"
+        },
+        "Enhancement": {
+          "CaracteristicaAdicional": "Additional Characteristic",
+          "CategoriaAdicional": "Additional Category",
+          "ConjuracaoAdiada": "Delayed Casting",
+          "ConjuracaoReativa": "Reactive Casting",
+          "ConjuracaoCuidadosa": "Careful Casting",
+          "DadoReikiAprimorado": "Enhanced Reiki Die",
+          "ConjuracaoDestrutiva": "Destructive Casting",
+          "Perfuracao": "Piercing"
+        },
+        "EnhancementDesc": {
+          "CaracteristicaAdicional": "Allows the ability to gain one extra characteristic slot.",
+          "CategoriaAdicional": "Allows the ability to gain one extra category slot.",
+          "ConjuracaoAdiada": "Delay the casting to trigger under specific circumstances.",
+          "ConjuracaoReativa": "Trigger casting as a reaction under defined conditions.",
+          "ConjuracaoCuidadosa": "Reduced risk or collateral impact during casting.",
+          "DadoReikiAprimorado": "Improve the reiki die used by this ability.",
+          "ConjuracaoDestrutiva": "Boost destructive output at the cost of control.",
+          "Perfuracao": "Increase penetration against defenses or resistances."
+        },
+        "Restrictions": {
+          "Title": "Restrictions",
+          "Description": "Restriction",
+          "Placeholder": "Describe the restriction...",
+          "Advances": "Advances",
+          "TargetLabel": "Characteristic",
+          "TargetPlaceholder": "Select a characteristic",
+          "TargetEmpty": "Unnamed characteristic"
+        }
+      },
+      "AbilityCategory": {
+        "CategoryLabel": "Ability Category",
+        "CostLabel": "PC Cost",
+        "NewName": "New Category Option"
       }
     },
     "Chat": {

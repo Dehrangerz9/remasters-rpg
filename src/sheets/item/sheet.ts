@@ -1,5 +1,6 @@
 import { SYSTEM_ID } from "../../constants.js";
 import { normalizeBonusArray } from "../global-functions/utils.js";
+import { calculateAbilityCost, sanitizeAbilityData } from "../../abilities/rules.js";
 import { applyItemThemeClass } from "./theme.js";
 import { buildItemContext } from "./context.js";
 import { activateItemListeners } from "./listeners.js";
@@ -14,6 +15,11 @@ export class RMRPGItemSheet extends ItemSheet {
         {
           navSelector: ".weapon-tabs",
           contentSelector: ".weapon-tab-content",
+          initial: "description"
+        },
+        {
+          navSelector: ".ability-tabs",
+          contentSelector: ".ability-tab-content",
           initial: "description"
         }
       ]
@@ -39,6 +45,17 @@ export class RMRPGItemSheet extends ItemSheet {
     }
     if (weapon?.damage?.bonuses && !Array.isArray(weapon.damage.bonuses)) {
       weapon.damage.bonuses = normalizeBonusArray(weapon.damage.bonuses);
+    }
+    if (this.item.type === "ability") {
+      expanded.system = expanded.system ?? {};
+      const currentAbility = this.item.system?.ability ?? {};
+      const mergedAbility = foundry.utils.mergeObject(currentAbility, expanded.system?.ability ?? {}, {
+        inplace: false,
+        overwrite: true
+      });
+      const ability = sanitizeAbilityData(mergedAbility);
+      expanded.system.ability = ability;
+      expanded.system.cost = calculateAbilityCost(ability).totalCost;
     }
     return super._updateObject(event, expanded);
   }

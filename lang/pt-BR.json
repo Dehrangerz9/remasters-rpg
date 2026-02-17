@@ -318,7 +318,98 @@
         "Placeholder": "Nova tag"
       },
       "Ability": {
-        "Cost": "Custo"
+        "Cost": "Custo",
+        "TotalCost": "Custo Total de PC",
+        "TotalCostShort": "PC",
+        "DescriptionTab": "Descrição",
+        "DetailsTab": "Detalhes",
+        "Remove": "Remover",
+        "CastingTime": {
+          "Title": "Tempo de Conjuração",
+          "Label": "Tempo de Conjuração",
+          "OneAction": "1 Ação",
+          "TwoActions": "2 Ações",
+          "ThreeActions": "3 Ações",
+          "FreeAction": "Ação Livre",
+          "Reaction": "Reação"
+        },
+        "Categories": {
+          "Title": "Categorias",
+          "Add": "Adicionar Categoria Opcional",
+          "TableName": "Opção",
+          "TableCategory": "Categoria",
+          "TableCost": "Custo PC",
+          "Empty": "Nenhuma categoria opcional ainda.",
+          "DropHint": "Arraste itens de categoria aqui."
+        },
+        "Category": {
+          "Criacao": "Criação",
+          "Evocao": "Evocação",
+          "Identificacao": "Identificação",
+          "Omissao": "Omissão",
+          "ManipulacaoMental": "Manipulação mental",
+          "Reforco": "Reforço",
+          "Recuperacao": "Recuperação"
+        },
+        "CategoryTooltip": {
+          "Criacao": "Tooltip provisório para Criação.",
+          "Evocao": "Tooltip provisório para Evocação.",
+          "Identificacao": "Tooltip provisório para Identificação.",
+          "Omissao": "Tooltip provisório para Omissão.",
+          "ManipulacaoMental": "Tooltip provisório para Manipulação mental.",
+          "Reforco": "Tooltip provisório para Reforço.",
+          "Recuperacao": "Tooltip provisório para Recuperação."
+        },
+        "Characteristics": {
+          "Title": "Características",
+          "Add": "Adicionar Característica"
+        },
+        "Characteristic": {
+          "Alvos": "Alvos",
+          "Area": "Área",
+          "Condicao": "Condição",
+          "Destruicao": "Destruição",
+          "Distancia": "Distância",
+          "Duracao": "Duração"
+        },
+        "Enhancements": {
+          "Title": "Aprimoramentos",
+          "Add": "Adicionar Aprimoramento"
+        },
+        "Enhancement": {
+          "CaracteristicaAdicional": "Característica adicional",
+          "CategoriaAdicional": "Categoria adicional",
+          "ConjuracaoAdiada": "Conjuração adiada",
+          "ConjuracaoReativa": "Conjuração reativa",
+          "ConjuracaoCuidadosa": "Conjuração cuidadosa",
+          "DadoReikiAprimorado": "Dado de reiki aprimorado",
+          "ConjuracaoDestrutiva": "Conjuração destrutiva",
+          "Perfuracao": "Perfuração"
+        },
+        "EnhancementDesc": {
+          "CaracteristicaAdicional": "Permite adicionar uma característica extra.",
+          "CategoriaAdicional": "Permite adicionar uma categoria extra.",
+          "ConjuracaoAdiada": "Permite adiar a conjuração para um gatilho específico.",
+          "ConjuracaoReativa": "Permite conjurar como reação em condições definidas.",
+          "ConjuracaoCuidadosa": "Reduz riscos ou impactos colaterais na conjuração.",
+          "DadoReikiAprimorado": "Melhora o dado de reiki usado por esta habilidade.",
+          "ConjuracaoDestrutiva": "Aumenta o potencial destrutivo com menor controle.",
+          "Perfuracao": "Aumenta a perfuração contra defesas ou resistências."
+        },
+        "Restrictions": {
+          "Title": "Restrições",
+          "Description": "Restrição",
+          "Placeholder": "Descreva a restrição...",
+          "Advances": "Avanços",
+          "TargetLabel": "Característica",
+          "TargetPlaceholder": "Selecione uma característica",
+          "TargetEmpty": "Característica sem nome"
+        }
+      },
+      "AbilityCategory": {
+        "CategoryLabel": "Categoria da Habilidade",
+        "CostLabel": "Custo PC",
+        "NewName": "Nova Categoria Opcional"
       }
     },
     "Chat": {

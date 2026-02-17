@@ -6,6 +6,12 @@
         <input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'RMRPG.Item.Name'}}" />
       </h1>
     </div>
+    {{#if isAbility}}
+    <div class="ability-cost-pill" title="{{localize 'RMRPG.Item.Ability.TotalCost'}}">
+      <span class="ability-cost-label">{{localize "RMRPG.Item.Ability.TotalCostShort"}}</span>
+      <span class="ability-cost-value">{{abilityCost}}</span>
+    </div>
+    {{/if}}
   </div>
   <div class="item-header-tags">
     <div class="tag-pill is-locked" title="{{typeTag.tooltip}}">

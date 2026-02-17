@@ -1,0 +1,11 @@
+<div class="grid-2">
+  <label>{{localize "RMRPG.Item.AbilityCategory.CategoryLabel"}}</label>
+  <select name="system.category">
+    {{selectOptions abilityCategoryOptions selected=system.category valueAttr="value" labelAttr="label"}}
+  </select>
+  <label>{{localize "RMRPG.Item.AbilityCategory.CostLabel"}}</label>
+  <input type="number" name="system.cost" value="{{system.cost}}" min="0" step="1" />
+</div>
+<div class="description-block">
+  {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
+</div>

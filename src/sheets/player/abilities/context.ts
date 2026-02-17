@@ -1,4 +1,5 @@
 import { clampInteger, formatSigned } from "../../global-functions/utils.js";
+import { calculateAbilityCost } from "../../../abilities/rules.js";
 
 export const applyPlayerAbilitiesContext = (context: any) => {
   const abilities = context.actor.items?.filter((item: any) => item.type === "ability") ?? [];
@@ -9,12 +10,19 @@ export const applyPlayerAbilitiesContext = (context: any) => {
     return String(a.name ?? "").localeCompare(String(b.name ?? ""));
   });
 
-  context.abilityItems = abilities.map((item: any) => ({
-    id: String(item.id ?? ""),
-    name: String(item.name ?? ""),
-    img: String(item.img ?? ""),
-    cost: clampInteger(Number(item.system?.cost ?? 0), 0, 9999)
-  }));
+  context.abilityItems = abilities.map((item: any) => {
+    const rawAbility = item.system?.ability;
+    const computedCost =
+      rawAbility && typeof rawAbility === "object"
+        ? calculateAbilityCost(rawAbility).totalCost
+        : Number(item.system?.cost ?? 0);
+    return {
+      id: String(item.id ?? ""),
+      name: String(item.name ?? ""),
+      img: String(item.img ?? ""),
+      cost: clampInteger(Number(computedCost ?? 0), 0, 9999)
+    };
+  });
 
   const pcTotal = clampInteger(Number(context.system.player?.pc?.total ?? 0), 0, 9999);
   const pcSpent = context.abilityItems.reduce((sum: number, item: any) => sum + Number(item.cost ?? 0), 0);

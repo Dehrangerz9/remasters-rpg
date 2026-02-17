@@ -221,6 +221,7 @@
     "types": [
       "weapon",
       "ability",
+      "ability-category",
       "feat",
       "acao",
       "item",
@@ -263,7 +264,25 @@
       "templates": [
         "common"
       ],
-      "cost": 0
+      "cost": 0,
+      "ability": {
+        "castingTime": "1-action",
+        "categories": [],
+        "characteristics": [],
+        "enhancements": [],
+        "restrictions": {
+          "description": "",
+          "advances": 0,
+          "advancesTarget": ""
+        }
+      }
+    },
+    "ability-category": {
+      "templates": [
+        "common"
+      ],
+      "category": "criacao",
+      "cost": 1
     },
     "feat": {
       "templates": [

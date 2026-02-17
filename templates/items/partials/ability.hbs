@@ -1,0 +1,179 @@
+<div class="ability-layout">
+  <nav class="ability-tabs tabs" data-group="ability">
+    <a class="item" data-tab="description">{{localize "RMRPG.Item.Ability.DescriptionTab"}}</a>
+    <a class="item" data-tab="details">{{localize "RMRPG.Item.Ability.DetailsTab"}}</a>
+  </nav>
+  <div class="ability-tab-content">
+    <div class="tab" data-group="ability" data-tab="description">
+      <div class="description-block">
+        {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
+      </div>
+    </div>
+    <div class="tab" data-group="ability" data-tab="details">
+      <div class="ability-details">
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.CastingTime.Title"}}</div>
+          <div class="ability-field">
+            <label>{{localize "RMRPG.Item.Ability.CastingTime.Label"}}</label>
+            <select name="system.ability.castingTime">
+              {{selectOptions abilityCastingTimeOptions selected=ability.castingTime valueAttr="value" labelAttr="label"}}
+            </select>
+          </div>
+        </section>
+
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Categories.Title"}}</div>
+          <div class="ability-category-table">
+            <div class="ability-category-header">
+              <span></span>
+              <span>{{localize "RMRPG.Item.Ability.Categories.TableName"}}</span>
+              <span>{{localize "RMRPG.Item.Ability.Categories.TableCategory"}}</span>
+              <span>{{localize "RMRPG.Item.Ability.Categories.TableCost"}}</span>
+              <span></span>
+            </div>
+            {{#if ability.categories.length}}
+            {{#each ability.categories}}
+            <div class="ability-category-row" data-index="{{@index}}" data-uuid="{{this.uuid}}">
+              <img class="item-icon" src="{{this.img}}" title="{{this.name}}" />
+              <div class="ability-category-main">
+                <button type="button" class="item-name" data-action="ability-category-open" data-uuid="{{this.uuid}}">
+                  {{this.name}}
+                </button>
+                {{#if this.description}}
+                <div class="ability-category-description">{{{this.description}}}</div>
+                {{/if}}
+              </div>
+              <span class="ability-category-type" title="{{this.tooltip}}">{{this.categoryLabel}}</span>
+              <span class="ability-category-cost">{{this.cost}}</span>
+              <button
+                type="button"
+                class="item-delete"
+                data-action="ability-category-remove"
+                data-index="{{@index}}"
+                aria-label="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                title="{{localize 'RMRPG.Item.Ability.Remove'}}"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            {{/each}}
+            {{else}}
+            <div class="ability-category-empty">{{localize "RMRPG.Item.Ability.Categories.Empty"}}</div>
+            {{/if}}
+          </div>
+          <div class="ability-category-actions">
+            <button
+              type="button"
+              class="ability-add"
+              data-action="ability-category-add"
+              {{#if abilityCategoriesMaxed}}disabled{{/if}}
+            >
+              <i class="fas fa-plus"></i>
+              {{localize "RMRPG.Item.Ability.Categories.Add"}}
+            </button>
+            <div class="ability-category-hint">{{localize "RMRPG.Item.Ability.Categories.DropHint"}}</div>
+          </div>
+        </section>
+
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Characteristics.Title"}}</div>
+          <div class="ability-list">
+            {{#each ability.characteristics}}
+            <div class="ability-list-entry">
+              <div class="ability-entry-row ability-entry-row--triple">
+                <select name="system.ability.characteristics.{{@index}}.id">
+                  {{selectOptions ../abilityCharacteristicOptions selected=this.id valueAttr="value" labelAttr="label"}}
+                </select>
+                <input
+                  type="number"
+                  name="system.ability.characteristics.{{@index}}.level"
+                  value="{{this.level}}"
+                  min="{{this.min}}"
+                  max="{{this.max}}"
+                  step="1"
+                />
+                <button
+                  type="button"
+                  class="ability-remove"
+                  data-action="ability-characteristic-remove"
+                  data-index="{{@index}}"
+                  aria-label="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                  title="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            {{/each}}
+            <button type="button" class="ability-add" data-action="ability-characteristic-add">
+              <i class="fas fa-plus"></i>
+              {{localize "RMRPG.Item.Ability.Characteristics.Add"}}
+            </button>
+          </div>
+        </section>
+
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Enhancements.Title"}}</div>
+          <div class="ability-list">
+            {{#each ability.enhancements}}
+            <div class="ability-list-entry">
+              <div class="ability-entry-row">
+                <select name="system.ability.enhancements.{{@index}}.id">
+                  {{selectOptions ../abilityEnhancementOptions selected=this.id valueAttr="value" labelAttr="label"}}
+                </select>
+                <button
+                  type="button"
+                  class="ability-remove"
+                  data-action="ability-enhancement-remove"
+                  data-index="{{@index}}"
+                  aria-label="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                  title="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+              {{#if this.description}}
+              <textarea class="ability-enhancement-description" readonly>{{this.description}}</textarea>
+              {{/if}}
+            </div>
+            {{/each}}
+            <button type="button" class="ability-add" data-action="ability-enhancement-add">
+              <i class="fas fa-plus"></i>
+              {{localize "RMRPG.Item.Ability.Enhancements.Add"}}
+            </button>
+          </div>
+        </section>
+
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Restrictions.Title"}}</div>
+          <div class="ability-field">
+            <label>{{localize "RMRPG.Item.Ability.Restrictions.Description"}}</label>
+            <textarea
+              name="system.ability.restrictions.description"
+              placeholder="{{localize 'RMRPG.Item.Ability.Restrictions.Placeholder'}}"
+            >{{ability.restrictions.description}}</textarea>
+          </div>
+          <div class="ability-field ability-field--inline">
+            <div class="ability-field-group">
+              <label>{{localize "RMRPG.Item.Ability.Restrictions.Advances"}}</label>
+              <input
+                type="number"
+                name="system.ability.restrictions.advances"
+                value="{{ability.restrictions.advances}}"
+                min="0"
+                step="1"
+              />
+            </div>
+            <div class="ability-field-group">
+              <label>{{localize "RMRPG.Item.Ability.Restrictions.TargetLabel"}}</label>
+              <select name="system.ability.restrictions.advancesTarget">
+                <option value="">{{localize "RMRPG.Item.Ability.Restrictions.TargetPlaceholder"}}</option>
+                {{selectOptions abilityRestrictionTargets selected=ability.restrictions.advancesTarget valueAttr="value" labelAttr="label"}}
+              </select>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

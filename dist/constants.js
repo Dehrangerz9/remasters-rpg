@@ -10,5 +10,5 @@ export const RANK_BONUS_BY_RANK = {
 };
 export const RMRPG = {
     actorTypes: ["player", "npc", "summon"],
-    itemTypes: ["weapon", "ability", "feat", "acao", "item", "consumable", "misc"]
+    itemTypes: ["weapon", "ability", "ability-category", "feat", "acao", "item", "consumable", "misc"]
 };

@@ -1,6 +1,7 @@
 import { normalizeBonusArray } from "../global-functions/utils.js";
 import { setupTagSystem } from "./tags.js";
 import { sendItemToChat } from "./chat.js";
+import { setupAbilityListeners } from "./ability/listeners.js";
 
 export const activateItemListeners = (sheet: any, html: JQuery) => {
   html.find("[data-action='weapon-hit-bonus-add']").on("click", async (event: any) => {
@@ -47,4 +48,5 @@ export const activateItemListeners = (sheet: any, html: JQuery) => {
   });
 
   setupTagSystem(sheet, html);
+  setupAbilityListeners(sheet, html);
 };

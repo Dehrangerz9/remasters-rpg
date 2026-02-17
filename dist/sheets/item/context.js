@@ -1,9 +1,11 @@
-import { normalizeBonusArray } from "../global-functions/utils.js";
+import { clampInteger, normalizeBonusArray } from "../global-functions/utils.js";
+import { buildAbilityOptions, calculateAbilityCost, collectAbilityModifiers, describeCharacteristicLimits, describeEnhancement, getCategoryLabel, getCategoryTooltip, normalizeAbilityData } from "../../abilities/rules.js";
 import { buildTagContext } from "./tags.js";
 export const buildItemContext = async (sheet, context) => {
     context.system = context.item.system;
     context.isWeapon = context.item.type === "weapon";
     context.isAbility = context.item.type === "ability";
+    context.isAbilityCategory = context.item.type === "ability-category";
     context.isFeat = context.item.type === "feat";
     context.isAction = context.item.type === "acao";
     context.isEquipment = ["weapon", "consumable", "misc", "item"].includes(context.item.type);
@@ -93,5 +95,68 @@ export const buildItemContext = async (sheet, context) => {
             bonuses: normalizeBonusArray(rawDamage.bonuses)
         }
     };
+    if (context.isAbility || context.isAbilityCategory) {
+        const localize = (key) => game.i18n.localize(key);
+        const abilityOptions = buildAbilityOptions(localize);
+        if (context.isAbilityCategory) {
+            context.abilityCategoryOptions = abilityOptions.categories;
+        }
+        if (!context.isAbility) {
+            return context;
+        }
+        const ability = normalizeAbilityData(context.system?.ability);
+        const modifiers = collectAbilityModifiers(ability.enhancements);
+        const costInfo = calculateAbilityCost(ability);
+        const characteristicLabels = new Map(abilityOptions.characteristics.map((entry) => [entry.value, entry.label]));
+        const categories = ability.categories.map((entry) => {
+            const categoryLabel = getCategoryLabel(entry.category, localize);
+            return {
+                ...entry,
+                name: entry.name || categoryLabel,
+                img: entry.img || "icons/svg/book.svg",
+                cost: Number(entry.cost ?? 0),
+                categoryLabel,
+                tooltip: getCategoryTooltip(entry.category, localize)
+            };
+        });
+        const characteristics = ability.characteristics.map((entry) => {
+            const limits = describeCharacteristicLimits(entry.id, modifiers);
+            return {
+                ...entry,
+                level: clampInteger(Number(entry.level ?? limits.min), limits.min, limits.max),
+                min: limits.min,
+                max: limits.max
+            };
+        });
+        const enhancements = ability.enhancements.map((entry) => ({
+            ...entry,
+            description: describeEnhancement(entry.id, localize)
+        }));
+        const restrictionTargets = characteristics.map((entry, index) => ({
+            value: String(index),
+            label: entry.id ? characteristicLabels.get(entry.id) ?? entry.id : localize("RMRPG.Item.Ability.Restrictions.TargetEmpty")
+        }));
+        const advancesTargetValue = ability.restrictions.advancesTarget === null || Number.isNaN(ability.restrictions.advancesTarget)
+            ? ""
+            : String(ability.restrictions.advancesTarget);
+        context.ability = {
+            ...ability,
+            restrictions: {
+                ...ability.restrictions,
+                advancesTarget: advancesTargetValue
+            },
+            categories,
+            characteristics,
+            enhancements
+        };
+        context.abilityCost = costInfo.totalCost;
+        context.abilityCastingTimeOptions = abilityOptions.castingTimes;
+        context.abilityCharacteristicOptions = abilityOptions.characteristics;
+        context.abilityEnhancementOptions = abilityOptions.enhancements;
+        context.abilityCategoryLimit = costInfo.limits.categories;
+        context.abilityCategoriesMaxed =
+            costInfo.limits.categories !== null && ability.categories.length >= costInfo.limits.categories;
+        context.abilityRestrictionTargets = restrictionTargets;
+    }
     return context;
 };
