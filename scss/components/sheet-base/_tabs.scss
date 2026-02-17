@@ -1,0 +1,33 @@
+@use "tokens" as t;
+
+@mixin sheet-tabs {
+  .tabs {
+    display: flex;
+    gap: t.$gap-sm;
+    justify-content: flex-start;
+
+    .item {
+      align-items: center;
+      background: var(--rmrpg-accent-soft);
+      border: 1px solid var(--rmrpg-border);
+      border-radius: t.$radius-lg;
+      color: var(--rmrpg-accent);
+      display: inline-flex;
+      font-size: 0.92rem;
+      height: 2rem;
+      justify-content: center;
+      width: 2rem;
+    }
+  }
+
+  .sheet-body {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .tab {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 0.15rem;
+  }
+}

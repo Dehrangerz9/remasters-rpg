@@ -1,0 +1,55 @@
+@use "tokens" as t;
+
+@mixin sheet-layout {
+  height: 100%;
+  padding: t.$pad-base;
+
+  button {
+    background: var(--rmrpg-accent);
+    border: 1px solid var(--rmrpg-accent);
+    color: #fff;
+  }
+
+  .sheet-columns {
+    display: grid;
+    gap: t.$gap-lg;
+    grid-template-columns: 300px 1fr;
+    height: 100%;
+  }
+
+  .left-column {
+    display: grid;
+    gap: t.$gap-md;
+    grid-template-rows: auto 1fr;
+    min-height: 0;
+  }
+
+  .profile-portrait {
+    border: 1px solid var(--rmrpg-border);
+    border-radius: t.$radius-lg;
+    height: 340px;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .status-rail {
+    display: grid;
+    gap: 0.5rem;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+  }
+
+  .status-row {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .right-column {
+    display: grid;
+    gap: t.$gap-md;
+    grid-template-rows: auto auto 1fr;
+    min-height: 0;
+  }
+}

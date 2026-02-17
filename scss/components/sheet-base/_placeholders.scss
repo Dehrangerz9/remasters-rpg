@@ -1,0 +1,22 @@
+@use "tokens" as t;
+
+%inline-center {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+}
+
+%surface-card {
+  background: var(--rmrpg-surface);
+  border: 1px solid var(--rmrpg-border);
+  border-radius: t.$radius-lg;
+}
+
+%pill {
+  border-radius: t.$radius-pill;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.62rem;
+  text-transform: uppercase;
+}

@@ -1,0 +1,268 @@
+@use "tokens" as t;
+@use "placeholders" as p;
+
+@mixin sheet-status {
+  .status-card {
+    @extend %surface-card;
+    display: grid;
+    gap: t.$gap-xs;
+    padding: t.$pad-card;
+    position: relative;
+
+    h3 {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    small {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.75rem;
+    }
+
+    .stat-input {
+      background: #fff;
+      border: 1px solid var(--rmrpg-border);
+      border-radius: t.$radius-md;
+      color: #234;
+      font-size: 1.1rem;
+      font-weight: 700;
+      height: 2.2rem;
+      padding: 0 0.4rem;
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .card-cog {
+    @extend %inline-center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: t.$radius-pill;
+    color: var(--rmrpg-text-soft);
+    font-size: 0.8rem;
+    height: t.$control-md;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    right: 0.4rem;
+    top: 0.4rem;
+    width: t.$control-md;
+    z-index: 2;
+  }
+
+  .status-card:hover .card-cog,
+  .attribute-card:hover .card-cog {
+    opacity: 1;
+  }
+
+  .derived-roll {
+    @extend %inline-center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: t.$radius-pill;
+    color: var(--rmrpg-accent);
+    height: t.$control-sm;
+    padding: 0;
+    width: t.$control-sm;
+  }
+
+  .derived-name {
+    background: transparent;
+    border: 0;
+    color: var(--rmrpg-text-soft);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .reiki-roll {
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex;
+    gap: t.$gap-xs;
+    transition: color 140ms ease, text-decoration-color 140ms ease;
+
+    i {
+      font-size: 0.9em;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--rmrpg-accent);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  .derived-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .bar-row {
+    align-items: center;
+    display: grid;
+    gap: t.$gap-sm;
+    grid-template-columns: 1fr 74px;
+  }
+
+  .value-bar {
+    border-radius: t.$radius-pill;
+    height: 1.35rem;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .value-fill {
+    height: 100%;
+    transition: width 160ms ease-out;
+  }
+
+  .value-text {
+    align-items: center;
+    color: #fff;
+    display: inline-flex;
+    font-size: 0.8rem;
+    font-weight: 700;
+    gap: 0.28rem;
+    left: 50%;
+    position: absolute;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    top: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+
+  .bar-input {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.9);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    height: 1rem;
+    min-width: 2rem;
+    padding: 0;
+    text-align: right;
+    width: 2.2rem;
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  .hp-bar {
+    background: #000;
+  }
+
+  .hp-fill {
+    background: linear-gradient(90deg, #15803d, #22c55e);
+  }
+
+  .temp-box {
+    align-items: center;
+    background: #f2f6ff;
+    border: 1px solid #b7c7e6;
+    border-radius: t.$radius-md;
+    display: grid;
+    gap: 0.1rem;
+    min-height: 1.35rem;
+    padding: 0.15rem 0.25rem;
+  }
+
+  .temp-label {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .temp-input {
+    background: transparent;
+    border: 0;
+    color: #234;
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 2.25rem;
+    padding: 0;
+    text-align: center;
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  .reiki-bar {
+    background: #000;
+  }
+
+  .reiki-fill {
+    background: linear-gradient(90deg, #205f78, #2ea0bf);
+  }
+
+  .derived-card {
+    .derived-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: t.$gap-sm;
+    }
+
+    .derived-item {
+      align-items: center;
+      display: grid;
+      gap: 0.4rem;
+      grid-template-columns: auto 1fr auto;
+      flex: 1 1 30%;
+      min-width: 150px;
+    }
+  }
+
+  .initiative-card {
+    .initiative-row {
+      align-items: center;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: space-between;
+    }
+
+    .derived-name {
+      align-items: center;
+      display: inline-flex;
+      gap: t.$gap-xs;
+      text-decoration: none;
+      transition: text-decoration-color 140ms ease;
+
+      i {
+        font-size: 0.9em;
+      }
+
+      &:hover,
+      &:focus-visible {
+        box-shadow: none;
+        outline: none;
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+      }
+    }
+  }
+}

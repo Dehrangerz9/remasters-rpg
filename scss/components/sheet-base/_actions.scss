@@ -1,0 +1,214 @@
+@use "tokens" as t;
+@use "placeholders" as p;
+
+@mixin sheet-actions {
+  .main-sections {
+    display: grid;
+    gap: t.$gap-xl;
+    margin-top: t.$gap-xl;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .actions-panel {
+    display: grid;
+    gap: t.$gap-xl;
+    max-width: none;
+    width: 100%;
+  }
+
+  .actions-section {
+    @extend %surface-card;
+    display: grid;
+    gap: 0.55rem;
+    padding: t.$pad-card-actions;
+    width: 100%;
+  }
+
+  .action-list {
+    display: grid;
+    gap: t.$gap-xs;
+    width: 100%;
+  }
+
+  .action-item-row {
+    align-items: center;
+    background: #f2f8ff;
+    border: 1px solid #cfe0f0;
+    border-radius: t.$radius-md;
+    cursor: grab;
+    display: grid;
+    gap: 0.4rem;
+    grid-template-columns: 1fr auto;
+    padding: t.$gap-xs t.$gap-sm;
+    width: 100%;
+  }
+
+  .attack-list .attack-item-row {
+    align-items: start;
+    background: transparent;
+    border: 1px solid #eef2f4;
+    grid-template-columns: 36px minmax(0, 1fr);
+    padding: 0.4rem t.$gap-sm;
+  }
+
+  .attack-item-row.is-stowed .item-icon {
+    filter: grayscale(1);
+  }
+
+  .attack-item-row.is-stowed .attack-item-body,
+  .attack-item-row.is-stowed .action-item-name {
+    color: var(--rmrpg-text-soft);
+  }
+
+  .attack-item-body {
+    display: grid;
+    gap: t.$gap-xs;
+  }
+
+  .attack-item-header {
+    align-items: center;
+    display: flex;
+    gap: 0.4rem;
+    justify-content: space-between;
+  }
+
+  .attack-actions {
+    display: flex;
+    gap: 0.2rem;
+    flex-direction: row;
+    max-width: 150px;
+  }
+
+  .attack-btn {
+    align-items: center;
+    background: var(--rmrpg-accent);
+    border: 1px solid var(--rmrpg-accent);
+    border-radius: t.$radius-sm;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.18rem 0.45rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .attack-btn-secondary {
+    background: #234b7d;
+    border-color: #234b7d;
+  }
+
+  .attack-btn-damage {
+    background: #8b1b1b;
+    border-color: #8b1b1b;
+  }
+
+  .attack-btn-critical {
+    background: #6f1515;
+    border-color: #6f1515;
+  }
+
+  .attack-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .attack-weapon-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+  }
+
+  .weapon-control-btn {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: t.$radius-sm;
+    color: var(--rmrpg-text-soft);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.12rem 0.4rem;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  .action-item-icon {
+    align-self: start;
+  }
+
+  .action-item-name {
+    background: transparent;
+    border: 0;
+    color: #1c3a52;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0;
+    text-align: left;
+  }
+
+  .action-item-controls {
+    align-items: center;
+    display: inline-flex;
+    gap: t.$gap-xs;
+  }
+
+  .action-item-handle {
+    @extend %inline-center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: t.$radius-sm;
+    color: var(--rmrpg-text-soft);
+    font-size: 0.8rem;
+    height: t.$control-sm;
+    width: t.$control-sm;
+  }
+
+  .action-item-delete {
+    @extend %inline-center;
+    background: #fff;
+    border: 1px solid #d7a8a8;
+    border-radius: t.$radius-sm;
+    color: #a64646;
+    cursor: pointer;
+    height: t.$control-sm;
+    width: t.$control-sm;
+  }
+
+  .action-empty {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.75rem;
+    margin: 0;
+  }
+
+  .section-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 0;
+      text-transform: uppercase;
+    }
+  }
+
+  .section-action {
+    @extend %inline-center;
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: t.$radius-pill;
+    color: var(--rmrpg-accent);
+    height: t.$control-lg;
+    padding: 0;
+    width: t.$control-lg;
+  }
+}

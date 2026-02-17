@@ -1,0 +1,125 @@
+@use "tokens" as t;
+@use "placeholders" as p;
+
+@mixin sheet-header {
+  .sheet-header {
+    @extend %surface-card;
+    display: grid;
+    gap: 0.4rem;
+    padding: t.$pad-card 0.75rem;
+  }
+
+  .header-top {
+    align-items: center;
+    display: flex;
+    gap: t.$gap-lg;
+    justify-content: space-between;
+  }
+
+  .charname {
+    flex: 1;
+    margin: 0;
+
+    input {
+      font-size: 1.28rem;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+
+  .header-badges {
+    align-items: center;
+    display: inline-flex;
+    gap: t.$gap-lg;
+  }
+
+  .rank-meta {
+    align-items: center;
+    display: grid;
+    gap: t.$gap-sm;
+    grid-template-columns: auto auto;
+  }
+
+  .rank-column,
+  .rank-values {
+    display: grid;
+    gap: 0.18rem;
+  }
+
+  .meta-label {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    @extend %pill;
+    background: var(--rmrpg-accent);
+    border: 1px solid var(--rmrpg-accent);
+    color: #fff;
+    font-size: 0.7rem;
+    line-height: 1;
+    padding: 0.16rem 0.62rem;
+  }
+
+  .type-pill,
+  .rank-pill,
+  .bonus-pill {
+    @extend %pill;
+  }
+
+  .rank-pill {
+    background: var(--rmrpg-accent);
+    border: 1px solid var(--rmrpg-accent);
+    color: #fff;
+  }
+
+  .bonus-pill {
+    background: #f4fbff;
+    border: 1px solid #8cb6c7;
+    color: #144a60;
+  }
+
+  .type-pill {
+    background: #eef5f7;
+    border: 1px solid var(--rmrpg-border);
+    color: var(--rmrpg-accent);
+  }
+
+  .protagonism-track {
+    align-items: center;
+    display: inline-flex;
+    gap: t.$gap-sm;
+
+    .track-label {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .track-dots {
+      display: inline-flex;
+      gap: 0.3rem;
+    }
+
+    .dot {
+      background: #edf2f4;
+      border: 1px solid var(--rmrpg-border);
+      border-radius: t.$radius-pill;
+      cursor: pointer;
+      height: 1rem;
+      padding: 0;
+      width: 1rem;
+
+      &.is-active {
+        background: #f4c542;
+        border-color: #d89f11;
+      }
+    }
+  }
+}
