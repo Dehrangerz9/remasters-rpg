@@ -2,7 +2,7 @@
   .personal-info {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.8rem;
     padding-bottom: 0.4rem;
   }
 
@@ -11,29 +11,40 @@
     border: 1px solid var(--rmrpg-border);
     border-radius: 8px;
     display: grid;
-    gap: 0.4rem;
-    padding: 0.55rem;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
 
-    h3,
-    h4 {
+    h3 {
       color: var(--rmrpg-text-soft);
-      font-size: 0.78rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       margin: 0;
+      border-bottom: 0;
+      text-decoration: none;
       text-transform: uppercase;
     }
 
-    textarea {
-      min-height: 82px;
-      resize: vertical;
+    h4 {
+      color: var(--rmrpg-text-soft);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 0;
+      border-bottom: 0;
+      text-decoration: none;
+      text-transform: uppercase;
     }
   }
 
   .personal-grid {
     display: flex;
-    gap: 0.45rem;
+    gap: 0.6rem;
     align-items: start;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .personal-grid-4 {
@@ -46,16 +57,19 @@
 
   .personal-grid-1 {
     flex-direction: column;
+    align-items: stretch;
+  }
+
+  .personal-grid-1 .personal-field {
+    width: 100%;
   }
 
   .personal-field {
-    background: var(--rmrpg-surface);
-    border: 1px solid var(--rmrpg-border);
-    border-radius: 8px;
     display: grid;
-    gap: 0.3rem;
-    padding: 0.45rem;
+    gap: 0.35rem;
+    padding: 0.1rem 0.25rem;
     flex: 1 1 0;
+    min-width: 0;
 
     label {
       color: var(--rmrpg-text-soft);
@@ -64,5 +78,66 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
+
+    input {
+      background: #fff;
+      border: 1px solid var(--rmrpg-border);
+      border-radius: 8px;
+      color: #234;
+      height: 1.9rem;
+      padding: 0 0.45rem;
+      width: 100%;
+    }
+  }
+
+  .personal-editor {
+    width: 100%;
+  }
+
+  .personal-editor .editor {
+    background: #fff;
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 8px;
+    color: #234;
+    display: flex;
+    flex-direction: column;
+    min-height: 110px;
+  }
+
+  .personal-editor .editor .editor-content,
+  .personal-editor .editor .editor-content .ProseMirror {
+    background: #fff;
+    color: #234;
+  }
+
+  .personal-editor .editor .editor-content {
+    flex: 1 1 auto;
+    min-height: 96px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 0.45rem 0.55rem;
+  }
+
+  .personal-editor .editor .editor-content .ProseMirror {
+    height: auto;
+    min-height: 96px;
+  }
+
+  .personal-notes {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .personal-note {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .personal-editor .editor:focus-within,
+  .personal-field input:focus {
+    border-color: var(--rmrpg-accent);
+    box-shadow: 0 0 0 1px var(--rmrpg-accent);
+    outline: none;
   }
 }

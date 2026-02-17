@@ -40,6 +40,18 @@
   color: #f1d6dc;
 }
 
+.punk-city .rmrpg-sheet .personal-editor .editor {
+  background: #120d12;
+  border: 1px solid var(--rmrpg-border);
+  color: #f1d6dc;
+}
+
+.punk-city .rmrpg-sheet .personal-editor .editor .editor-content,
+.punk-city .rmrpg-sheet .personal-editor .editor .editor-content .ProseMirror {
+  background: #120d12;
+  color: #f1d6dc;
+}
+
 .punk-city .rmrpg-sheet input:focus,
 .punk-city .rmrpg-sheet select:focus,
 .punk-city .rmrpg-sheet textarea:focus {
@@ -60,4 +72,3 @@
 .punk-city .rmrpg-sheet .meta-value {
   box-shadow: 0 0 10px rgba(228, 70, 85, 0.35);
 }
-
