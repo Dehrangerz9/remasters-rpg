@@ -403,6 +403,16 @@
   font-weight: 700;
   margin: 0;
 }
+.rmrpg-sheet:not(.rmrpg-item-sheet) .sheet-header .charname input {
+  background-color: rgba(242, 242, 242, 0);
+  border: none;
+  border-bottom: 2px solid var(--rmrpg-accent);
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 2rem;
+  height: 2.3rem;
+  padding: 0;
+}
 .rmrpg-sheet .header-badges {
   align-items: center;
   gap: 0.75rem;
@@ -1347,6 +1357,7 @@
   display: flex;
   gap: 0.75rem;
   justify-content: flex-start;
+  width: 100%;
 }
 .rmrpg-sheet.rmrpg-item-sheet .item-title,
 .rmrpg-sheet .rmrpg-item-sheet .item-title {
