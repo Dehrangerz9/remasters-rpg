@@ -2,11 +2,11 @@
   "id": "remasters-rpg",
   "title": "Remasters RPG",
   "description": "A starter system scaffold for Foundry VTT v13.",
-  "version": "0.1.0-alpha.1",
+  "version": "0.2.0-alpha",
   "url": "https://github.com/Dehrangerz9/remasters-rpg",
   "manifest": "https://github.com/Dehrangerz9/remasters-rpg/releases/latest/download/system.json",
-  "download": "https://github.com/Dehrangerz9/remasters-rpg/releases/download/v0.1.0-alpha.1/remasters-rpg-0.1.0-alpha.1.zip",
-  "changelog": "https://github.com/Dehrangerz9/remasters-rpg/releases/tag/v0.1.0-alpha.1",
+  "download": "https://github.com/Dehrangerz9/remasters-rpg/releases/download/v0.2.0-alpha/remasters-rpg-0.2.0-alpha.zip",
+  "changelog": "https://github.com/Dehrangerz9/remasters-rpg/releases/tag/v0.2.0-alpha",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
