@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run build:ts && npm run build:scss",
+    "build": "npm run build:i18n && npm run build:ts && npm run build:scss",
+    "build:i18n": "node scripts/build-i18n.mjs",
     "build:ts": "tsc -p tsconfig.json",
     "build:scss": "sass scss/remasters-rpg.scss dist/remasters-rpg.css --no-source-map",
     "watch:ts": "tsc -p tsconfig.json --watch",

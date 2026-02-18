@@ -1,0 +1,53 @@
+{
+  "RMRPG": {
+    "Dialogs": {
+      "InvalidNumber": "Please enter valid numeric values.",
+      "Attributes": {
+        "Title": "Set Attributes"
+      },
+      "HP": {
+        "Title": "Set Hit Points",
+        "Current": "Current HP",
+        "Max": "Maximum HP",
+        "Temp": "Temporary HP"
+      },
+      "Defense": {
+        "Title": "Set VD",
+        "Manual": "Manual VD",
+        "BlankForAuto": "Leave blank for auto"
+      },
+      "Reiki": {
+        "Title": "Set Reiki Charges",
+        "Current": "Current Charges",
+        "Max": "Maximum Charges"
+      },
+      "Derived": {
+        "Title": "Set Derived Stats",
+        "Modifier": "Modifier"
+      },
+      "Resistance": {
+        "Title": "Set Resistances"
+      },
+      "Roll": {
+        "Title": "Rolling {label}",
+        "Modifier": "Modifier",
+        "Type": "Type",
+        "Value": "Value",
+        "Include": "Include",
+        "Add": "Add",
+        "ModifierPlaceholder": "Modifier",
+        "SkillBonus": "Skill Bonus",
+        "AttackBonus": "Attack Modifier",
+        "BonusFallback": "Bonus {index}",
+        "InvalidModifier": "Enter a valid modifier name and numeric value.",
+        "Types": {
+          "Attribute": "Attribute",
+          "State": "State",
+          "Skill": "Skill",
+          "Situational": "Situational",
+          "Untyped": "Untyped"
+        }
+      }
+    }
+  }
+}

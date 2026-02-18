@@ -203,10 +203,15 @@ export const buildItemContext = async (sheet, context) => {
                 overRanking
             };
         });
-        const enhancements = ability.enhancements.map((entry) => ({
-            ...entry,
-            description: describeEnhancement(entry.id, localize)
-        }));
+        const enhancements = ability.enhancements.map((entry) => {
+            const description = String(describeEnhancement(entry.id, localize) ?? "").trim();
+            const isLongDescription = description.length > 280 || description.includes("\n");
+            return {
+                ...entry,
+                description,
+                isLongDescription
+            };
+        });
         const restrictionTargets = characteristics.map((entry, index) => ({
             value: String(index),
             label: entry.id ? characteristicLabels.get(entry.id) ?? entry.id : localize("RMRPG.Item.Ability.Restrictions.TargetEmpty")

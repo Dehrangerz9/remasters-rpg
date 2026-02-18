@@ -1,0 +1,10 @@
+{
+  "RMRPG": {
+    "Chat": {
+      "ReikiLoss": "{name} rolled {total} and lost a Reiki charge.",
+      "ReikiNoLoss": "{name} rolled {total} and kept all Reiki charges.",
+      "DamageApplied": "{name} took {damage} damage.",
+      "DamageAbsorbed": "{name} absorbed {soak} damage and took {damage} damage."
+    }
+  }
+}

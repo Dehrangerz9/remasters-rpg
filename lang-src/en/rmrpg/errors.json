@@ -1,0 +1,7 @@
+{
+  "RMRPG": {
+    "Errors": {
+      "SelectSingleTarget": "Select exactly one targeted or controlled token."
+    }
+  }
+}

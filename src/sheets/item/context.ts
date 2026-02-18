@@ -229,10 +229,15 @@ export const buildItemContext = async (sheet: any, context: any) => {
       };
     });
 
-    const enhancements = ability.enhancements.map((entry) => ({
-      ...entry,
-      description: describeEnhancement(entry.id, localize)
-    }));
+    const enhancements = ability.enhancements.map((entry) => {
+      const description = String(describeEnhancement(entry.id, localize) ?? "").trim();
+      const isLongDescription = description.length > 280 || description.includes("\n");
+      return {
+        ...entry,
+        description,
+        isLongDescription
+      };
+    });
 
     const restrictionTargets = characteristics.map((entry, index) => ({
       value: String(index),

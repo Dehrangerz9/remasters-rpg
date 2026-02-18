@@ -30,6 +30,7 @@ Use this URL in Foundry's **Install System** dialog:
 
 - TypeScript watch mode: `npm run watch:ts`
 - SCSS watch mode: `npm run watch:scss`
+- Localization source files live in `lang-src/` and are merged into `lang/*.json` by `npm run build:i18n` (already included in `npm run build`).
 
 ## Create Release Package
 

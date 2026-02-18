@@ -2331,10 +2331,46 @@
   border: 1px solid #cfe0f7;
   border-radius: 8px;
   color: #355c7a;
+  display: grid;
   font-size: 0.78rem;
+  gap: 0.2rem;
   line-height: 1.2;
   padding: 0.45rem 0.55rem;
-  resize: none;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-enhancement-description-text,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-enhancement-description-text {
+  white-space: pre-line;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-enhancement-description.is-collapsible .ability-enhancement-description-text,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-enhancement-description.is-collapsible .ability-enhancement-description-text {
+  max-height: 3.6em;
+  overflow: hidden;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-enhancement-description.is-expanded .ability-enhancement-description-text,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-enhancement-description.is-expanded .ability-enhancement-description-text {
+  max-height: none;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-enhancement-toggle,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-enhancement-toggle {
+  align-items: center;
+  align-self: center;
+  background: transparent;
+  border: none;
+  color: #355c7a;
+  cursor: pointer;
+  display: inline-flex;
+  height: 1.1rem;
+  justify-content: center;
+  padding: 0;
+  width: 1.1rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-enhancement-toggle i,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-enhancement-toggle i {
+  transition: transform 0.16s ease-in-out;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-enhancement-description.is-expanded .ability-enhancement-toggle i,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-enhancement-description.is-expanded .ability-enhancement-toggle i {
+  transform: rotate(180deg);
 }
 
 .rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-description-grid,

@@ -145,7 +145,20 @@
                 </button>
               </div>
               {{#if this.description}}
-              <textarea class="ability-enhancement-description" readonly>{{this.description}}</textarea>
+              <div class="ability-enhancement-description{{#if this.isLongDescription}} is-collapsible{{/if}}">
+                <div class="ability-enhancement-description-text">{{this.description}}</div>
+                {{#if this.isLongDescription}}
+                <button
+                  type="button"
+                  class="ability-enhancement-toggle"
+                  data-action="ability-enhancement-toggle"
+                  aria-expanded="false"
+                  aria-label="{{localize 'RMRPG.Item.Ability.Enhancements.ToggleDescription'}}"
+                >
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                {{/if}}
+              </div>
               {{/if}}
             </div>
             {{/each}}

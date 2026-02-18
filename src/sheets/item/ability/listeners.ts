@@ -322,4 +322,13 @@ export const setupAbilityListeners = (sheet: any, html: JQuery) => {
     const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
     await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
   });
+
+  html.find("[data-action='ability-enhancement-toggle']").on("click", (event: any) => {
+    event.preventDefault();
+    const button = event.currentTarget as HTMLElement;
+    const container = button.closest(".ability-enhancement-description");
+    if (!container) return;
+    const expanded = container.classList.toggle("is-expanded");
+    button.setAttribute("aria-expanded", String(expanded));
+  });
 };
