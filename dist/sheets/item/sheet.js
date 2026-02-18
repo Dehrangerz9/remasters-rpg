@@ -17,11 +17,18 @@ const coerceIndexedCollection = (value) => {
         .map(([, entry]) => entry);
 };
 export class RMRPGItemSheet extends ItemSheet {
+    _pendingScrollPositions = {};
+    static SCROLL_SELECTORS = [
+        ".sheet-body",
+        ".weapon-tab-content > .tab[data-tab='details']",
+        ".ability-tab-content > .tab[data-tab='details']"
+    ];
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["rmrpg", "sheet", "item"],
             width: 620,
             height: 620,
+            scrollY: RMRPGItemSheet.SCROLL_SELECTORS,
             tabs: [
                 {
                     navSelector: ".weapon-tabs",
@@ -36,13 +43,39 @@ export class RMRPGItemSheet extends ItemSheet {
             ]
         });
     }
+    _captureScrollPositions(html) {
+        const root = html?.[0] ?? this.element?.[0];
+        if (!root)
+            return;
+        const nextPositions = {};
+        for (const selector of RMRPGItemSheet.SCROLL_SELECTORS) {
+            const element = root.querySelector(selector);
+            if (!element)
+                continue;
+            nextPositions[selector] = Number(element.scrollTop ?? 0);
+        }
+        this._pendingScrollPositions = nextPositions;
+    }
+    _restoreScrollPositions(html) {
+        const root = html?.[0];
+        if (!root)
+            return;
+        for (const [selector, top] of Object.entries(this._pendingScrollPositions)) {
+            const element = root.querySelector(selector);
+            if (!element)
+                continue;
+            element.scrollTop = Number(top ?? 0);
+        }
+    }
     render(force = false, options = {}) {
+        this._captureScrollPositions(this.element);
         applyItemThemeClass(this);
         return super.render(force, options);
     }
     activateListeners(html) {
         super.activateListeners(html);
         applyItemThemeClass(this);
+        this._restoreScrollPositions(html);
         activateItemListeners(this, html);
     }
     async _updateObject(event, formData) {

@@ -17,11 +17,20 @@ const coerceIndexedCollection = (value: unknown) => {
 };
 
 export class RMRPGItemSheet extends ItemSheet {
+  private _pendingScrollPositions: Record<string, number> = {};
+
+  private static readonly SCROLL_SELECTORS = [
+    ".sheet-body",
+    ".weapon-tab-content > .tab[data-tab='details']",
+    ".ability-tab-content > .tab[data-tab='details']"
+  ];
+
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["rmrpg", "sheet", "item"],
       width: 620,
       height: 620,
+      scrollY: RMRPGItemSheet.SCROLL_SELECTORS,
       tabs: [
         {
           navSelector: ".weapon-tabs",
@@ -37,7 +46,32 @@ export class RMRPGItemSheet extends ItemSheet {
     });
   }
 
+  private _captureScrollPositions(html?: JQuery) {
+    const root = (html?.[0] as HTMLElement | undefined) ?? (this.element?.[0] as HTMLElement | undefined);
+    if (!root) return;
+
+    const nextPositions: Record<string, number> = {};
+    for (const selector of RMRPGItemSheet.SCROLL_SELECTORS) {
+      const element = root.querySelector(selector) as HTMLElement | null;
+      if (!element) continue;
+      nextPositions[selector] = Number(element.scrollTop ?? 0);
+    }
+    this._pendingScrollPositions = nextPositions;
+  }
+
+  private _restoreScrollPositions(html: JQuery) {
+    const root = html?.[0] as HTMLElement | undefined;
+    if (!root) return;
+
+    for (const [selector, top] of Object.entries(this._pendingScrollPositions)) {
+      const element = root.querySelector(selector) as HTMLElement | null;
+      if (!element) continue;
+      element.scrollTop = Number(top ?? 0);
+    }
+  }
+
   render(force = false, options = {}) {
+    this._captureScrollPositions(this.element);
     applyItemThemeClass(this);
     return super.render(force, options);
   }
@@ -45,6 +79,7 @@ export class RMRPGItemSheet extends ItemSheet {
   activateListeners(html: JQuery) {
     super.activateListeners(html);
     applyItemThemeClass(this);
+    this._restoreScrollPositions(html);
     activateItemListeners(this, html);
   }
 
