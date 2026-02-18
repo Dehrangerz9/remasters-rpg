@@ -2,6 +2,12 @@
 
 Starter scaffold for a Foundry VTT v13 system.
 
+## Install via Manifest URL
+
+Use this URL in Foundry's **Install System** dialog:
+
+`https://github.com/Dehrangerz9/remasters-rpg/releases/latest/download/system.json`
+
 ## Included
 
 - `system.json` manifest targeting v13
@@ -24,6 +30,14 @@ Starter scaffold for a Foundry VTT v13 system.
 
 - TypeScript watch mode: `npm run watch:ts`
 - SCSS watch mode: `npm run watch:scss`
+
+## Create Release Package
+
+1. Run: `npm run release:package`
+2. Artifacts are generated under `release/v<version>/`:
+   - `system.json`
+   - `remasters-rpg-<version>.zip`
+3. Upload both files to a GitHub Release for that tag.
 
 ## Customize first
 

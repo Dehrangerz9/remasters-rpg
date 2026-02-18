@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 # Keep Foundry runtime build output versioned.
 !dist/
 !dist/**
+
+# Release artifacts are generated locally and should not be versioned.
+release/
