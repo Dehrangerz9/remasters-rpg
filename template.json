@@ -267,6 +267,7 @@
       "cost": 0,
       "ability": {
         "castingTime": "1-action",
+        "castingCost": "default",
         "categories": [],
         "characteristics": [],
         "enhancements": [],

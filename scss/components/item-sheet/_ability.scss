@@ -62,6 +62,27 @@
       padding: 0.75rem;
     }
 
+    .ability-section--compact {
+      gap: 0.45rem;
+    }
+
+    .ability-inline-select-row {
+      align-items: center;
+      column-gap: 0.75rem;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+
+    .ability-inline-select-row .ability-section-title {
+      flex: 0 0 165px;
+      margin: 0;
+    }
+
+    .ability-inline-select-row select {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
     .ability-section-title {
       color: var(--rmrpg-accent);
       font-size: 0.75rem;
@@ -158,6 +179,13 @@
       font-weight: 600;
       letter-spacing: 0.02em;
       text-transform: lowercase;
+    }
+
+    .ability-section-warning {
+      color: #9a4e2b;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
     }
 
     .ability-cost-input {

@@ -22,6 +22,7 @@ export type AbilityCharacteristicRule = {
   min: number;
   max: number;
   cost: CostRule;
+  cumulativeCost?: boolean;
   levels?: AbilityCharacteristicLevelRule[];
   effects?: Record<string, unknown>;
 };
@@ -57,6 +58,11 @@ export type AbilityCastingTimeRule = {
   cost?: CostRule;
 };
 
+export type AbilityCastingCostRule = {
+  id: string;
+  labelKey: string;
+};
+
 export type AbilityCategoryEntry = {
   id: string;
   uuid: string;
@@ -71,6 +77,7 @@ export type AbilityCharacteristicEntry = {
   id: string;
   level: number;
   damageType: string;
+  areaType: string;
 };
 
 export type AbilityEnhancementEntry = {
@@ -85,6 +92,7 @@ export type AbilityRestrictions = {
 
 export type AbilityData = {
   castingTime: string;
+  castingCost: string;
   categories: AbilityCategoryEntry[];
   characteristics: AbilityCharacteristicEntry[];
   enhancements: AbilityEnhancementEntry[];
@@ -104,11 +112,12 @@ export type CharacteristicLevelChoice = {
 };
 
 const ABILITY_DAMAGE_TYPES = ["physical", "elemental", "mental", "deteriorating"] as const;
+const ABILITY_AREA_TYPES = ["emanacao", "feixe", "explosao", "line"] as const;
 
 export const ABILITY_RULES = {
   // Replace these placeholder tables with the campaign's progression rules.
   categoryLimit: 2,
-  characteristicLimit: null as number | null,
+  characteristicLimit: 3,
   castingTimes: [
     { id: "1-action", labelKey: "RMRPG.Item.Ability.CastingTime.OneAction", cost: { type: "flat", value: 0 } },
     { id: "2-actions", labelKey: "RMRPG.Item.Ability.CastingTime.TwoActions", cost: { type: "flat", value: 0 } },
@@ -116,6 +125,11 @@ export const ABILITY_RULES = {
     { id: "free", labelKey: "RMRPG.Item.Ability.CastingTime.FreeAction", cost: { type: "flat", value: 0 } },
     { id: "reaction", labelKey: "RMRPG.Item.Ability.CastingTime.Reaction", cost: { type: "flat", value: 0 } }
   ] as AbilityCastingTimeRule[],
+  castingCosts: [
+    { id: "default", labelKey: "RMRPG.Item.Ability.CastingCost.Default" },
+    { id: "enhanced-check", labelKey: "RMRPG.Item.Ability.CastingCost.EnhancedCheck" },
+    { id: "free", labelKey: "RMRPG.Item.Ability.CastingCost.Free" }
+  ] as AbilityCastingCostRule[],
   categories: [
     {
       id: "criacao",
@@ -180,6 +194,7 @@ export const ABILITY_RULES = {
       labelKey: "RMRPG.Item.Ability.Characteristic.Area",
       min: 1,
       max: 3,
+      cumulativeCost: true,
       cost: { type: "table", values: [12, 9, 6] },
       levels: [
         { level: 1, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.AreaSmall", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.AreaSmall", rank: "D" },
@@ -330,10 +345,26 @@ export const resolveCost = (rule: CostRule | null | undefined, level = 1) => {
   return handler(rule, Math.max(1, Math.floor(level)));
 };
 
+const resolveCharacteristicCost = (rule: AbilityCharacteristicRule | null | undefined, level: number) => {
+  if (!rule) return 0;
+  const normalizedLevel = Math.max(1, Math.floor(level));
+  if (!rule.cumulativeCost) {
+    return resolveCost(rule.cost, normalizedLevel);
+  }
+
+  const startLevel = Math.max(1, Math.floor(rule.min ?? 1));
+  let total = 0;
+  for (let current = startLevel; current <= normalizedLevel; current += 1) {
+    total += resolveCost(rule.cost, current);
+  }
+  return total;
+};
+
 const categoryMap = new Map(ABILITY_RULES.categories.map((entry) => [entry.id, entry]));
 const characteristicMap = new Map(ABILITY_RULES.characteristics.map((entry) => [entry.id, entry]));
 const enhancementMap = new Map(ABILITY_RULES.enhancements.map((entry) => [entry.id, entry]));
 const castingTimeMap = new Map(ABILITY_RULES.castingTimes.map((entry) => [entry.id, entry]));
+const castingCostMap = new Map(ABILITY_RULES.castingCosts.map((entry) => [entry.id, entry]));
 const rankOrder = new Map<AbilityRank, number>(RANKS.map((rank, index) => [rank, index]));
 
 const normalizeRank = (value: unknown): AbilityRank | null => {
@@ -356,6 +387,7 @@ export const getAbilityCategoryRule = (id: string) => categoryMap.get(id);
 export const getAbilityCharacteristicRule = (id: string) => characteristicMap.get(id);
 export const getAbilityEnhancementRule = (id: string) => enhancementMap.get(id);
 export const getAbilityCastingTimeRule = (id: string) => castingTimeMap.get(id);
+export const getAbilityCastingCostRule = (id: string) => castingCostMap.get(id);
 
 const normalizeEntries = <T extends Record<string, any>>(raw: unknown, defaults: T) => {
   if (!Array.isArray(raw)) return [] as T[];
@@ -366,6 +398,7 @@ export const normalizeAbilityData = (raw: any): AbilityData => {
   const ability = raw && typeof raw === "object" ? raw : {};
   return {
     castingTime: String(ability.castingTime ?? ABILITY_RULES.castingTimes[0]?.id ?? "1-action"),
+    castingCost: String(ability.castingCost ?? ABILITY_RULES.castingCosts[0]?.id ?? "default"),
     categories: normalizeEntries(ability.categories, {
       id: "",
       uuid: "",
@@ -390,7 +423,7 @@ export const normalizeAbilityData = (raw: any): AbilityData => {
         description: String(entry.description ?? entry.notes ?? "")
       };
     }),
-    characteristics: normalizeEntries(ability.characteristics, { id: "", level: 1, damageType: "" }),
+    characteristics: normalizeEntries(ability.characteristics, { id: "", level: 1, damageType: "", areaType: "" }),
     enhancements: normalizeEntries(ability.enhancements, { id: "" }),
     restrictions: {
       description: String(ability.restrictions?.description ?? ""),
@@ -439,6 +472,9 @@ export const sanitizeAbilityData = (raw: any, options?: AbilityRuleContext): Abi
   if (!castingTimeMap.has(ability.castingTime)) {
     ability.castingTime = ABILITY_RULES.castingTimes[0]?.id ?? "1-action";
   }
+  if (!castingCostMap.has(ability.castingCost)) {
+    ability.castingCost = ABILITY_RULES.castingCosts[0]?.id ?? "default";
+  }
 
   ability.categories = ability.categories
     .filter((entry) => entry && typeof entry === "object")
@@ -459,11 +495,6 @@ export const sanitizeAbilityData = (raw: any, options?: AbilityRuleContext): Abi
       };
     });
 
-  const categoryLimit = getCategoryLimit(modifiers);
-  if (categoryLimit !== null) {
-    ability.categories = ability.categories.slice(0, categoryLimit);
-  }
-
   ability.characteristics = ability.characteristics
     .filter((entry) => entry && typeof entry === "object")
     .map((entry) => {
@@ -477,18 +508,19 @@ export const sanitizeAbilityData = (raw: any, options?: AbilityRuleContext): Abi
       const normalizedDamageType = ABILITY_DAMAGE_TYPES.includes(rawDamageType as (typeof ABILITY_DAMAGE_TYPES)[number])
         ? rawDamageType
         : "";
+      const rawAreaType = String((entry as any).areaType ?? "");
+      const normalizedAreaType = ABILITY_AREA_TYPES.includes(rawAreaType as (typeof ABILITY_AREA_TYPES)[number])
+        ? rawAreaType
+        : "";
       const damageType = id === "destruicao" ? normalizedDamageType || "physical" : "";
+      const areaType = id === "area" ? normalizedAreaType || "emanacao" : "";
       return {
         id: rule ? id : "",
         level: clampInteger(Number(entry.level ?? min), min, max),
-        damageType
+        damageType,
+        areaType
       };
     });
-
-  const characteristicLimit = getCharacteristicLimit(modifiers);
-  if (characteristicLimit !== null) {
-    ability.characteristics = ability.characteristics.slice(0, characteristicLimit);
-  }
 
   const maxIndex = ability.characteristics.length - 1;
   if (!Number.isFinite(ability.restrictions.advancesTarget ?? NaN)) {
@@ -542,7 +574,7 @@ export const calculateAbilityCost = (raw: any, options?: AbilityRuleContext) => 
     const baseLevel = clampInteger(entry.level, min, max);
     const extra = ability.restrictions.advancesTarget === index ? ability.restrictions.advances : 0;
     const effectiveLevel = clampInteger(baseLevel + extra, min, max);
-    return total + resolveCost(rule.cost, effectiveLevel);
+    return total + resolveCharacteristicCost(rule, effectiveLevel);
   }, 0);
 
   const enhancementCost = ability.enhancements.reduce((total, entry) => {
@@ -573,6 +605,7 @@ export const calculateAbilityCost = (raw: any, options?: AbilityRuleContext) => 
 
 export const buildAbilityOptions = (localize: (key: string) => string) => ({
   castingTimes: ABILITY_RULES.castingTimes.map((entry) => ({ value: entry.id, label: localize(entry.labelKey) })),
+  castingCosts: ABILITY_RULES.castingCosts.map((entry) => ({ value: entry.id, label: localize(entry.labelKey) })),
   categories: ABILITY_RULES.categories.map((entry) => ({ value: entry.id, label: localize(entry.labelKey) })),
   characteristics: ABILITY_RULES.characteristics.map((entry) => ({ value: entry.id, label: localize(entry.labelKey) })),
   enhancements: ABILITY_RULES.enhancements.map((entry) => ({ value: entry.id, label: localize(entry.labelKey) }))
@@ -651,7 +684,7 @@ export const getCharacteristicLevelChoices = (
       label: String(entry.label),
       level: entry.level,
       minRank: entry.minRank,
-      cost: resolveCost(rule.cost, entry.level)
+      cost: resolveCharacteristicCost(rule, entry.level)
     }))
     .sort((a, b) => a.level - b.level);
 };

@@ -333,9 +333,16 @@
           "FreeAction": "Free Action",
           "Reaction": "Reaction"
         },
+        "CastingCost": {
+          "Title": "Ability Cost",
+          "Default": "Default (1 reiki check)",
+          "EnhancedCheck": "Enhanced check",
+          "Free": "Free"
+        },
         "Categories": {
           "Title": "Category Effects",
           "Add": "Add Category Effect",
+          "LimitExceededWarning": "Category limit exceeded",
           "TableName": "Effect",
           "TableCategory": "Category",
           "TableCost": "PC Cost",
@@ -368,6 +375,7 @@
           "TypeLabel": "Type",
           "PCLabel": "PC",
           "RankLabel": "Rank",
+          "LimitExceededWarning": "Characteristic limit exceeded",
           "OverRankingLegend": "Over-ranking characteristics"
         },
         "Characteristic": {
@@ -377,6 +385,12 @@
           "Destruicao": "Destruction",
           "Distancia": "Distance",
           "Duracao": "Duration"
+        },
+        "AreaType": {
+          "Emanacao": "Emanation",
+          "Feixe": "Beam",
+          "Explosao": "Explosion",
+          "Line": "Line"
         },
         "CharacteristicLevel": {
           "Targets1": "Targets 1",

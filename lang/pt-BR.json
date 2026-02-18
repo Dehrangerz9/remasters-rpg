@@ -333,9 +333,16 @@
           "FreeAction": "Ação Livre",
           "Reaction": "Reação"
         },
+        "CastingCost": {
+          "Title": "Custo da Habilidade",
+          "Default": "Default (1 checagem de reiki)",
+          "EnhancedCheck": "Checagem aprimorada",
+          "Free": "Grátis"
+        },
         "Categories": {
           "Title": "Efeitos de Categoria",
           "Add": "Adicionar Efeito de Categoria",
+          "LimitExceededWarning": "Limite de categorias ultrapassado",
           "TableName": "Efeito",
           "TableCategory": "Categoria",
           "TableCost": "Custo PC",
@@ -368,6 +375,7 @@
           "TypeLabel": "Tipo",
           "PCLabel": "PC",
           "RankLabel": "Rank",
+          "LimitExceededWarning": "Limite de características ultrapassado",
           "OverRankingLegend": "Over-ranking characteristics"
         },
         "Characteristic": {
@@ -377,6 +385,12 @@
           "Destruicao": "Destruição",
           "Distancia": "Distância",
           "Duracao": "Duração"
+        },
+        "AreaType": {
+          "Emanacao": "Emanação",
+          "Feixe": "Feixe",
+          "Explosao": "Explosão",
+          "Line": "Line"
         },
         "CharacteristicLevel": {
           "Targets1": "Alvos 1",

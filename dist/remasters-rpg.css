@@ -2062,6 +2062,27 @@
   gap: 0.65rem;
   padding: 0.75rem;
 }
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-section--compact,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-section--compact {
+  gap: 0.45rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-inline-select-row,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-inline-select-row {
+  align-items: center;
+  column-gap: 0.75rem;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-inline-select-row .ability-section-title,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-inline-select-row .ability-section-title {
+  flex: 0 0 165px;
+  margin: 0;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-inline-select-row select,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-inline-select-row select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
 .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-section-title,
 .rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-section-title {
   color: var(--rmrpg-accent);
@@ -2160,6 +2181,13 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: lowercase;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-section-warning,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-section-warning {
+  color: #9a4e2b;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-cost-input,
 .rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-cost-input {

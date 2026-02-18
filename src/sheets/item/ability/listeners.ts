@@ -142,10 +142,6 @@ export const setupAbilityListeners = (sheet: any, html: JQuery) => {
     event.preventDefault();
     await sheet._onSubmit(event, { preventClose: true, preventRender: true });
     const ability = normalizeAbilityData(sheet.item.system?.ability);
-    const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
-    const actorRank = getActorRank(sheet);
-    const limit = calculateAbilityCost({ ...ability, categories: resolvedCategories }, { actorRank }).limits.categories;
-    if (limit !== null && resolvedCategories.length >= limit) return;
     const defaultCategory = options.categories[0]?.value ?? "";
     const rule = getAbilityCategoryRule(defaultCategory);
     const defaultCost = resolveCost(rule?.cost, 1);
@@ -239,11 +235,6 @@ export const setupAbilityListeners = (sheet: any, html: JQuery) => {
       if (!itemData || itemData.type !== "category-effect") return;
 
       const ability = normalizeAbilityData(sheet.item.system?.ability);
-      const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
-      const actorRank = getActorRank(sheet);
-      const limit = calculateAbilityCost({ ...ability, categories: resolvedCategories }, { actorRank }).limits.categories;
-      if (limit !== null && resolvedCategories.length >= limit) return;
-
       const rawSystem = itemData.system ?? {};
       const entryData = {
         name: String(itemData.name ?? localize("RMRPG.Item.AbilityCategory.NewName")),
@@ -284,7 +275,8 @@ export const setupAbilityListeners = (sheet: any, html: JQuery) => {
     ability.characteristics.push({
       id: defaultId,
       level: rule?.min ?? 1,
-      damageType: defaultId === "destruicao" ? "physical" : ""
+      damageType: defaultId === "destruicao" ? "physical" : "",
+      areaType: defaultId === "area" ? "emanacao" : ""
     });
     const actorRank = getActorRank(sheet);
     const sanitized = sanitizeAbilityData(ability, { actorRank });

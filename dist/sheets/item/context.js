@@ -136,6 +136,12 @@ export const buildItemContext = async (sheet, context) => {
             { value: "mental", label: game.i18n.localize("RMRPG.Item.Weapon.DamageType.Mental") },
             { value: "deteriorating", label: game.i18n.localize("RMRPG.Item.Weapon.DamageType.Deteriorating") }
         ];
+        const areaTypeOptions = [
+            { value: "emanacao", label: game.i18n.localize("RMRPG.Item.Ability.AreaType.Emanacao") },
+            { value: "feixe", label: game.i18n.localize("RMRPG.Item.Ability.AreaType.Feixe") },
+            { value: "explosao", label: game.i18n.localize("RMRPG.Item.Ability.AreaType.Explosao") },
+            { value: "line", label: game.i18n.localize("RMRPG.Item.Ability.AreaType.Line") }
+        ];
         const normalizedActorRank = String(actorRank ?? "").toUpperCase();
         const rankBonusFromActor = Number(item.parent?.system?.rank?.bonus ?? NaN);
         const rankBonus = Number.isFinite(rankBonusFromActor)
@@ -175,6 +181,8 @@ export const buildItemContext = async (sheet, context) => {
             const overRanking = selectedChoice
                 ? isOverRankingCharacteristicLevel(entry.id, level, actorRank)
                 : false;
+            const showDamageType = entry.id === "destruicao";
+            const showAreaType = entry.id === "area";
             return {
                 ...entry,
                 level,
@@ -182,9 +190,14 @@ export const buildItemContext = async (sheet, context) => {
                 max: limits.max,
                 useLevelSelect: true,
                 levelOptions,
-                showDamageType: entry.id === "destruicao",
-                damageType: String(entry.damageType ?? "physical"),
-                damageTypeOptions,
+                showTypeSelect: showDamageType || showAreaType,
+                typeField: showDamageType ? "damageType" : showAreaType ? "areaType" : "",
+                typeValue: showDamageType
+                    ? String(entry.damageType ?? "physical")
+                    : showAreaType
+                        ? String(entry.areaType ?? "emanacao")
+                        : "",
+                typeOptions: showDamageType ? damageTypeOptions : showAreaType ? areaTypeOptions : [],
                 selectedLevelCostLabel,
                 selectedLevelRankLabel,
                 overRanking
@@ -213,11 +226,14 @@ export const buildItemContext = async (sheet, context) => {
         };
         context.abilityCost = costInfo.totalCost;
         context.abilityCastingTimeOptions = abilityOptions.castingTimes;
+        context.abilityCastingCostOptions = abilityOptions.castingCosts;
         context.abilityCharacteristicOptions = abilityOptions.characteristics;
         context.abilityEnhancementOptions = abilityOptions.enhancements;
         context.abilityCategoryLimit = costInfo.limits.categories;
-        context.abilityCategoriesMaxed =
-            costInfo.limits.categories !== null && resolvedCategories.length >= costInfo.limits.categories;
+        context.abilityCategoryLimitExceeded =
+            costInfo.limits.categories !== null && resolvedCategories.length > costInfo.limits.categories;
+        context.abilityCharacteristicLimitExceeded =
+            costInfo.limits.characteristics !== null && ability.characteristics.length > costInfo.limits.characteristics;
         context.abilityRestrictionTargets = restrictionTargets;
         context.abilityHasOverRankingCharacteristics = characteristics.some((entry) => Boolean(entry.overRanking));
         const categoryTags = categories

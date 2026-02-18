@@ -11,26 +11,27 @@
     </div>
     <div class="tab" data-group="ability" data-tab="details">
       <div class="ability-details">
-        <section class="ability-section">
-          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.CastingTime.Title"}}</div>
-          <div class="ability-field">
-            <label>{{localize "RMRPG.Item.Ability.CastingTime.Label"}}</label>
+        <section class="ability-section ability-section--compact">
+          <div class="ability-inline-select-row">
+            <div class="ability-section-title">{{localize "RMRPG.Item.Ability.CastingTime.Title"}}</div>
             <select name="system.ability.castingTime">
               {{selectOptions abilityCastingTimeOptions selected=ability.castingTime valueAttr="value" labelAttr="label"}}
+            </select>
+          </div>
+          <div class="ability-inline-select-row">
+            <div class="ability-section-title">{{localize "RMRPG.Item.Ability.CastingCost.Title"}}</div>
+            <select name="system.ability.castingCost">
+              {{selectOptions abilityCastingCostOptions selected=ability.castingCost valueAttr="value" labelAttr="label"}}
             </select>
           </div>
         </section>
 
         <section class="ability-section">
           <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Categories.Title"}}</div>
+          {{#if abilityCategoryLimitExceeded}}
+          <div class="ability-section-warning">{{localize "RMRPG.Item.Ability.Categories.LimitExceededWarning"}}</div>
+          {{/if}}
           <div class="ability-category-table">
-            <div class="ability-category-header">
-              <span></span>
-              <span>{{localize "RMRPG.Item.Ability.Categories.TableName"}}</span>
-              <span>{{localize "RMRPG.Item.Ability.Categories.TableCategory"}}</span>
-              <span>{{localize "RMRPG.Item.Ability.Categories.TableCost"}}</span>
-              <span></span>
-            </div>
             {{#if ability.categories.length}}
             {{#each ability.categories}}
             <div class="ability-category-row" data-index="{{@index}}" data-id="{{this.id}}" data-uuid="{{this.uuid}}">
@@ -39,9 +40,6 @@
                 <button type="button" class="item-name" data-action="ability-category-open" data-id="{{this.id}}" data-uuid="{{this.uuid}}">
                   {{this.name}}
                 </button>
-                {{#if this.description}}
-                <div class="ability-category-description">{{{this.description}}}</div>
-                {{/if}}
               </div>
               <span class="ability-category-type" title="{{this.tooltip}}">{{this.categoryLabel}}</span>
               <span class="ability-category-cost">{{this.cost}}</span>
@@ -57,8 +55,6 @@
               </button>
             </div>
             {{/each}}
-            {{else}}
-            <div class="ability-category-empty">{{localize "RMRPG.Item.Ability.Categories.Empty"}}</div>
             {{/if}}
           </div>
           <div class="ability-category-actions">
@@ -66,17 +62,21 @@
               type="button"
               class="ability-add"
               data-action="ability-category-add"
-              {{#if abilityCategoriesMaxed}}disabled{{/if}}
             >
               <i class="fas fa-plus"></i>
               {{localize "RMRPG.Item.Ability.Categories.Add"}}
             </button>
-            <div class="ability-category-hint">{{localize "RMRPG.Item.Ability.Categories.DropHint"}}</div>
           </div>
         </section>
 
         <section class="ability-section">
           <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Characteristics.Title"}}</div>
+          {{#if abilityCharacteristicLimitExceeded}}
+          <div class="ability-section-warning">{{localize "RMRPG.Item.Ability.Characteristics.LimitExceededWarning"}}</div>
+          {{/if}}
+          {{#if abilityHasOverRankingCharacteristics}}
+          <div class="ability-section-warning">{{localize "RMRPG.Item.Ability.Characteristics.OverRankingLegend"}}</div>
+          {{/if}}
           <div class="ability-list">
             <div class="ability-characteristic-header">
               <span>{{localize "RMRPG.Item.Ability.Characteristics.CharacteristicLabel"}}</span>
@@ -95,9 +95,9 @@
                 <select name="system.ability.characteristics.{{@index}}.level">
                   {{selectOptions this.levelOptions selected=this.level valueAttr="value" labelAttr="label"}}
                 </select>
-                {{#if this.showDamageType}}
-                <select name="system.ability.characteristics.{{@index}}.damageType">
-                  {{selectOptions this.damageTypeOptions selected=this.damageType valueAttr="value" labelAttr="label"}}
+                {{#if this.showTypeSelect}}
+                <select name="system.ability.characteristics.{{@index}}.{{this.typeField}}">
+                  {{selectOptions this.typeOptions selected=this.typeValue valueAttr="value" labelAttr="label"}}
                 </select>
                 {{else}}
                 <span class="ability-characteristic-type-placeholder">-</span>
@@ -117,9 +117,6 @@
               </div>
             </div>
             {{/each}}
-            {{#if abilityHasOverRankingCharacteristics}}
-            <div class="ability-overrank-legend">{{localize "RMRPG.Item.Ability.Characteristics.OverRankingLegend"}}</div>
-            {{/if}}
             <button type="button" class="ability-add" data-action="ability-characteristic-add">
               <i class="fas fa-plus"></i>
               {{localize "RMRPG.Item.Ability.Characteristics.Add"}}
