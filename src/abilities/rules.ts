@@ -1,3 +1,4 @@
+import { RANKS } from "../constants.js";
 import { clampInteger } from "../sheets/global-functions/utils.js";
 
 export type CostRule =
@@ -21,7 +22,17 @@ export type AbilityCharacteristicRule = {
   min: number;
   max: number;
   cost: CostRule;
+  levels?: AbilityCharacteristicLevelRule[];
   effects?: Record<string, unknown>;
+};
+
+type AbilityRank = (typeof RANKS)[number];
+
+export type AbilityCharacteristicLevelRule = {
+  level: number;
+  labelKey?: string;
+  shortLabelKey?: string;
+  rank?: AbilityRank;
 };
 
 export type AbilityModifier = {
@@ -59,6 +70,7 @@ export type AbilityCategoryEntry = {
 export type AbilityCharacteristicEntry = {
   id: string;
   level: number;
+  damageType: string;
 };
 
 export type AbilityEnhancementEntry = {
@@ -78,6 +90,20 @@ export type AbilityData = {
   enhancements: AbilityEnhancementEntry[];
   restrictions: AbilityRestrictions;
 };
+
+type AbilityRuleContext = {
+  actorRank?: string | null;
+};
+
+export type CharacteristicLevelChoice = {
+  value: string;
+  label: string;
+  level: number;
+  minRank: AbilityRank | null;
+  cost: number;
+};
+
+const ABILITY_DAMAGE_TYPES = ["physical", "elemental", "mental", "deteriorating"] as const;
 
 export const ABILITY_RULES = {
   // Replace these placeholder tables with the campaign's progression rules.
@@ -140,48 +166,88 @@ export const ABILITY_RULES = {
       labelKey: "RMRPG.Item.Ability.Characteristic.Alvos",
       min: 1,
       max: 5,
-      cost: { type: "linear", base: 1, step: 1 }
+      cost: { type: "table", values: [0, 6, 15, 27, 39] },
+      levels: [
+        { level: 1, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Targets1", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Targets1", rank: "D" },
+        { level: 2, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Targets2", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Targets2", rank: "D" },
+        { level: 3, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Targets3", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Targets3", rank: "C" },
+        { level: 4, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Targets4", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Targets4", rank: "B" },
+        { level: 5, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Targets5", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Targets5", rank: "A" }
+      ]
     },
     {
       id: "area",
       labelKey: "RMRPG.Item.Ability.Characteristic.Area",
       min: 1,
-      max: 5,
-      cost: { type: "step", steps: [
-        { upto: 1, value: 1 },
-        { upto: 2, value: 2 },
-        { upto: 3, value: 4 },
-        { upto: 4, value: 6 },
-        { upto: 5, value: 9 }
-      ] }
+      max: 3,
+      cost: { type: "table", values: [12, 9, 6] },
+      levels: [
+        { level: 1, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.AreaSmall", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.AreaSmall", rank: "D" },
+        { level: 2, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.AreaMedium", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.AreaMedium", rank: "C" },
+        { level: 3, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.AreaLarge", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.AreaLarge", rank: "B" }
+      ]
     },
     {
       id: "condicao",
       labelKey: "RMRPG.Item.Ability.Characteristic.Condicao",
       min: 1,
-      max: 5,
-      cost: { type: "exponential", base: 1, factor: 2 }
+      max: 4,
+      cost: { type: "table", values: [3, 6, 12, 18] },
+      levels: [
+        { level: 1, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.ConditionGrade1", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.ConditionGrade1", rank: "D" },
+        { level: 2, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.ConditionGrade2", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.ConditionGrade2", rank: "C" },
+        { level: 3, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.ConditionGrade3", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.ConditionGrade3", rank: "B" },
+        { level: 4, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.ConditionGrade4", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.ConditionGrade4", rank: "A" }
+      ]
     },
     {
       id: "destruicao",
       labelKey: "RMRPG.Item.Ability.Characteristic.Destruicao",
       min: 1,
-      max: 5,
-      cost: { type: "table", values: [2, 4, 6, 9, 12] }
+      max: 6,
+      cost: { type: "table", values: [0, 3, 9, 18, 30, 42] },
+      levels: [
+        { level: 1, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DestructionNoDie", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DestructionNoDie", rank: "D" },
+        { level: 2, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DestructionD4", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DestructionD4", rank: "D" },
+        { level: 3, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DestructionD6", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DestructionD6", rank: "D" },
+        { level: 4, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DestructionD8", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DestructionD8", rank: "C" },
+        { level: 5, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DestructionD10", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DestructionD10", rank: "B" },
+        { level: 6, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DestructionD12", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DestructionD12", rank: "A" }
+      ]
     },
     {
       id: "distancia",
       labelKey: "RMRPG.Item.Ability.Characteristic.Distancia",
       min: 1,
-      max: 5,
-      cost: { type: "linear", base: 1, step: 2 }
+      max: 11,
+      cost: { type: "table", values: [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30] },
+      levels: [
+        { level: 1, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DistanceMelee", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DistanceMelee", rank: "D" },
+        { level: 2, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance3", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance3", rank: "D" },
+        { level: 3, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance6", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance6", rank: "D" },
+        { level: 4, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance9", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance9", rank: "C" },
+        { level: 5, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance12", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance12", rank: "C" },
+        { level: 6, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance15", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance15", rank: "B" },
+        { level: 7, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance18", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance18", rank: "B" },
+        { level: 8, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance21", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance21", rank: "A" },
+        { level: 9, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance24", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance24", rank: "A" },
+        { level: 10, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance27", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance27", rank: "A" },
+        { level: 11, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.Distance30", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.Distance30", rank: "A" }
+      ]
     },
     {
       id: "duracao",
       labelKey: "RMRPG.Item.Ability.Characteristic.Duracao",
       min: 1,
       max: 5,
-      cost: { type: "table", values: [1, 2, 3, 5, 8] }
+      cost: { type: "table", values: [0, 6, 15, 27, 39] },
+      levels: [
+        { level: 1, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DurationInstant", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DurationInstant", rank: "D" },
+        { level: 2, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DurationScene", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DurationScene", rank: "D" },
+        { level: 3, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DurationHours", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DurationHours", rank: "D" },
+        { level: 4, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DurationDay", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DurationDay", rank: "B" },
+        { level: 5, labelKey: "RMRPG.Item.Ability.CharacteristicLevel.DurationPermanent", shortLabelKey: "RMRPG.Item.Ability.CharacteristicLevelShort.DurationPermanent", rank: "A" }
+      ]
     }
   ] as AbilityCharacteristicRule[],
   enhancements: [
@@ -268,6 +334,23 @@ const categoryMap = new Map(ABILITY_RULES.categories.map((entry) => [entry.id, e
 const characteristicMap = new Map(ABILITY_RULES.characteristics.map((entry) => [entry.id, entry]));
 const enhancementMap = new Map(ABILITY_RULES.enhancements.map((entry) => [entry.id, entry]));
 const castingTimeMap = new Map(ABILITY_RULES.castingTimes.map((entry) => [entry.id, entry]));
+const rankOrder = new Map<AbilityRank, number>(RANKS.map((rank, index) => [rank, index]));
+
+const normalizeRank = (value: unknown): AbilityRank | null => {
+  const rank = String(value ?? "").toUpperCase() as AbilityRank;
+  return rankOrder.has(rank) ? rank : null;
+};
+
+const isRankLowerThan = (actorRank: AbilityRank | null, minRank: AbilityRank | null) => {
+  if (!actorRank || !minRank) return false;
+  return (rankOrder.get(actorRank) ?? 0) < (rankOrder.get(minRank) ?? 0);
+};
+
+const getCharacteristicLevelRequirement = (id: string, level: number) => {
+  const rule = characteristicMap.get(id);
+  const definition = rule?.levels?.find((entry) => Number(entry.level) === Number(level));
+  return normalizeRank(definition?.rank);
+};
 
 export const getAbilityCategoryRule = (id: string) => categoryMap.get(id);
 export const getAbilityCharacteristicRule = (id: string) => characteristicMap.get(id);
@@ -307,7 +390,7 @@ export const normalizeAbilityData = (raw: any): AbilityData => {
         description: String(entry.description ?? entry.notes ?? "")
       };
     }),
-    characteristics: normalizeEntries(ability.characteristics, { id: "", level: 1 }),
+    characteristics: normalizeEntries(ability.characteristics, { id: "", level: 1, damageType: "" }),
     enhancements: normalizeEntries(ability.enhancements, { id: "" }),
     restrictions: {
       description: String(ability.restrictions?.description ?? ""),
@@ -349,7 +432,7 @@ export const getCharacteristicLimit = (modifiers?: AbilityModifier) => {
   return Math.max(0, base + delta);
 };
 
-export const sanitizeAbilityData = (raw: any): AbilityData => {
+export const sanitizeAbilityData = (raw: any, options?: AbilityRuleContext): AbilityData => {
   const ability = normalizeAbilityData(raw);
   const modifiers = collectAbilityModifiers(ability.enhancements);
 
@@ -390,9 +473,15 @@ export const sanitizeAbilityData = (raw: any): AbilityData => {
       const maxOverride = modifiers.characteristicMaxOverrides?.[id];
       const min = minOverride ?? rule?.min ?? 0;
       const max = maxOverride ?? rule?.max ?? 0;
+      const rawDamageType = String((entry as any).damageType ?? "");
+      const normalizedDamageType = ABILITY_DAMAGE_TYPES.includes(rawDamageType as (typeof ABILITY_DAMAGE_TYPES)[number])
+        ? rawDamageType
+        : "";
+      const damageType = id === "destruicao" ? normalizedDamageType || "physical" : "";
       return {
         id: rule ? id : "",
-        level: clampInteger(Number(entry.level ?? min), min, max)
+        level: clampInteger(Number(entry.level ?? min), min, max),
+        damageType
       };
     });
 
@@ -432,8 +521,8 @@ export const sanitizeAbilityData = (raw: any): AbilityData => {
   return ability;
 };
 
-export const calculateAbilityCost = (raw: any) => {
-  const ability = sanitizeAbilityData(raw);
+export const calculateAbilityCost = (raw: any, options?: AbilityRuleContext) => {
+  const ability = sanitizeAbilityData(raw, options);
   const modifiers = collectAbilityModifiers(ability.enhancements);
 
   const categoryCost = ability.categories.reduce((total, entry) => {
@@ -515,11 +604,60 @@ export const describeEnhancement = (id: string, localize: (key: string) => strin
   return rule ? localize(rule.descriptionKey) : "";
 };
 
-export const describeCharacteristicLimits = (id: string, modifiers?: AbilityModifier) => {
+export const describeCharacteristicLimits = (id: string, modifiers?: AbilityModifier, options?: AbilityRuleContext) => {
   const rule = characteristicMap.get(id);
   if (!rule) return { min: 0, max: 0 };
+  const min = modifiers?.characteristicMinOverrides?.[id] ?? rule.min;
+  const modifiedMax = modifiers?.characteristicMaxOverrides?.[id] ?? rule.max;
   return {
-    min: modifiers?.characteristicMinOverrides?.[id] ?? rule.min,
-    max: modifiers?.characteristicMaxOverrides?.[id] ?? rule.max
+    min,
+    max: Math.max(min, modifiedMax)
   };
+};
+
+export const getCharacteristicLevelChoices = (
+  id: string,
+  localize: (key: string) => string,
+  options?: AbilityRuleContext
+): CharacteristicLevelChoice[] => {
+  const rule = characteristicMap.get(id);
+  if (!rule) return [];
+
+  const configuredLevels =
+    Array.isArray(rule.levels) && rule.levels.length
+      ? rule.levels
+          .filter((entry) => Number.isFinite(entry.level))
+          .map((entry) => ({
+            level: Number(entry.level),
+            label: entry.shortLabelKey
+              ? localize(entry.shortLabelKey)
+              : entry.labelKey
+                ? localize(entry.labelKey)
+                : String(entry.level),
+            minRank: normalizeRank(entry.rank)
+          }))
+      : Array.from({ length: Math.max(0, rule.max - rule.min + 1) }, (_, index) => {
+          const level = rule.min + index;
+          return {
+            level,
+            label: String(level),
+            minRank: null
+          };
+        });
+
+  return configuredLevels
+    .map((entry) => ({
+      value: String(entry.level),
+      label: String(entry.label),
+      level: entry.level,
+      minRank: entry.minRank,
+      cost: resolveCost(rule.cost, entry.level)
+    }))
+    .sort((a, b) => a.level - b.level);
+};
+
+export const isOverRankingCharacteristicLevel = (id: string, level: number, actorRank: string | null | undefined) => {
+  const requiredRank = getCharacteristicLevelRequirement(id, level);
+  const normalizedActorRank = normalizeRank(actorRank);
+  return isRankLowerThan(normalizedActorRank, requiredRank);
 };

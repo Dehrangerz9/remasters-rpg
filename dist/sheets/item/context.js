@@ -1,7 +1,16 @@
 import { clampInteger, normalizeBonusArray } from "../global-functions/utils.js";
-import { buildAbilityOptions, calculateAbilityCost, collectAbilityModifiers, describeCharacteristicLimits, describeEnhancement, getCategoryLabel, getCategoryTag, getCategoryTooltip, listCategoryTags, normalizeAbilityData } from "../../abilities/rules.js";
+import { buildAbilityOptions, calculateAbilityCost, collectAbilityModifiers, describeCharacteristicLimits, describeEnhancement, getCategoryLabel, getCharacteristicLevelChoices, isOverRankingCharacteristicLevel, getCategoryTag, getCategoryTooltip, listCategoryTags, normalizeAbilityData } from "../../abilities/rules.js";
 import { resolveAbilityCategories } from "../../abilities/category-links.js";
 import { buildTagContext } from "./tags.js";
+import { RANK_BONUS_BY_RANK } from "../../constants.js";
+const DESTRUCTION_DIE_BY_LEVEL = {
+    1: "",
+    2: "d4",
+    3: "d6",
+    4: "d8",
+    5: "d10",
+    6: "d12"
+};
 export const buildItemContext = async (sheet, context) => {
     const item = context.item ?? sheet.item ?? sheet.document ?? sheet.object;
     if (!item)
@@ -116,8 +125,23 @@ export const buildItemContext = async (sheet, context) => {
             categories: resolvedCategories
         };
         const modifiers = collectAbilityModifiers(ability.enhancements);
-        const costInfo = calculateAbilityCost(resolvedAbility);
+        const actorRank = item.parent?.documentName === "Actor" ? String(item.parent.system?.rank?.value ?? "") : null;
+        const costInfo = calculateAbilityCost(resolvedAbility, { actorRank });
         const characteristicLabels = new Map(abilityOptions.characteristics.map((entry) => [entry.value, entry.label]));
+        const pcLabel = localize("RMRPG.Item.Ability.TotalCostShort");
+        const rankLabel = localize("RMRPG.Actor.Rank");
+        const damageTypeOptions = [
+            { value: "physical", label: game.i18n.localize("RMRPG.Item.Weapon.DamageType.Physical") },
+            { value: "elemental", label: game.i18n.localize("RMRPG.Item.Weapon.DamageType.Elemental") },
+            { value: "mental", label: game.i18n.localize("RMRPG.Item.Weapon.DamageType.Mental") },
+            { value: "deteriorating", label: game.i18n.localize("RMRPG.Item.Weapon.DamageType.Deteriorating") }
+        ];
+        const normalizedActorRank = String(actorRank ?? "").toUpperCase();
+        const rankBonusFromActor = Number(item.parent?.system?.rank?.bonus ?? NaN);
+        const rankBonus = Number.isFinite(rankBonusFromActor)
+            ? rankBonusFromActor
+            : (RANK_BONUS_BY_RANK[normalizedActorRank] ?? RANK_BONUS_BY_RANK.D);
+        const destructionDiceCount = Math.max(1, rankBonus - 1);
         const categories = resolvedCategories.map((entry) => {
             const categoryLabel = getCategoryLabel(entry.category, localize);
             return {
@@ -130,12 +154,40 @@ export const buildItemContext = async (sheet, context) => {
             };
         });
         const characteristics = ability.characteristics.map((entry) => {
-            const limits = describeCharacteristicLimits(entry.id, modifiers);
+            const limits = describeCharacteristicLimits(entry.id, modifiers, { actorRank });
+            const levelChoices = getCharacteristicLevelChoices(entry.id, localize);
+            const level = clampInteger(Number(entry.level ?? limits.min), limits.min, limits.max);
+            const selectedChoice = levelChoices.find((choice) => Number(choice.level) === level) ?? null;
+            const fallbackOptions = [{ value: String(level), label: String(level) }];
+            const levelOptions = levelChoices.length > 0
+                ? levelChoices.map((choice) => ({
+                    value: choice.value,
+                    label: choice.label
+                }))
+                : fallbackOptions;
+            const selectedLevelCostLabel = selectedChoice ? `${selectedChoice.cost} ${pcLabel}` : `0 ${pcLabel}`;
+            const selectedLevelRankLabelBase = selectedChoice?.minRank ? `${rankLabel} ${selectedChoice.minRank}` : "-";
+            const destructionDie = entry.id === "destruicao" ? DESTRUCTION_DIE_BY_LEVEL[level] ?? "" : "";
+            const destructionPreviewLabel = destructionDie ? `${destructionDiceCount}${destructionDie}` : null;
+            const selectedLevelRankLabel = entry.id === "destruicao" && destructionPreviewLabel
+                ? `${selectedLevelRankLabelBase} | ${destructionPreviewLabel}`
+                : selectedLevelRankLabelBase;
+            const overRanking = selectedChoice
+                ? isOverRankingCharacteristicLevel(entry.id, level, actorRank)
+                : false;
             return {
                 ...entry,
-                level: clampInteger(Number(entry.level ?? limits.min), limits.min, limits.max),
+                level,
                 min: limits.min,
-                max: limits.max
+                max: limits.max,
+                useLevelSelect: true,
+                levelOptions,
+                showDamageType: entry.id === "destruicao",
+                damageType: String(entry.damageType ?? "physical"),
+                damageTypeOptions,
+                selectedLevelCostLabel,
+                selectedLevelRankLabel,
+                overRanking
             };
         });
         const enhancements = ability.enhancements.map((entry) => ({
@@ -167,6 +219,7 @@ export const buildItemContext = async (sheet, context) => {
         context.abilityCategoriesMaxed =
             costInfo.limits.categories !== null && resolvedCategories.length >= costInfo.limits.categories;
         context.abilityRestrictionTargets = restrictionTargets;
+        context.abilityHasOverRankingCharacteristics = characteristics.some((entry) => Boolean(entry.overRanking));
         const categoryTags = categories
             .map((entry) => ({
             name: getCategoryTag(entry.category, localize),

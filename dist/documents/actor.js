@@ -61,12 +61,13 @@ class RMRPGGenericActor extends Actor {
         system.resistance.deteriorating = this.roundDown(deterioratingRes);
         // Resolve linked category-effect items before ability totals are consumed elsewhere.
         const abilityItems = this.items?.filter((item) => item.type === "ability") ?? [];
+        const actorRank = String(system.rank?.value ?? "");
         for (const abilityItem of abilityItems) {
             const ability = normalizeAbilityData(abilityItem.system?.ability);
             const resolvedCategories = resolveAbilityCategories(abilityItem, ability);
-            const sanitized = sanitizeAbilityData({ ...ability, categories: resolvedCategories });
+            const sanitized = sanitizeAbilityData({ ...ability, categories: resolvedCategories }, { actorRank });
             abilityItem.system.ability = sanitized;
-            abilityItem.system.cost = calculateAbilityCost(sanitized).totalCost;
+            abilityItem.system.cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
         }
     }
     resolveRankState(system) {

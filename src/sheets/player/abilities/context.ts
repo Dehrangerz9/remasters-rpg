@@ -4,6 +4,7 @@ import { resolveAbilityCategories } from "../../../abilities/category-links.js";
 
 export const applyPlayerAbilitiesContext = (context: any) => {
   const abilities = context.actor.items?.filter((item: any) => item.type === "ability") ?? [];
+  const actorRank = String(context.system?.rank?.value ?? "");
   abilities.sort((a: any, b: any) => {
     const aSort = Number(a.sort ?? 0);
     const bSort = Number(b.sort ?? 0);
@@ -17,7 +18,7 @@ export const applyPlayerAbilitiesContext = (context: any) => {
     if (rawAbility && typeof rawAbility === "object") {
       const ability = normalizeAbilityData(rawAbility);
       const resolvedCategories = resolveAbilityCategories(item, ability);
-      computedCost = calculateAbilityCost({ ...ability, categories: resolvedCategories }).totalCost;
+      computedCost = calculateAbilityCost({ ...ability, categories: resolvedCategories }, { actorRank }).totalCost;
     }
     return {
       id: String(item.id ?? ""),

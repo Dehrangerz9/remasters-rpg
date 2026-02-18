@@ -35,8 +35,9 @@ export const syncAbilitiesForCategoryEffect = async (item: any) => {
 
   const ability = normalizeAbilityData(abilityItem.system?.ability);
   const resolvedCategories = resolveAbilityCategories(abilityItem, ability);
-  const sanitized = sanitizeAbilityData({ ...ability, categories: resolvedCategories });
-  const costInfo = calculateAbilityCost(sanitized);
+  const actorRank = String(actor.system?.rank?.value ?? "");
+  const sanitized = sanitizeAbilityData({ ...ability, categories: resolvedCategories }, { actorRank });
+  const costInfo = calculateAbilityCost(sanitized, { actorRank });
 
   const localize = (key: string) => game.i18n.localize(key);
   const categoryTagNames = new Set(listCategoryTags(localize).map((tag) => tag.toLowerCase()));

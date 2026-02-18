@@ -25,6 +25,7 @@ const dedupeTags = (entries) => {
     });
 };
 const isActorOwnedAbility = (sheet) => sheet.item.type === "ability" && sheet.item.parent?.documentName === "Actor";
+const getActorRank = (sheet) => isActorOwnedAbility(sheet) ? String(sheet.item.parent.system?.rank?.value ?? "") : null;
 const findLinkedCategoryItem = (sheet, entry) => {
     if (!isActorOwnedAbility(sheet))
         return null;
@@ -105,9 +106,10 @@ export const setupAbilityListeners = (sheet, html) => {
     const options = buildAbilityOptions(localize);
     const resolveCategoryLabel = (category) => getCategoryLabel(category, localize) || category;
     const persistAbility = async (ability) => {
+        const actorRank = getActorRank(sheet);
         const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
-        const sanitized = sanitizeAbilityData({ ...ability, categories: resolvedCategories });
-        const cost = calculateAbilityCost(sanitized).totalCost;
+        const sanitized = sanitizeAbilityData({ ...ability, categories: resolvedCategories }, { actorRank });
+        const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
         await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
         await syncCategoryTags(sheet, sanitized);
         return sanitized;
@@ -117,7 +119,8 @@ export const setupAbilityListeners = (sheet, html) => {
         await sheet._onSubmit(event, { preventClose: true, preventRender: true });
         const ability = normalizeAbilityData(sheet.item.system?.ability);
         const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
-        const limit = calculateAbilityCost({ ...ability, categories: resolvedCategories }).limits.categories;
+        const actorRank = getActorRank(sheet);
+        const limit = calculateAbilityCost({ ...ability, categories: resolvedCategories }, { actorRank }).limits.categories;
         if (limit !== null && resolvedCategories.length >= limit)
             return;
         const defaultCategory = options.categories[0]?.value ?? "";
@@ -213,7 +216,8 @@ export const setupAbilityListeners = (sheet, html) => {
                 return;
             const ability = normalizeAbilityData(sheet.item.system?.ability);
             const resolvedCategories = resolveAbilityCategories(sheet.item, ability);
-            const limit = calculateAbilityCost({ ...ability, categories: resolvedCategories }).limits.categories;
+            const actorRank = getActorRank(sheet);
+            const limit = calculateAbilityCost({ ...ability, categories: resolvedCategories }, { actorRank }).limits.categories;
             if (limit !== null && resolvedCategories.length >= limit)
                 return;
             const rawSystem = itemData.system ?? {};
@@ -252,10 +256,12 @@ export const setupAbilityListeners = (sheet, html) => {
         const rule = getAbilityCharacteristicRule(defaultId);
         ability.characteristics.push({
             id: defaultId,
-            level: rule?.min ?? 1
+            level: rule?.min ?? 1,
+            damageType: defaultId === "destruicao" ? "physical" : ""
         });
-        const sanitized = sanitizeAbilityData(ability);
-        const cost = calculateAbilityCost(sanitized).totalCost;
+        const actorRank = getActorRank(sheet);
+        const sanitized = sanitizeAbilityData(ability, { actorRank });
+        const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
         await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
     });
     html.find("[data-action='ability-characteristic-remove']").on("click", async (event) => {
@@ -268,8 +274,9 @@ export const setupAbilityListeners = (sheet, html) => {
         if (index >= ability.characteristics.length)
             return;
         ability.characteristics.splice(index, 1);
-        const sanitized = sanitizeAbilityData(ability);
-        const cost = calculateAbilityCost(sanitized).totalCost;
+        const actorRank = getActorRank(sheet);
+        const sanitized = sanitizeAbilityData(ability, { actorRank });
+        const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
         await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
     });
     html.find("[data-action='ability-enhancement-add']").on("click", async (event) => {
@@ -277,8 +284,9 @@ export const setupAbilityListeners = (sheet, html) => {
         await sheet._onSubmit(event, { preventClose: true, preventRender: true });
         const ability = normalizeAbilityData(sheet.item.system?.ability);
         ability.enhancements.push({ id: options.enhancements[0]?.value ?? "" });
-        const sanitized = sanitizeAbilityData(ability);
-        const cost = calculateAbilityCost(sanitized).totalCost;
+        const actorRank = getActorRank(sheet);
+        const sanitized = sanitizeAbilityData(ability, { actorRank });
+        const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
         await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
     });
     html.find("[data-action='ability-enhancement-remove']").on("click", async (event) => {
@@ -291,8 +299,9 @@ export const setupAbilityListeners = (sheet, html) => {
         if (index >= ability.enhancements.length)
             return;
         ability.enhancements.splice(index, 1);
-        const sanitized = sanitizeAbilityData(ability);
-        const cost = calculateAbilityCost(sanitized).totalCost;
+        const actorRank = getActorRank(sheet);
+        const sanitized = sanitizeAbilityData(ability, { actorRank });
+        const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
         await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
     });
 };

@@ -6,6 +6,16 @@ import { resolveAbilityCategories } from "../../abilities/category-links.js";
 import { applyItemThemeClass } from "./theme.js";
 import { buildItemContext } from "./context.js";
 import { activateItemListeners } from "./listeners.js";
+const coerceIndexedCollection = (value) => {
+    if (Array.isArray(value))
+        return value;
+    if (!value || typeof value !== "object")
+        return null;
+    return Object.entries(value)
+        .filter(([key]) => /^\d+$/.test(key))
+        .sort((a, b) => Number(a[0]) - Number(b[0]))
+        .map(([, entry]) => entry);
+};
 export class RMRPGItemSheet extends ItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -46,16 +56,32 @@ export class RMRPGItemSheet extends ItemSheet {
         }
         if (this.item.type === "ability") {
             expanded.system = expanded.system ?? {};
+            const submittedAbility = expanded.system?.ability;
+            if (submittedAbility && typeof submittedAbility === "object") {
+                const submittedCategories = coerceIndexedCollection(submittedAbility.categories);
+                const submittedCharacteristics = coerceIndexedCollection(submittedAbility.characteristics);
+                const submittedEnhancements = coerceIndexedCollection(submittedAbility.enhancements);
+                if (submittedCategories) {
+                    submittedAbility.categories = submittedCategories;
+                }
+                if (submittedCharacteristics) {
+                    submittedAbility.characteristics = submittedCharacteristics;
+                }
+                if (submittedEnhancements) {
+                    submittedAbility.enhancements = submittedEnhancements;
+                }
+            }
             const currentAbility = this.item.system?.ability ?? {};
             const mergedAbility = foundry.utils.mergeObject(currentAbility, expanded.system?.ability ?? {}, {
                 inplace: false,
                 overwrite: true
             });
-            const ability = sanitizeAbilityData(mergedAbility);
+            const actorRank = this.item.parent?.documentName === "Actor" ? String(this.item.parent.system?.rank?.value ?? "") : null;
+            const ability = sanitizeAbilityData(mergedAbility, { actorRank });
             const resolvedCategories = resolveAbilityCategories(this.item, ability);
-            const resolvedAbility = sanitizeAbilityData({ ...ability, categories: resolvedCategories });
+            const resolvedAbility = sanitizeAbilityData({ ...ability, categories: resolvedCategories }, { actorRank });
             expanded.system.ability = resolvedAbility;
-            expanded.system.cost = calculateAbilityCost(resolvedAbility).totalCost;
+            expanded.system.cost = calculateAbilityCost(resolvedAbility, { actorRank }).totalCost;
         }
         const result = await super._updateObject(event, expanded);
         if (this.item.type === "category-effect") {

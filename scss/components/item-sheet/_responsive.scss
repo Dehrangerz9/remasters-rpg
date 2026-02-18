@@ -18,5 +18,24 @@
     .weapon-bonus-row > :nth-child(2) {
       flex: 1 1 90px;
     }
+
+    &.ability-sheet {
+      .ability-characteristic-header {
+        display: none;
+      }
+
+      .ability-entry-row--characteristic {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 0.4rem;
+      }
+
+      .ability-entry-row--characteristic .ability-characteristic-meta {
+        text-align: left;
+      }
+
+      .ability-entry-row--characteristic .ability-remove {
+        justify-self: end;
+      }
+    }
   }
 }
