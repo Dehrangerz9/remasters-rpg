@@ -219,7 +219,11 @@
         "Enhancements": {
           "Title": "Enhancements",
           "Add": "Add Enhancement",
-          "ToggleDescription": "Expand or collapse description"
+          "ToggleDescription": "Expand or collapse description",
+          "RequirementNotMetReactiveCasting": "Requirement not met: Rank C and casting time up to 1 action.",
+          "RequirementNotMetCarefulCasting": "Requirement not met: the ability must have the Area characteristic.",
+          "RequirementNotMetDestructiveCasting": "Requirement not met: the ability must have the Area characteristic.",
+          "RequirementNotMetPiercing": "Requirement not met: the ability must have the Destruction characteristic."
         },
         "Enhancement": {
           "CaracteristicaAdicional": "Additional Characteristic",
@@ -240,6 +244,11 @@
           "DadoReikiAprimorado": "Improve the reiki die used by this ability.",
           "ConjuracaoDestrutiva": "Boost destructive output at the cost of control.",
           "Perfuracao": "Increase penetration against defenses or resistances."
+        },
+        "Tags": {
+          "Cuidadosa": "Careful",
+          "Destrutiva": "Destructive",
+          "Perfurante": "Piercing"
         },
         "Restrictions": {
           "Title": "Restrictions",

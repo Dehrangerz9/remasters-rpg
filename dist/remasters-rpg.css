@@ -1647,6 +1647,18 @@
   border-color: #8fd3a1;
   color: #2a7a39;
 }
+.rmrpg-sheet.rmrpg-item-sheet .tag-pill.is-category.is-careful,
+.rmrpg-sheet .rmrpg-item-sheet .tag-pill.is-category.is-careful {
+  background: #e3f8ea;
+  border-color: #78c98f;
+  color: #1f7a38;
+}
+.rmrpg-sheet.rmrpg-item-sheet .tag-pill.offensive-trait,
+.rmrpg-sheet .rmrpg-item-sheet .tag-pill.offensive-trait {
+  background: #fbeaea;
+  border-color: #c96d6d;
+  color: #7a1f1f;
+}
 .rmrpg-sheet.rmrpg-item-sheet .tag-text,
 .rmrpg-sheet .rmrpg-item-sheet .tag-text {
   line-height: 1;
@@ -2371,6 +2383,13 @@
 .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-enhancement-description.is-expanded .ability-enhancement-toggle i,
 .rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-enhancement-description.is-expanded .ability-enhancement-toggle i {
   transform: rotate(180deg);
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-enhancement-requirement-warning,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-enhancement-requirement-warning {
+  color: #9a4e2b;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-description-grid,

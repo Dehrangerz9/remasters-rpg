@@ -18,7 +18,7 @@
       <span class="tag-text">{{typeTag.name}}</span>
     </div>
     {{#each tagEntries}}
-    <div class="tag-pill{{#if this.locked}} is-locked{{/if}}{{#if this.isCategory}} is-category{{/if}}" data-index="{{@index}}" data-locked="{{this.locked}}" title="{{this.tooltip}}">
+    <div class="tag-pill{{#if this.locked}} is-locked{{/if}}{{#if this.isCategory}} is-category{{/if}}{{#if this.isCareful}} is-careful{{/if}}{{#if this.isOffensiveTrait}} offensive-trait{{/if}}" data-index="{{@index}}" data-locked="{{this.locked}}" title="{{this.tooltip}}">
       <span class="tag-text">{{this.name}}</span>
       {{#unless this.locked}}
         <button

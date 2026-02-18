@@ -160,6 +160,9 @@
                 {{/if}}
               </div>
               {{/if}}
+              {{#if this.requirementWarning}}
+              <div class="ability-enhancement-requirement-warning">{{this.requirementWarning}}</div>
+              {{/if}}
             </div>
             {{/each}}
             <button type="button" class="ability-add" data-action="ability-enhancement-add">

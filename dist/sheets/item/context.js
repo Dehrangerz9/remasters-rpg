@@ -11,6 +11,9 @@ const DESTRUCTION_DIE_BY_LEVEL = {
     5: "d10",
     6: "d12"
 };
+const RANK_ORDER = ["D", "C", "B", "A", "S"];
+const RANK_INDEX = new Map(RANK_ORDER.map((rank, index) => [rank, index]));
+const REACTIVE_ALLOWED_CASTING_TIMES = new Set(["1-action", "free", "reaction"]);
 export const buildItemContext = async (sheet, context) => {
     const item = context.item ?? sheet.item ?? sheet.document ?? sheet.object;
     if (!item)
@@ -143,6 +146,7 @@ export const buildItemContext = async (sheet, context) => {
             { value: "line", label: game.i18n.localize("RMRPG.Item.Ability.AreaType.Line") }
         ];
         const normalizedActorRank = String(actorRank ?? "").toUpperCase();
+        const actorRankIndex = RANK_INDEX.get(String(normalizedActorRank ?? ""));
         const rankBonusFromActor = Number(item.parent?.system?.rank?.bonus ?? NaN);
         const rankBonus = Number.isFinite(rankBonusFromActor)
             ? rankBonusFromActor
@@ -203,13 +207,40 @@ export const buildItemContext = async (sheet, context) => {
                 overRanking
             };
         });
+        const hasAreaCharacteristic = ability.characteristics.some((characteristic) => characteristic.id === "area");
+        const hasDestructionCharacteristic = ability.characteristics.some((characteristic) => characteristic.id === "destruicao");
         const enhancements = ability.enhancements.map((entry) => {
             const description = String(describeEnhancement(entry.id, localize) ?? "").trim();
             const isLongDescription = description.length > 280 || description.includes("\n");
+            let requirementWarning = "";
+            if (entry.id === "conjuracao-reativa") {
+                const minimumRankIndex = RANK_INDEX.get("C") ?? 1;
+                const meetsRankRequirement = actorRankIndex !== undefined && Number.isFinite(actorRankIndex) && actorRankIndex >= minimumRankIndex;
+                const meetsCastingTimeRequirement = REACTIVE_ALLOWED_CASTING_TIMES.has(String(ability.castingTime ?? ""));
+                if (!meetsRankRequirement || !meetsCastingTimeRequirement) {
+                    requirementWarning = localize("RMRPG.Item.Ability.Enhancements.RequirementNotMetReactiveCasting");
+                }
+            }
+            if (entry.id === "conjuracao-cuidadosa") {
+                if (!hasAreaCharacteristic) {
+                    requirementWarning = localize("RMRPG.Item.Ability.Enhancements.RequirementNotMetCarefulCasting");
+                }
+            }
+            if (entry.id === "conjuracao-destrutiva") {
+                if (!hasAreaCharacteristic) {
+                    requirementWarning = localize("RMRPG.Item.Ability.Enhancements.RequirementNotMetDestructiveCasting");
+                }
+            }
+            if (entry.id === "perfuracao") {
+                if (!hasDestructionCharacteristic) {
+                    requirementWarning = localize("RMRPG.Item.Ability.Enhancements.RequirementNotMetPiercing");
+                }
+            }
             return {
                 ...entry,
                 description,
-                isLongDescription
+                isLongDescription,
+                requirementWarning
             };
         });
         const restrictionTargets = characteristics.map((entry, index) => ({
@@ -247,9 +278,62 @@ export const buildItemContext = async (sheet, context) => {
             tooltip: getCategoryTooltip(entry.category, localize)
         }))
             .filter((entry) => entry.name);
-        if (categoryTags.length) {
+        const hasCarefulEnhancement = ability.enhancements.some((entry) => entry.id === "conjuracao-cuidadosa");
+        const hasDestructiveEnhancement = ability.enhancements.some((entry) => entry.id === "conjuracao-destrutiva");
+        const hasPiercingEnhancement = ability.enhancements.some((entry) => entry.id === "perfuracao");
+        const carefulTag = hasCarefulEnhancement
+            ? {
+                name: localize("RMRPG.Item.Ability.Tags.Cuidadosa"),
+                tooltip: localize("RMRPG.Item.Ability.Enhancement.ConjuracaoCuidadosa"),
+                isCategory: true,
+                isCareful: true
+            }
+            : null;
+        const destructiveTag = hasDestructiveEnhancement
+            ? {
+                name: localize("RMRPG.Item.Ability.Tags.Destrutiva"),
+                tooltip: localize("RMRPG.Item.Ability.Enhancement.ConjuracaoDestrutiva"),
+                isOffensiveTrait: true
+            }
+            : null;
+        const piercingTag = hasPiercingEnhancement
+            ? {
+                name: `${localize("RMRPG.Item.Ability.Tags.Perfurante")} ${rankBonus}`,
+                tooltip: localize("RMRPG.Item.Ability.Enhancement.Perfuracao"),
+                isOffensiveTrait: true
+            }
+            : null;
+        if (categoryTags.length || carefulTag || destructiveTag || piercingTag) {
             const categoryTagNames = new Set(listCategoryTags(localize).map((tag) => tag.toLowerCase()));
-            const tagMap = new Map(categoryTags.map((entry) => [String(entry.name ?? "").toLowerCase(), entry]));
+            const managedTagMap = new Map();
+            for (const entry of categoryTags) {
+                const key = String(entry.name ?? "").toLowerCase();
+                if (!key)
+                    continue;
+                managedTagMap.set(key, {
+                    name: entry.name,
+                    tooltip: entry.tooltip,
+                    isCategory: true
+                });
+            }
+            if (carefulTag?.name) {
+                const carefulKey = String(carefulTag.name).toLowerCase();
+                if (carefulKey) {
+                    managedTagMap.set(carefulKey, carefulTag);
+                }
+            }
+            if (destructiveTag?.name) {
+                const destructiveKey = String(destructiveTag.name).toLowerCase();
+                if (destructiveKey) {
+                    managedTagMap.set(destructiveKey, destructiveTag);
+                }
+            }
+            if (piercingTag?.name) {
+                const piercingKey = String(piercingTag.name).toLowerCase();
+                if (piercingKey) {
+                    managedTagMap.set(piercingKey, piercingTag);
+                }
+            }
             const merged = [];
             const seen = new Set();
             for (const entry of context.tagEntries ?? []) {
@@ -258,17 +342,21 @@ export const buildItemContext = async (sheet, context) => {
                     continue;
                 if (categoryTagNames.has(key))
                     continue;
+                if (managedTagMap.has(key))
+                    continue;
                 merged.push(entry);
                 seen.add(key);
             }
-            for (const [key, categoryTag] of tagMap.entries()) {
+            for (const [key, managedTag] of managedTagMap.entries()) {
                 if (seen.has(key))
                     continue;
                 merged.push({
-                    name: categoryTag.name,
-                    tooltip: categoryTag.tooltip,
+                    name: managedTag.name,
+                    tooltip: managedTag.tooltip,
                     locked: true,
-                    isCategory: true
+                    isCategory: Boolean(managedTag.isCategory),
+                    isCareful: Boolean(managedTag.isCareful),
+                    isOffensiveTrait: Boolean(managedTag.isOffensiveTrait)
                 });
                 seen.add(key);
             }

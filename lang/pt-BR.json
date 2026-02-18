@@ -472,7 +472,11 @@
         "Enhancements": {
           "Title": "Aprimoramentos",
           "Add": "Adicionar Aprimoramento",
-          "ToggleDescription": "Expandir ou recolher descrição"
+          "ToggleDescription": "Expandir ou recolher descrição",
+          "RequirementNotMetReactiveCasting": "Requisito não cumprido: Rank C e tempo de conjuração de até 1 ação.",
+          "RequirementNotMetCarefulCasting": "Requisito não cumprido: a habilidade precisa possuir a característica Área.",
+          "RequirementNotMetDestructiveCasting": "Requisito não cumprido: a habilidade precisa possuir a característica Área.",
+          "RequirementNotMetPiercing": "Requisito não cumprido: a habilidade precisa possuir a característica Destruição."
         },
         "Enhancement": {
           "CaracteristicaAdicional": "Característica adicional",
@@ -488,11 +492,16 @@
           "CaracteristicaAdicional": "A habilidade possui um espaço de característica adicional.",
           "CategoriaAdicional": "A habilidade possui um espaço de categoria adicional.",
           "ConjuracaoAdiada": "Você prepara a sua habilidade para ser conjurada futuramente. Conjure a habilidade e defina um gatilho para a sua ativação, da mesma forma que a ação Preparar. Quando este gatilho acontecer, a habilidade é conjurada. Ao preparar a habilidade, você deve escolher prepará-la em uma unidade ou em uma criatura. Ao preparar a habilidade em uma unidade, quando uma criatura estiver ocupando o espaço da unidade, ao realizar o gatilho da habilidade, a habilidade é conjurada. Se a habilidade possuir a característica área, qualquer criatura dentro da área a partir da unidade é capaz de ativar o gatilho. Ao preparar a habilidade em uma criatura, o gatilho é ativado quando a criatura ou fator externo provocar a ativação do gatilho. Ao ser ativado, a habilidade é conjurada na criatura e afeta somente ela. Se a habilidade possuir a característica alvos, você pode preparar a habilidade em até o número máximo de alvos, fazendo com que cada alvo possa ativar o gatilho em si. Você pode ter a habilidade adiada desta forma por um tempo indefinido, desde que o gatilho não tenha sido cumprido. Você pode ter somente uma habilidade preparada por vez; ao preparar uma nova habilidade, a preparação anterior é desfeita.",
-          "ConjuracaoReativa": "Permite conjurar como reação em condições definidas.",
-          "ConjuracaoCuidadosa": "Reduz riscos ou impactos colaterais na conjuração.",
-          "DadoReikiAprimorado": "Melhora o dado de reiki usado por esta habilidade.",
-          "ConjuracaoDestrutiva": "Aumenta o potencial destrutivo com menor controle.",
-          "Perfuracao": "Aumenta a perfuração contra defesas ou resistências."
+          "ConjuracaoReativa": "Requisito: Rank C, o tempo de conjuração da habilidade não pode ultrapassar 1 ação. Descrição: Defina um gatilho para a conjuração da habilidade, da mesma forma que a ação Preparar. Quando este gatilho acontecer, você pode gastar uma reação para conjurar a habilidade.",
+          "ConjuracaoCuidadosa": "Requisito: A habilidade possui a característica Área. Descrição: As criaturas aliadas atingidas pela habilidade, ao realizar um Teste de Atributo, transformam uma falha em um sucesso ou um sucesso em um sucesso crítico.",
+          "DadoReikiAprimorado": "Descrição: A CD da Checagem de Reiki para conjurar essa habilidade diminui em 1.",
+          "ConjuracaoDestrutiva": "Requisito: A habilidade possui a característica Área. Durante a conjuração da habilidade, realize uma checagem de reiki adicional. Criaturas que obterem sucesso no Teste de Atributo para resistir à habilidade recebem dano total em vez de metade do dano.",
+          "Perfuracao": "Requisito: A habilidade possui a característica Destruição. Descrição: O dano causado pela habilidade ignora um valor de resistência igual ao valor de seu Bônus de Rank."
+        },
+        "Tags": {
+          "Cuidadosa": "Cuidadosa",
+          "Destrutiva": "Destrutiva",
+          "Perfurante": "Perfurante"
         },
         "Restrictions": {
           "Title": "Restrições",
