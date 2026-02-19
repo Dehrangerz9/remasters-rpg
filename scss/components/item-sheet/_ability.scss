@@ -48,9 +48,20 @@
       padding-right: 0.2rem;
     }
 
+    .ability-tab-content > .tab[data-tab="additional-settings"] {
+      max-height: 100%;
+      overflow-y: auto;
+      padding-right: 0.2rem;
+    }
+
     .ability-details {
       display: grid;
       gap: 0.85rem;
+    }
+
+    .ability-details--additional {
+      align-content: start;
+      grid-auto-rows: min-content;
     }
 
     .ability-section {
@@ -260,7 +271,21 @@
     }
 
     .ability-entry-row--triple {
-      grid-template-columns: 1fr 90px auto;
+      grid-template-columns: minmax(0, 1fr) minmax(90px, 170px) auto;
+    }
+
+    .ability-toggle-row {
+      align-items: center;
+      display: inline-flex;
+      gap: 0.45rem;
+      margin: 0;
+
+      span {
+        color: var(--rmrpg-text);
+        font-size: 0.74rem;
+        font-weight: 600;
+        line-height: 1.2;
+      }
     }
 
     .ability-characteristic-header,

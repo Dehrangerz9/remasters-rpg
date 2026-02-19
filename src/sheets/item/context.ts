@@ -16,6 +16,7 @@ import {
 import { resolveAbilityCategories } from "../../abilities/category-links.js";
 import { buildTagContext } from "./tags.js";
 import { RANK_BONUS_BY_RANK } from "../../constants.js";
+import { DERIVED_CONFIG } from "../actor/config.js";
 
 const DESTRUCTION_DIE_BY_LEVEL: Record<number, string> = {
   1: "",
@@ -29,6 +30,38 @@ const DESTRUCTION_DIE_BY_LEVEL: Record<number, string> = {
 const RANK_ORDER = ["D", "C", "B", "A", "S"] as const;
 const RANK_INDEX = new Map<string, number>(RANK_ORDER.map((rank, index) => [rank, index]));
 const REACTIVE_ALLOWED_CASTING_TIMES = new Set(["1-action", "free", "reaction"]);
+
+const normalizeAbilityConfig = (raw: any) => {
+  const source = raw && typeof raw === "object" ? raw : {};
+  const attack = source.attack && typeof source.attack === "object" ? source.attack : {};
+  const secondary = source.secondary && typeof source.secondary === "object" ? source.secondary : {};
+  const damage = source.damage && typeof source.damage === "object" ? source.damage : {};
+  return {
+    attack: {
+      useOverride: Boolean(attack.useOverride),
+      attribute: String(attack.attribute ?? "default") || "default",
+      manualBonus: Number.isFinite(Number(attack.manualBonus)) ? Math.floor(Number(attack.manualBonus)) : 0,
+      bonuses: normalizeBonusArray(attack.bonuses).map((entry: any) => ({
+        label: String(entry?.label ?? "").trim(),
+        value: Number.isFinite(Number(entry?.value)) ? Math.floor(Number(entry.value)) : 0
+      }))
+    },
+    secondary: {
+      attribute: String(secondary.attribute ?? "vigor") || "vigor",
+      manualDcEnabled: Boolean(secondary.manualDcEnabled),
+      manualDc: Number.isFinite(Number(secondary.manualDc)) ? Math.floor(Number(secondary.manualDc)) : 10
+    },
+    damage: {
+      useOverride: Boolean(damage.useOverride),
+      formula: String(damage.formula ?? "").trim(),
+      type: String(damage.type ?? "physical") || "physical",
+      bonuses: normalizeBonusArray(damage.bonuses).map((entry: any) => ({
+        formula: String(entry?.formula ?? "").trim(),
+        type: String(entry?.type ?? "physical") || "physical"
+      }))
+    }
+  };
+};
 
 export const buildItemContext = async (sheet: any, context: any) => {
   const item = context.item ?? sheet.item ?? sheet.document ?? sheet.object;
@@ -252,6 +285,16 @@ export const buildItemContext = async (sheet: any, context: any) => {
     });
     const hasAreaCharacteristic = ability.characteristics.some((characteristic) => characteristic.id === "area");
     const hasDestructionCharacteristic = ability.characteristics.some((characteristic) => characteristic.id === "destruicao");
+    const hasConditionCharacteristic = ability.characteristics.some((characteristic) => characteristic.id === "condicao");
+    const tagNames = new Set(
+      ((context.tagEntries as any[]) ?? [])
+        .map((entry) => String(entry?.name ?? "").trim().toLowerCase())
+        .filter(Boolean)
+    );
+    const hasAreaTag = tagNames.has("area");
+    const hasDestructionTag = tagNames.has("destruicao");
+    const hasConditionTag = tagNames.has("condicao");
+    const hasAttackTag = tagNames.has("ataque");
 
     const enhancements = ability.enhancements.map((entry) => {
       const description = String(describeEnhancement(entry.id, localize) ?? "").trim();
@@ -324,6 +367,26 @@ export const buildItemContext = async (sheet: any, context: any) => {
     context.abilityRestrictionTargets = restrictionTargets;
     context.abilityHasOverRankingCharacteristics = characteristics.some((entry) => Boolean(entry.overRanking));
     context.abilityRestrictionsPlaceholder = localize("RMRPG.Item.Ability.Restrictions.Placeholder");
+    context.abilityFeatureState = {
+      hasAttack: hasDestructionCharacteristic || hasAttackTag,
+      hasArea: hasAreaCharacteristic || hasAreaTag,
+      hasCondition: hasConditionCharacteristic || hasConditionTag,
+      hasSecondary: hasAreaCharacteristic || hasAreaTag || hasConditionCharacteristic || hasConditionTag,
+      hasDestruction: hasDestructionCharacteristic || hasDestructionTag
+    };
+    context.abilityAdditionalSettings = normalizeAbilityConfig(context.system?.abilityConfig);
+    context.abilityDamageTypeOptions = damageTypeOptions;
+    context.abilityAttackAttributeOptions = [
+      {
+        value: "default",
+        label: localize("RMRPG.Item.Ability.AdditionalSettings.UseCastingAttribute")
+      },
+      ...attributeOptions
+    ];
+    context.abilitySecondaryAttributeOptions = DERIVED_CONFIG.filter((entry) => entry.key !== "iniciativa").map((entry) => ({
+      value: entry.key,
+      label: localize(entry.labelKey)
+    }));
 
     const categoryTags = categories
       .map((entry) => ({

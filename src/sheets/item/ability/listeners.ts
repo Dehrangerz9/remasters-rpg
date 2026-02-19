@@ -123,6 +123,22 @@ const syncCategoryTags = async (sheet: any, ability: ReturnType<typeof normalize
   await sheet.item.update({ "system.tags": merged });
 };
 
+const normalizeAttackBonusConfig = (raw: unknown) => {
+  if (!Array.isArray(raw)) return [] as Array<{ label: string; value: number }>;
+  return raw.map((entry: any) => ({
+    label: String(entry?.label ?? ""),
+    value: Number.isFinite(Number(entry?.value)) ? Math.floor(Number(entry.value)) : 0
+  }));
+};
+
+const normalizeDamageBonusConfig = (raw: unknown) => {
+  if (!Array.isArray(raw)) return [] as Array<{ formula: string; type: string }>;
+  return raw.map((entry: any) => ({
+    formula: String(entry?.formula ?? ""),
+    type: String(entry?.type ?? "physical") || "physical"
+  }));
+};
+
 export const setupAbilityListeners = (sheet: any, html: JQuery) => {
   if (sheet.item.type !== "ability") return;
   const localize = (key: string) => game.i18n.localize(key);
@@ -375,6 +391,52 @@ export const setupAbilityListeners = (sheet: any, html: JQuery) => {
     const sanitized = sanitizeAbilityData(ability, { actorRank });
     const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
     await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
+  });
+
+  html.find("[data-action='ability-attack-bonus-add']").on("click", async (event: any) => {
+    event.preventDefault();
+    await sheet._onSubmit(event, { preventClose: true, preventRender: true });
+    const bonuses = normalizeAttackBonusConfig(sheet.item.system?.abilityConfig?.attack?.bonuses).map((entry) => ({
+      ...entry
+    }));
+    bonuses.push({ label: "", value: 0 });
+    await sheet.item.update({ "system.abilityConfig.attack.bonuses": bonuses });
+  });
+
+  html.find("[data-action='ability-attack-bonus-remove']").on("click", async (event: any) => {
+    event.preventDefault();
+    const index = Number(event.currentTarget.dataset.index);
+    if (!Number.isFinite(index) || index < 0) return;
+    await sheet._onSubmit(event, { preventClose: true, preventRender: true });
+    const bonuses = normalizeAttackBonusConfig(sheet.item.system?.abilityConfig?.attack?.bonuses).map((entry) => ({
+      ...entry
+    }));
+    if (index >= bonuses.length) return;
+    bonuses.splice(index, 1);
+    await sheet.item.update({ "system.abilityConfig.attack.bonuses": bonuses });
+  });
+
+  html.find("[data-action='ability-damage-bonus-add']").on("click", async (event: any) => {
+    event.preventDefault();
+    await sheet._onSubmit(event, { preventClose: true, preventRender: true });
+    const bonuses = normalizeDamageBonusConfig(sheet.item.system?.abilityConfig?.damage?.bonuses).map((entry) => ({
+      ...entry
+    }));
+    bonuses.push({ formula: "", type: "physical" });
+    await sheet.item.update({ "system.abilityConfig.damage.bonuses": bonuses });
+  });
+
+  html.find("[data-action='ability-damage-bonus-remove']").on("click", async (event: any) => {
+    event.preventDefault();
+    const index = Number(event.currentTarget.dataset.index);
+    if (!Number.isFinite(index) || index < 0) return;
+    await sheet._onSubmit(event, { preventClose: true, preventRender: true });
+    const bonuses = normalizeDamageBonusConfig(sheet.item.system?.abilityConfig?.damage?.bonuses).map((entry) => ({
+      ...entry
+    }));
+    if (index >= bonuses.length) return;
+    bonuses.splice(index, 1);
+    await sheet.item.update({ "system.abilityConfig.damage.bonuses": bonuses });
   });
 
   html.find("[data-action='ability-enhancement-toggle']").on("click", (event: any) => {

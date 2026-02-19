@@ -105,6 +105,12 @@
         "NewName": "New Ability",
         "Edit": "Edit ability",
         "Cast": "Cast ability",
+        "CastRoll": {
+          "RollAttack": "Roll Attack",
+          "SecondaryButton": "Secondary {attribute} test CDE {dc}",
+          "RollDamage": "Roll Damage",
+          "NoActions": "No roll action"
+        },
         "Delete": "Delete ability",
         "Empty": "No abilities yet.",
         "Columns": {

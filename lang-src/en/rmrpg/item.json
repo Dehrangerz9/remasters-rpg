@@ -259,6 +259,33 @@
           "TargetLabel": "Characteristic",
           "TargetPlaceholder": "Select a characteristic",
           "TargetEmpty": "Unnamed characteristic"
+        },
+        "AdditionalSettings": {
+          "Tab": "Additional Settings",
+          "UseCastingAttribute": "Use actor casting attribute",
+          "BonusLabel": "Bonus label",
+          "NoneTitle": "No Additional Settings",
+          "NoneDescription": "Add Destruction, Area or Condition to unlock cast settings.",
+          "Attack": {
+            "Title": "Attack",
+            "OverrideToggle": "Use attack overrides",
+            "Attribute": "Attribute",
+            "ManualBonus": "Manual bonus",
+            "AddBonus": "Add attack bonus"
+          },
+          "Secondary": {
+            "Title": "Secondary Test",
+            "Attribute": "Secondary attribute",
+            "ManualDc": "Manual CDE",
+            "UseManualDc": "Use manual CDE instead of actor CDE"
+          },
+          "Damage": {
+            "Title": "Damage",
+            "OverrideToggle": "Use damage override formula",
+            "Formula": "Base formula",
+            "Type": "Base type",
+            "AddBonus": "Add damage part"
+          }
         }
       },
       "AbilityCategory": {

@@ -105,6 +105,12 @@
         "NewName": "Nova Habilidade",
         "Edit": "Editar habilidade",
         "Cast": "Conjurar habilidade",
+        "CastRoll": {
+          "RollAttack": "Rolar Ataque",
+          "SecondaryButton": "Teste de Secundario de {attribute} CDE {dc}",
+          "RollDamage": "Rolar Dano",
+          "NoActions": "Sem ação de rolagem"
+        },
         "Delete": "Excluir habilidade",
         "Empty": "Nenhuma habilidade ainda.",
         "Columns": {

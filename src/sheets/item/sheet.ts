@@ -16,13 +16,95 @@ const coerceIndexedCollection = (value: unknown) => {
     .map(([, entry]) => entry);
 };
 
+const normalizeTagEntries = (raw: unknown) => {
+  const source = Array.isArray(raw) ? raw : [];
+  return source
+    .map((entry: any) =>
+      typeof entry === "string"
+        ? { name: String(entry ?? "").trim(), tooltip: "" }
+        : { name: String(entry?.name ?? "").trim(), tooltip: String(entry?.tooltip ?? "").trim() }
+    )
+    .filter((entry) => entry.name);
+};
+
+const dedupeTagEntries = (entries: Array<{ name: string; tooltip: string }>) => {
+  const seen = new Set<string>();
+  return entries.filter((entry) => {
+    const key = entry.name.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+const syncAbilityAutoTags = (rawTags: unknown, ability: any) => {
+  const tags = normalizeTagEntries(rawTags);
+  const managedNames = new Set(["ataque", "area", "condicao", "destruicao"]);
+  const preserved = tags.filter((tag) => !managedNames.has(tag.name.toLowerCase()));
+
+  const characteristics = Array.isArray(ability?.characteristics) ? ability.characteristics : [];
+  const hasDestruction = characteristics.some((entry: any) => String(entry?.id ?? "") === "destruicao");
+  const hasArea = characteristics.some((entry: any) => String(entry?.id ?? "") === "area");
+  const hasCondition = characteristics.some((entry: any) => String(entry?.id ?? "") === "condicao");
+
+  const autoTags = [];
+  if (hasDestruction) {
+    autoTags.push({ name: "destruicao", tooltip: "" }, { name: "ataque", tooltip: "" });
+  }
+  if (hasArea) {
+    autoTags.push({ name: "area", tooltip: "" });
+  }
+  if (hasCondition) {
+    autoTags.push({ name: "condicao", tooltip: "" });
+  }
+
+  return dedupeTagEntries([...preserved, ...autoTags]);
+};
+
+const normalizeAbilityConfig = (raw: any) => {
+  const source = raw && typeof raw === "object" ? raw : {};
+  const attackSource = source.attack && typeof source.attack === "object" ? source.attack : {};
+  const secondarySource = source.secondary && typeof source.secondary === "object" ? source.secondary : {};
+  const damageSource = source.damage && typeof source.damage === "object" ? source.damage : {};
+
+  const attackBonuses = normalizeBonusArray(attackSource.bonuses).map((entry: any) => ({
+    label: String(entry?.label ?? "").trim(),
+    value: Number.isFinite(Number(entry?.value)) ? Math.floor(Number(entry.value)) : 0
+  }));
+  const damageBonuses = normalizeBonusArray(damageSource.bonuses).map((entry: any) => ({
+    formula: String(entry?.formula ?? "").trim(),
+    type: String(entry?.type ?? "physical") || "physical"
+  }));
+
+  return {
+    attack: {
+      useOverride: Boolean(attackSource.useOverride),
+      attribute: String(attackSource.attribute ?? "default") || "default",
+      manualBonus: Number.isFinite(Number(attackSource.manualBonus)) ? Math.floor(Number(attackSource.manualBonus)) : 0,
+      bonuses: attackBonuses
+    },
+    secondary: {
+      attribute: String(secondarySource.attribute ?? "vigor") || "vigor",
+      manualDcEnabled: Boolean(secondarySource.manualDcEnabled),
+      manualDc: Number.isFinite(Number(secondarySource.manualDc)) ? Math.floor(Number(secondarySource.manualDc)) : 10
+    },
+    damage: {
+      useOverride: Boolean(damageSource.useOverride),
+      formula: String(damageSource.formula ?? "").trim(),
+      type: String(damageSource.type ?? "physical") || "physical",
+      bonuses: damageBonuses
+    }
+  };
+};
+
 export class RMRPGItemSheet extends ItemSheet {
   private _pendingScrollPositions: Record<string, number> = {};
 
   private static readonly SCROLL_SELECTORS = [
     ".sheet-body",
     ".weapon-tab-content > .tab[data-tab='details']",
-    ".ability-tab-content > .tab[data-tab='details']"
+    ".ability-tab-content > .tab[data-tab='details']",
+    ".ability-tab-content > .tab[data-tab='additional-settings']"
   ];
 
   static get defaultOptions() {
@@ -120,6 +202,25 @@ export class RMRPGItemSheet extends ItemSheet {
       const resolvedAbility = sanitizeAbilityData({ ...ability, categories: resolvedCategories }, { actorRank });
       expanded.system.ability = resolvedAbility;
       expanded.system.cost = calculateAbilityCost(resolvedAbility, { actorRank }).totalCost;
+
+      const submittedAbilityConfig = expanded.system?.abilityConfig;
+      if (submittedAbilityConfig && typeof submittedAbilityConfig === "object") {
+        const submittedAttackBonuses = coerceIndexedCollection((submittedAbilityConfig as any).attack?.bonuses);
+        const submittedDamageBonuses = coerceIndexedCollection((submittedAbilityConfig as any).damage?.bonuses);
+        if (submittedAttackBonuses) {
+          (submittedAbilityConfig as any).attack.bonuses = submittedAttackBonuses;
+        }
+        if (submittedDamageBonuses) {
+          (submittedAbilityConfig as any).damage.bonuses = submittedDamageBonuses;
+        }
+      }
+      const currentAbilityConfig = this.item.system?.abilityConfig ?? {};
+      const mergedAbilityConfig = foundry.utils.mergeObject(currentAbilityConfig, submittedAbilityConfig ?? {}, {
+        inplace: false,
+        overwrite: true
+      });
+      expanded.system.abilityConfig = normalizeAbilityConfig(mergedAbilityConfig);
+      expanded.system.tags = syncAbilityAutoTags(expanded.system.tags ?? this.item.system?.tags, resolvedAbility);
     }
     const result = await super._updateObject(event, expanded);
     if (this.item.type === "category-effect") {

@@ -2,6 +2,7 @@
   <nav class="ability-tabs tabs" data-group="ability">
     <a class="item" data-tab="description">{{localize "RMRPG.Item.Ability.DescriptionTab"}}</a>
     <a class="item" data-tab="details">{{localize "RMRPG.Item.Ability.DetailsTab"}}</a>
+    <a class="item" data-tab="additional-settings">{{localize "RMRPG.Item.Ability.AdditionalSettings.Tab"}}</a>
   </nav>
   <div class="ability-tab-content">
     <div class="tab" data-group="ability" data-tab="description">
@@ -228,6 +229,168 @@
             </div>
           </div>
         </section>
+      </div>
+    </div>
+    <div class="tab" data-group="ability" data-tab="additional-settings">
+      <div class="ability-details ability-details--additional">
+        {{#if abilityFeatureState.hasAttack}}
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.AdditionalSettings.Attack.Title"}}</div>
+          <label class="ability-toggle-row">
+            <input type="checkbox" name="system.abilityConfig.attack.useOverride" {{checked abilityAdditionalSettings.attack.useOverride}} />
+            <span>{{localize "RMRPG.Item.Ability.AdditionalSettings.Attack.OverrideToggle"}}</span>
+          </label>
+          <div class="ability-field ability-field--inline">
+            <div class="ability-field-group">
+              <label>{{localize "RMRPG.Item.Ability.AdditionalSettings.Attack.Attribute"}}</label>
+              <select name="system.abilityConfig.attack.attribute">
+                {{selectOptions abilityAttackAttributeOptions selected=abilityAdditionalSettings.attack.attribute valueAttr="value" labelAttr="label"}}
+              </select>
+            </div>
+            <div class="ability-field-group">
+              <label>{{localize "RMRPG.Item.Ability.AdditionalSettings.Attack.ManualBonus"}}</label>
+              <input
+                type="number"
+                name="system.abilityConfig.attack.manualBonus"
+                value="{{abilityAdditionalSettings.attack.manualBonus}}"
+                step="1"
+              />
+            </div>
+          </div>
+
+          <div class="ability-list">
+            {{#each abilityAdditionalSettings.attack.bonuses}}
+            <div class="ability-list-entry">
+              <div class="ability-entry-row ability-entry-row--triple">
+                <input
+                  type="text"
+                  name="system.abilityConfig.attack.bonuses.{{@index}}.label"
+                  value="{{this.label}}"
+                  placeholder="{{localize 'RMRPG.Item.Ability.AdditionalSettings.BonusLabel'}}"
+                />
+                <input
+                  type="number"
+                  name="system.abilityConfig.attack.bonuses.{{@index}}.value"
+                  value="{{this.value}}"
+                  step="1"
+                />
+                <button
+                  type="button"
+                  class="ability-remove"
+                  data-action="ability-attack-bonus-remove"
+                  data-index="{{@index}}"
+                  aria-label="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                  title="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            {{/each}}
+            <button type="button" class="ability-add" data-action="ability-attack-bonus-add">
+              <i class="fas fa-plus"></i>
+              {{localize "RMRPG.Item.Ability.AdditionalSettings.Attack.AddBonus"}}
+            </button>
+          </div>
+        </section>
+        {{/if}}
+
+        {{#if abilityFeatureState.hasSecondary}}
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.AdditionalSettings.Secondary.Title"}}</div>
+          <div class="ability-field ability-field--inline">
+            <div class="ability-field-group">
+              <label>{{localize "RMRPG.Item.Ability.AdditionalSettings.Secondary.Attribute"}}</label>
+              <select name="system.abilityConfig.secondary.attribute">
+                {{selectOptions abilitySecondaryAttributeOptions selected=abilityAdditionalSettings.secondary.attribute valueAttr="value" labelAttr="label"}}
+              </select>
+            </div>
+            <div class="ability-field-group">
+              <label>{{localize "RMRPG.Item.Ability.AdditionalSettings.Secondary.ManualDc"}}</label>
+              <input
+                type="number"
+                name="system.abilityConfig.secondary.manualDc"
+                value="{{abilityAdditionalSettings.secondary.manualDc}}"
+                step="1"
+              />
+            </div>
+          </div>
+          <label class="ability-toggle-row">
+            <input type="checkbox" name="system.abilityConfig.secondary.manualDcEnabled" {{checked abilityAdditionalSettings.secondary.manualDcEnabled}} />
+            <span>{{localize "RMRPG.Item.Ability.AdditionalSettings.Secondary.UseManualDc"}}</span>
+          </label>
+        </section>
+        {{/if}}
+
+        {{#if abilityFeatureState.hasDestruction}}
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.AdditionalSettings.Damage.Title"}}</div>
+          <label class="ability-toggle-row">
+            <input type="checkbox" name="system.abilityConfig.damage.useOverride" {{checked abilityAdditionalSettings.damage.useOverride}} />
+            <span>{{localize "RMRPG.Item.Ability.AdditionalSettings.Damage.OverrideToggle"}}</span>
+          </label>
+          <div class="ability-field ability-field--inline">
+            <div class="ability-field-group">
+              <label>{{localize "RMRPG.Item.Ability.AdditionalSettings.Damage.Formula"}}</label>
+              <input
+                type="text"
+                name="system.abilityConfig.damage.formula"
+                value="{{abilityAdditionalSettings.damage.formula}}"
+                placeholder="1d6"
+              />
+            </div>
+            <div class="ability-field-group">
+              <label>{{localize "RMRPG.Item.Ability.AdditionalSettings.Damage.Type"}}</label>
+              <select name="system.abilityConfig.damage.type">
+                {{selectOptions abilityDamageTypeOptions selected=abilityAdditionalSettings.damage.type valueAttr="value" labelAttr="label"}}
+              </select>
+            </div>
+          </div>
+
+          <div class="ability-list">
+            {{#each abilityAdditionalSettings.damage.bonuses}}
+            <div class="ability-list-entry">
+              <div class="ability-entry-row ability-entry-row--triple">
+                <input
+                  type="text"
+                  name="system.abilityConfig.damage.bonuses.{{@index}}.formula"
+                  value="{{this.formula}}"
+                  placeholder="1d4"
+                />
+                <select name="system.abilityConfig.damage.bonuses.{{@index}}.type">
+                  {{selectOptions ../abilityDamageTypeOptions selected=this.type valueAttr="value" labelAttr="label"}}
+                </select>
+                <button
+                  type="button"
+                  class="ability-remove"
+                  data-action="ability-damage-bonus-remove"
+                  data-index="{{@index}}"
+                  aria-label="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                  title="{{localize 'RMRPG.Item.Ability.Remove'}}"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            {{/each}}
+            <button type="button" class="ability-add" data-action="ability-damage-bonus-add">
+              <i class="fas fa-plus"></i>
+              {{localize "RMRPG.Item.Ability.AdditionalSettings.Damage.AddBonus"}}
+            </button>
+          </div>
+        </section>
+        {{/if}}
+
+        {{#unless abilityFeatureState.hasAttack}}
+        {{#unless abilityFeatureState.hasSecondary}}
+        {{#unless abilityFeatureState.hasDestruction}}
+        <section class="ability-section">
+          <div class="ability-section-title">{{localize "RMRPG.Item.Ability.AdditionalSettings.NoneTitle"}}</div>
+          <div class="ability-category-empty">{{localize "RMRPG.Item.Ability.AdditionalSettings.NoneDescription"}}</div>
+        </section>
+        {{/unless}}
+        {{/unless}}
+        {{/unless}}
       </div>
     </div>
   </div>

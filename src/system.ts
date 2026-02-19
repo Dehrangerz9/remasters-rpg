@@ -5,6 +5,7 @@ import { RMRPGActorSheet } from "./sheets/actor/sheet.js";
 import { RMRPGItemSheet } from "./sheets/item/sheet.js";
 import { syncAbilitiesForCategoryEffect } from "./abilities/category-effects.js";
 import { setupCheckChatInteractions } from "./sheets/player/rolls/chat.js";
+import { setupAbilityCastChatInteractions } from "./sheets/player/abilities/chat.js";
 
 const applyPunkCityTheme = (enabled: boolean) => {
   document.body?.classList.toggle("punk-city", enabled);
@@ -100,6 +101,7 @@ Hooks.once("ready", () => {
   console.log(`${SYSTEM_ID} | Ready`);
   applyPunkCityTheme(Boolean(game.settings.get(SYSTEM_ID, "punkCityTheme")));
   setupCheckChatInteractions();
+  setupAbilityCastChatInteractions();
 });
 
 Hooks.on("updateItem", (item: any) => {

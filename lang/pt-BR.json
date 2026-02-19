@@ -105,6 +105,12 @@
         "NewName": "Nova Habilidade",
         "Edit": "Editar habilidade",
         "Cast": "Conjurar habilidade",
+        "CastRoll": {
+          "RollAttack": "Rolar Ataque",
+          "SecondaryButton": "Teste de Secundario de {attribute} CDE {dc}",
+          "RollDamage": "Rolar Dano",
+          "NoActions": "Sem ação de rolagem"
+        },
         "Delete": "Excluir habilidade",
         "Empty": "Nenhuma habilidade ainda.",
         "Columns": {
@@ -281,7 +287,8 @@
       }
     },
     "Errors": {
-      "SelectSingleTarget": "Selecione exatamente um alvo ou token controlado."
+      "SelectSingleTarget": "Selecione exatamente um alvo ou token controlado.",
+      "SelectOneOrMoreTargets": "Selecione um ou mais alvos ou tokens controlados."
     },
     "Item": {
       "Name": "Nome do Item",
@@ -542,6 +549,33 @@
           "TargetLabel": "Característica",
           "TargetPlaceholder": "Selecione uma característica",
           "TargetEmpty": "Característica sem nome"
+        },
+        "AdditionalSettings": {
+          "Tab": "Configurações Adicionais",
+          "UseCastingAttribute": "Usar atributo de conjuração do ator",
+          "BonusLabel": "Rótulo do bônus",
+          "NoneTitle": "Sem Configurações Adicionais",
+          "NoneDescription": "Adicione Destruição, Área ou Condição para liberar os ajustes de conjuração.",
+          "Attack": {
+            "Title": "Ataque",
+            "OverrideToggle": "Usar overrides de ataque",
+            "Attribute": "Atributo",
+            "ManualBonus": "Bônus manual",
+            "AddBonus": "Adicionar bônus de ataque"
+          },
+          "Secondary": {
+            "Title": "Teste Secundário",
+            "Attribute": "Atributo secundário",
+            "ManualDc": "CDE manual",
+            "UseManualDc": "Usar CDE manual no lugar da CDE do ator"
+          },
+          "Damage": {
+            "Title": "Dano",
+            "OverrideToggle": "Usar fórmula de dano override",
+            "Formula": "Fórmula base",
+            "Type": "Tipo base",
+            "AddBonus": "Adicionar parte de dano"
+          }
         }
       },
       "AbilityCategory": {

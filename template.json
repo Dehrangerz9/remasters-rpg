@@ -276,6 +276,25 @@
           "advances": 0,
           "advancesTarget": ""
         }
+      },
+      "abilityConfig": {
+        "attack": {
+          "useOverride": false,
+          "attribute": "default",
+          "manualBonus": 0,
+          "bonuses": []
+        },
+        "secondary": {
+          "attribute": "vigor",
+          "manualDcEnabled": false,
+          "manualDc": 10
+        },
+        "damage": {
+          "useOverride": false,
+          "formula": "",
+          "type": "physical",
+          "bonuses": []
+        }
       }
     },
     "category-effect": {

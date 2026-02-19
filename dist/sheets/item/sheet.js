@@ -16,12 +16,84 @@ const coerceIndexedCollection = (value) => {
         .sort((a, b) => Number(a[0]) - Number(b[0]))
         .map(([, entry]) => entry);
 };
+const normalizeTagEntries = (raw) => {
+    const source = Array.isArray(raw) ? raw : [];
+    return source
+        .map((entry) => typeof entry === "string"
+        ? { name: String(entry ?? "").trim(), tooltip: "" }
+        : { name: String(entry?.name ?? "").trim(), tooltip: String(entry?.tooltip ?? "").trim() })
+        .filter((entry) => entry.name);
+};
+const dedupeTagEntries = (entries) => {
+    const seen = new Set();
+    return entries.filter((entry) => {
+        const key = entry.name.toLowerCase();
+        if (seen.has(key))
+            return false;
+        seen.add(key);
+        return true;
+    });
+};
+const syncAbilityAutoTags = (rawTags, ability) => {
+    const tags = normalizeTagEntries(rawTags);
+    const managedNames = new Set(["ataque", "area", "condicao", "destruicao"]);
+    const preserved = tags.filter((tag) => !managedNames.has(tag.name.toLowerCase()));
+    const characteristics = Array.isArray(ability?.characteristics) ? ability.characteristics : [];
+    const hasDestruction = characteristics.some((entry) => String(entry?.id ?? "") === "destruicao");
+    const hasArea = characteristics.some((entry) => String(entry?.id ?? "") === "area");
+    const hasCondition = characteristics.some((entry) => String(entry?.id ?? "") === "condicao");
+    const autoTags = [];
+    if (hasDestruction) {
+        autoTags.push({ name: "destruicao", tooltip: "" }, { name: "ataque", tooltip: "" });
+    }
+    if (hasArea) {
+        autoTags.push({ name: "area", tooltip: "" });
+    }
+    if (hasCondition) {
+        autoTags.push({ name: "condicao", tooltip: "" });
+    }
+    return dedupeTagEntries([...preserved, ...autoTags]);
+};
+const normalizeAbilityConfig = (raw) => {
+    const source = raw && typeof raw === "object" ? raw : {};
+    const attackSource = source.attack && typeof source.attack === "object" ? source.attack : {};
+    const secondarySource = source.secondary && typeof source.secondary === "object" ? source.secondary : {};
+    const damageSource = source.damage && typeof source.damage === "object" ? source.damage : {};
+    const attackBonuses = normalizeBonusArray(attackSource.bonuses).map((entry) => ({
+        label: String(entry?.label ?? "").trim(),
+        value: Number.isFinite(Number(entry?.value)) ? Math.floor(Number(entry.value)) : 0
+    }));
+    const damageBonuses = normalizeBonusArray(damageSource.bonuses).map((entry) => ({
+        formula: String(entry?.formula ?? "").trim(),
+        type: String(entry?.type ?? "physical") || "physical"
+    }));
+    return {
+        attack: {
+            useOverride: Boolean(attackSource.useOverride),
+            attribute: String(attackSource.attribute ?? "default") || "default",
+            manualBonus: Number.isFinite(Number(attackSource.manualBonus)) ? Math.floor(Number(attackSource.manualBonus)) : 0,
+            bonuses: attackBonuses
+        },
+        secondary: {
+            attribute: String(secondarySource.attribute ?? "vigor") || "vigor",
+            manualDcEnabled: Boolean(secondarySource.manualDcEnabled),
+            manualDc: Number.isFinite(Number(secondarySource.manualDc)) ? Math.floor(Number(secondarySource.manualDc)) : 10
+        },
+        damage: {
+            useOverride: Boolean(damageSource.useOverride),
+            formula: String(damageSource.formula ?? "").trim(),
+            type: String(damageSource.type ?? "physical") || "physical",
+            bonuses: damageBonuses
+        }
+    };
+};
 export class RMRPGItemSheet extends ItemSheet {
     _pendingScrollPositions = {};
     static SCROLL_SELECTORS = [
         ".sheet-body",
         ".weapon-tab-content > .tab[data-tab='details']",
-        ".ability-tab-content > .tab[data-tab='details']"
+        ".ability-tab-content > .tab[data-tab='details']",
+        ".ability-tab-content > .tab[data-tab='additional-settings']"
     ];
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -115,6 +187,24 @@ export class RMRPGItemSheet extends ItemSheet {
             const resolvedAbility = sanitizeAbilityData({ ...ability, categories: resolvedCategories }, { actorRank });
             expanded.system.ability = resolvedAbility;
             expanded.system.cost = calculateAbilityCost(resolvedAbility, { actorRank }).totalCost;
+            const submittedAbilityConfig = expanded.system?.abilityConfig;
+            if (submittedAbilityConfig && typeof submittedAbilityConfig === "object") {
+                const submittedAttackBonuses = coerceIndexedCollection(submittedAbilityConfig.attack?.bonuses);
+                const submittedDamageBonuses = coerceIndexedCollection(submittedAbilityConfig.damage?.bonuses);
+                if (submittedAttackBonuses) {
+                    submittedAbilityConfig.attack.bonuses = submittedAttackBonuses;
+                }
+                if (submittedDamageBonuses) {
+                    submittedAbilityConfig.damage.bonuses = submittedDamageBonuses;
+                }
+            }
+            const currentAbilityConfig = this.item.system?.abilityConfig ?? {};
+            const mergedAbilityConfig = foundry.utils.mergeObject(currentAbilityConfig, submittedAbilityConfig ?? {}, {
+                inplace: false,
+                overwrite: true
+            });
+            expanded.system.abilityConfig = normalizeAbilityConfig(mergedAbilityConfig);
+            expanded.system.tags = syncAbilityAutoTags(expanded.system.tags ?? this.item.system?.tags, resolvedAbility);
         }
         const result = await super._updateObject(event, expanded);
         if (this.item.type === "category-effect") {

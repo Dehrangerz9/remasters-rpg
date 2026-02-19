@@ -57,6 +57,15 @@ export type DamageRollRequest = {
   criticalMultiplier?: number;
 };
 
+const DESTRUCTION_DIE_BY_LEVEL: Record<number, string> = {
+  1: "",
+  2: "d4",
+  3: "d6",
+  4: "d8",
+  5: "d10",
+  6: "d12"
+};
+
 const DAMAGE_TYPE_META: Record<
   DamageTypeId,
   { labelKey: string; icon: string; css: string }
@@ -158,48 +167,98 @@ const buildDamageEntriesFromItem = (actor: any, item: any) => {
   const entries: DamageEntry[] = [];
   const modifiers: DamageModifierEntry[] = [];
 
-  if (!item || item.type !== "weapon") {
+  if (!item) {
     return { entries, modifiers };
   }
 
-  const rawDamage = item.system?.weapon?.damage ?? {};
-  const baseDice = toSafeInteger(rawDamage.base?.dice, 0);
-  const baseDie = String(rawDamage.base?.die ?? "d6").trim() || "d6";
-  const baseType = normalizeDamageType(rawDamage.base?.type);
+  if (item.type === "weapon") {
+    const rawDamage = item.system?.weapon?.damage ?? {};
+    const baseDice = toSafeInteger(rawDamage.base?.dice, 0);
+    const baseDie = String(rawDamage.base?.die ?? "d6").trim() || "d6";
+    const baseType = normalizeDamageType(rawDamage.base?.type);
 
-  if (baseDice > 0) {
-    entries.push({
-      key: "base",
-      label: localize("RMRPG.Dialogs.Damage.BaseDamage"),
-      formula: `${baseDice}${baseDie}`,
-      damageType: baseType,
-      checked: true
+    if (baseDice > 0) {
+      entries.push({
+        key: "base",
+        label: localize("RMRPG.Dialogs.Damage.BaseDamage"),
+        formula: `${baseDice}${baseDie}`,
+        damageType: baseType,
+        checked: true
+      });
+    }
+
+    const bonusEntries = normalizeBonusArray(rawDamage.bonuses);
+    bonusEntries.forEach((bonus: any, index: number) => {
+      const formula = sanitizeFormula(bonus?.formula);
+      if (!formula) return;
+      entries.push({
+        key: `bonus-${index}`,
+        label: localize("RMRPG.Dialogs.Damage.BonusDamage", { index: index + 1 }),
+        formula,
+        damageType: normalizeDamageType(bonus?.type),
+        checked: true
+      });
     });
+
+    const attributeKey = String(rawDamage.attribute ?? "none");
+    if (attributeKey !== "none") {
+      const attributeValue = toSafeInteger(actor?.system?.attributes?.[attributeKey]?.value, 0);
+      modifiers.push({
+        key: "damage-attribute",
+        name: getAttributeLabel(attributeKey),
+        type: localize("RMRPG.Dialogs.Roll.Types.Attribute"),
+        value: attributeValue,
+        checked: true,
+        damageType: baseType
+      });
+    }
   }
 
-  const bonusEntries = normalizeBonusArray(rawDamage.bonuses);
-  bonusEntries.forEach((bonus: any, index: number) => {
-    const formula = sanitizeFormula(bonus?.formula);
-    if (!formula) return;
-    entries.push({
-      key: `bonus-${index}`,
-      label: localize("RMRPG.Dialogs.Damage.BonusDamage", { index: index + 1 }),
-      formula,
-      damageType: normalizeDamageType(bonus?.type),
-      checked: true
-    });
-  });
+  if (item.type === "ability") {
+    const characteristics = Array.isArray(item.system?.ability?.characteristics) ? item.system.ability.characteristics : [];
+    const destruction = characteristics.find((entry: any) => String(entry?.id ?? "") === "destruicao");
 
-  const attributeKey = String(rawDamage.attribute ?? "none");
-  if (attributeKey !== "none") {
-    const attributeValue = toSafeInteger(actor?.system?.attributes?.[attributeKey]?.value, 0);
-    modifiers.push({
-      key: "damage-attribute",
-      name: getAttributeLabel(attributeKey),
-      type: localize("RMRPG.Dialogs.Roll.Types.Attribute"),
-      value: attributeValue,
-      checked: true,
-      damageType: baseType
+    const damageConfig = item.system?.abilityConfig?.damage ?? {};
+    const useOverride = Boolean(damageConfig.useOverride);
+    const overrideFormula = sanitizeFormula(damageConfig.formula);
+    const overrideType = normalizeDamageType(damageConfig.type);
+
+    if (useOverride && overrideFormula) {
+      entries.push({
+        key: "base",
+        label: localize("RMRPG.Dialogs.Damage.BaseDamage"),
+        formula: overrideFormula,
+        damageType: overrideType,
+        checked: true
+      });
+    } else if (destruction) {
+      const level = toSafeInteger(destruction.level, 1);
+      const die = DESTRUCTION_DIE_BY_LEVEL[level] ?? "";
+      const rankBonus = toSafeInteger(actor?.system?.rank?.bonus, 0);
+      const diceCount = Math.max(1, rankBonus - 1);
+      const formula = die ? `${diceCount}${die}` : "";
+      if (formula) {
+        entries.push({
+          key: "base",
+          label: localize("RMRPG.Dialogs.Damage.BaseDamage"),
+          formula,
+          damageType: normalizeDamageType(destruction.damageType),
+          checked: true
+        });
+      }
+    }
+
+    const bonusEntries = normalizeBonusArray(damageConfig.bonuses);
+    bonusEntries.forEach((bonus: any, index: number) => {
+      const formula = sanitizeFormula(bonus?.formula);
+      if (!formula) return;
+      entries.push({
+        key: `bonus-${index}`,
+        label: localize("RMRPG.Dialogs.Damage.BonusDamage", { index: index + 1 }),
+        formula,
+        damageType: normalizeDamageType(bonus?.type),
+        checked: true
+      });
     });
   }
 
