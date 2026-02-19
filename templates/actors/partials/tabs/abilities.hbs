@@ -95,12 +95,7 @@
             <i class="fas fa-trash"></i>
           </button>
           <div class="item-details">
-            <p class="item-details-description">
-              <strong>{{localize "RMRPG.Common.Description"}}:</strong>
-              {{#if this.description}}{{this.description}}{{else}}-{{/if}}
-            </p>
             <div class="item-details-tags">
-              <strong>{{localize "RMRPG.Common.Tags"}}:</strong>
               <div class="item-tags-list">
                 {{#if this.tags.length}}
                 {{#each this.tags}}
@@ -111,6 +106,9 @@
                 {{/if}}
               </div>
             </div>
+            <p class="item-details-description">
+              {{#if this.description}}{{this.description}}{{else}}-{{/if}}
+            </p>
           </div>
         </div>
         {{/each}}

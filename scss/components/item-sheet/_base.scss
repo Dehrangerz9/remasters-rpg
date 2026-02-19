@@ -89,6 +89,8 @@
       text-transform: uppercase;
       white-space: nowrap;
       width: auto;
+      text-shadow: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
     }
 
     .tabs .item.active {
@@ -102,6 +104,19 @@
     .tabs .item:focus-visible {
       box-shadow: none;
       outline: none;
+      text-shadow: none;
+    }
+
+    .tabs .item:hover,
+    .tabs .item:focus-visible {
+      border-color: var(--rmrpg-accent);
+      box-shadow: 0 0 0 2px var(--rmrpg-accent-ring);
+    }
+
+    .tabs .item.active:hover,
+    .tabs .item.active:focus-visible {
+      border-color: #123a63;
+      box-shadow: 0 0 0 2px var(--rmrpg-accent-ring);
     }
 
     .tab {

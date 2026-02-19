@@ -12,11 +12,29 @@
       border: 1px solid var(--rmrpg-border);
       border-radius: t.$radius-lg;
       color: var(--rmrpg-accent);
+      cursor: pointer;
       display: inline-flex;
       font-size: 0.92rem;
       height: 2rem;
       justify-content: center;
+      text-shadow: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
       width: 2rem;
+
+      &:hover,
+      &:focus,
+      &:focus-visible,
+      &:active {
+        box-shadow: none;
+        outline: none;
+        text-shadow: none;
+      }
+
+      &:hover,
+      &:focus-visible {
+        border-color: var(--rmrpg-accent);
+        box-shadow: 0 0 0 2px var(--rmrpg-accent-ring);
+      }
     }
   }
 
