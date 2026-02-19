@@ -33,6 +33,7 @@
         "Modifier": "Modifier",
         "Type": "Type",
         "Value": "Value",
+        "Outcome": "Outcome",
         "Include": "Include",
         "Add": "Add",
         "ModifierPlaceholder": "Modifier",
@@ -40,6 +41,12 @@
         "AttackBonus": "Attack Modifier",
         "BonusFallback": "Bonus {index}",
         "InvalidModifier": "Enter a valid modifier name and numeric value.",
+        "Outcomes": {
+          "CriticalSuccess": "Critical Success",
+          "Success": "Success",
+          "Failure": "Failure",
+          "CriticalFailure": "Critical Failure"
+        },
         "Types": {
           "Attribute": "Attribute",
           "State": "State",

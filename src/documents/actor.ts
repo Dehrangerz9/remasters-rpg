@@ -1,8 +1,12 @@
 import { ADVANCEMENTS_PER_RANK, RANK_BONUS_BY_RANK, RANKS } from "../constants.js";
 import { calculateAbilityCost, normalizeAbilityData, sanitizeAbilityData } from "../abilities/rules.js";
 import { resolveAbilityCategories } from "../abilities/category-links.js";
+import { rollSkillOrDerivedCheck } from "../sheets/player/rolls/check.js";
+import { DERIVED_CONFIG } from "../sheets/actor/config.js";
+import { formatSigned } from "../sheets/global-functions/utils.js";
 
 type Rank = (typeof RANKS)[number];
+const DERIVED_LABEL_BY_KEY = new Map(DERIVED_CONFIG.map((entry) => [entry.key, entry.labelKey]));
 
 class RMRPGGenericActor extends Actor {
   prepareDerivedData() {
@@ -122,30 +126,41 @@ class RMRPGGenericActor extends Actor {
     return roll;
   }
 
-  async rollDerived(derivedKey: string) {
+  async rollDerived(
+    derivedKey: string,
+    options: { dc?: number | null; passosDeSucessos?: number; passosDeFalha?: number } = {}
+  ) {
     const value = this.asNumber(this.system.derived?.[derivedKey]);
-    const roll = await new Roll("1d20 + @value", { value }).evaluate();
-
-    await roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this }),
-      flavor: `${this.name} rolls ${derivedKey}`
+    const derivedLabelKey = DERIVED_LABEL_BY_KEY.get(derivedKey);
+    const derivedLabel = derivedLabelKey ? game.i18n.localize(derivedLabelKey) : derivedKey;
+    const result = await rollSkillOrDerivedCheck({
+      actor: this,
+      label: `${derivedLabel}`,
+      totalModifier: value,
+      dc: options.dc,
+      passosDeSucessos: options.passosDeSucessos,
+      passosDeFalha: options.passosDeFalha,
+      breakdownTags: [`${derivedLabel} ${formatSigned(value)}`]
     });
-
-    return roll;
+    return result.roll;
   }
 
-  async rollSkill(skillLabel: string, total: number) {
+  async rollSkill(
+    skillLabel: string,
+    total: number,
+    options: { dc?: number | null; passosDeSucessos?: number; passosDeFalha?: number } = {}
+  ) {
     const totalBonus = this.asNumber(total);
-    const roll = await new Roll("1d20 + @total", {
-      total: totalBonus
-    }).evaluate();
-
-    await roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this }),
-      flavor: `${this.name} rolls ${skillLabel}`
+    const result = await rollSkillOrDerivedCheck({
+      actor: this,
+      label: `${skillLabel}`,
+      totalModifier: totalBonus,
+      dc: options.dc,
+      passosDeSucessos: options.passosDeSucessos,
+      passosDeFalha: options.passosDeFalha,
+      breakdownTags: [`${skillLabel} ${formatSigned(totalBonus)}`]
     });
-
-    return roll;
+    return result.roll;
   }
 }
 

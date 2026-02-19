@@ -4,6 +4,7 @@ import { getAttributeLabel } from "../../actor/helpers.js";
 import { openRollDialog } from "../rolls/dialog.js";
 import { rollReikiSurge } from "../rolls/reiki.js";
 import { createDamageControls } from "../rolls/damage.js";
+import { rollSkillOrDerivedCheck } from "../rolls/check.js";
 
 const ACTION_CREATE_MAP: Record<string, { tag: string; nameKey: string; cost: string }> = {
   attack: {
@@ -24,6 +25,21 @@ const ACTION_CREATE_MAP: Record<string, { tag: string; nameKey: string; cost: st
 };
 
 export const bindPlayerActionListeners = (sheet: any, html: JQuery) => {
+  const resolveTargetDc = () => {
+    const targets = Array.from(game.user?.targets ?? []);
+    const token: any = targets[0] ?? null;
+    if (!token?.actor) return { dc: null, label: "" };
+    const raw = Number(token.actor.system?.defense?.calculated ?? token.actor.system?.defense?.value);
+    if (!Number.isFinite(raw)) return { dc: null, label: "" };
+    const dc = Math.floor(raw);
+    const targetLabel = String(token.actor?.name ?? token.name ?? "").trim();
+    const defenseLabel = localize("RMRPG.Actor.Defense.Title");
+    return {
+      dc,
+      label: targetLabel ? `${defenseLabel} ${targetLabel} ${dc}` : `${defenseLabel} ${dc}`
+    };
+  };
+
   html.find("[data-action='action-item-delete']").on("click", async (event: any) => {
     event.preventDefault();
     const id = String(event.currentTarget.dataset.id ?? "");
@@ -65,6 +81,7 @@ export const bindPlayerActionListeners = (sheet: any, html: JQuery) => {
     const button = event.currentTarget as HTMLElement;
     const id = String(button.dataset.id ?? "");
     const isPra = String(button.dataset.pra ?? "") === "true";
+    const damageFormula = String(button.dataset.damageFormula ?? "").trim();
     const item = id ? sheet.actor.items?.get(id) : null;
     const rankBonus = Number(sheet.actor.system.rank?.bonus ?? 0);
     const modifiers: RollModifier[] = [];
@@ -140,10 +157,30 @@ export const bindPlayerActionListeners = (sheet: any, html: JQuery) => {
     const result = await openRollDialog(title, modifiers);
     if (!result) return;
 
-    const roll = await new Roll("1d20 + @total", { total: result.total }).evaluate();
-    await roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: sheet.actor }),
-      flavor: item ? `${sheet.actor.name} - ${item.name}` : `${sheet.actor.name} Attack`
+    const targetDc = resolveTargetDc();
+    const breakdownTags = result.modifiers
+      .filter((modifier) => modifier.checked)
+      .map((modifier) => {
+        const value = Math.floor(Number(modifier.value ?? 0));
+        return `${modifier.name} ${value >= 0 ? `+${value}` : `${value}`}`;
+      });
+    if (targetDc.label) {
+      breakdownTags.push(targetDc.label);
+    }
+
+    await rollSkillOrDerivedCheck({
+      actor: sheet.actor,
+      label: item ? `${item.name}` : localize("RMRPG.Actor.Actions.Attacks"),
+      totalModifier: result.total,
+      dc: targetDc.dc,
+      breakdownTags,
+      damageButton:
+        damageFormula && damageFormula !== "0"
+          ? {
+              formula: damageFormula,
+              itemName: String(item?.name ?? "")
+            }
+          : null
     });
 
     if (result.modifiers.some((modifier) => modifier.key === "reiki-surge" && modifier.checked)) {

@@ -241,6 +241,7 @@
         "Modifier": "Modificador",
         "Type": "Tipo",
         "Value": "Valor",
+        "Outcome": "Resultado",
         "Include": "Incluir",
         "Add": "Adicionar",
         "ModifierPlaceholder": "Modificador",
@@ -248,6 +249,12 @@
         "AttackBonus": "Modificador de Ataque",
         "BonusFallback": "Bônus {index}",
         "InvalidModifier": "Insira um nome e valor numérico válidos para o modificador.",
+        "Outcomes": {
+          "CriticalSuccess": "Sucesso Crítico",
+          "Success": "Sucesso",
+          "Failure": "Falha",
+          "CriticalFailure": "Falha Crítica"
+        },
         "Types": {
           "Attribute": "Atributo",
           "State": "Estado",

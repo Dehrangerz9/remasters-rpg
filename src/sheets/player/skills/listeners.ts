@@ -1,9 +1,10 @@
 import { RollModifier } from "../../actor/config.js";
-import { localize } from "../../global-functions/utils.js";
+import { formatSigned, localize } from "../../global-functions/utils.js";
 import { getAttributeLabel } from "../../actor/helpers.js";
 import { openRollDialog } from "../rolls/dialog.js";
 import { rollReikiSurge } from "../rolls/reiki.js";
 import { openSkillSettings } from "./dialogs.js";
+import { rollSkillOrDerivedCheck } from "../rolls/check.js";
 
 export const bindPlayerSkillListeners = (sheet: any, html: JQuery) => {
   html.find("[data-action='roll-skill']").on("click", async (event: any) => {
@@ -59,10 +60,13 @@ export const bindPlayerSkillListeners = (sheet: any, html: JQuery) => {
     const result = await openRollDialog(title, modifiers);
     if (!result) return;
 
-    const roll = await new Roll("1d20 + @total", { total: result.total }).evaluate();
-    await roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: sheet.actor }),
-      flavor: label || localize("RMRPG.Actor.Skills.Title")
+    await rollSkillOrDerivedCheck({
+      actor: sheet.actor,
+      label: label || localize("RMRPG.Actor.Skills.Title"),
+      totalModifier: result.total,
+      breakdownTags: result.modifiers
+        .filter((modifier) => modifier.checked)
+        .map((modifier) => `${modifier.name} ${formatSigned(Math.floor(Number(modifier.value ?? 0)))}`)
     });
 
     if (result.modifiers.some((modifier) => modifier.key === "reiki-surge" && modifier.checked)) {
