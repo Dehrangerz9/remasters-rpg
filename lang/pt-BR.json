@@ -377,6 +377,7 @@
           "Add": "Adicionar Característica",
           "CharacteristicLabel": "Característica",
           "LevelLabel": "Nível",
+          "EditLevelHint": "Clique para editar o nível base",
           "TypeLabel": "Tipo",
           "PCLabel": "PC",
           "RankLabel": "Rank",
@@ -504,7 +505,7 @@
           "Perfurante": "Perfurante"
         },
         "Restrictions": {
-          "Title": "Restrições",
+          "Title": "Restrição",
           "Description": "Restrição",
           "Placeholder": "Descreva a restrição...",
           "Advances": "Avanços",

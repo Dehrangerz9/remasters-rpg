@@ -20,6 +20,11 @@
     }
 
     &.ability-sheet {
+      .ability-restrictions-layout {
+        grid-template-columns: 1fr;
+        row-gap: 0.6rem;
+      }
+
       .ability-characteristic-header {
         display: none;
       }

@@ -377,6 +377,7 @@
           "Add": "Add Characteristic",
           "CharacteristicLabel": "Characteristic",
           "LevelLabel": "Level",
+          "EditLevelHint": "Click to edit the base level",
           "TypeLabel": "Type",
           "PCLabel": "PC",
           "RankLabel": "Rank",
@@ -504,7 +505,7 @@
           "Perfurante": "Piercing"
         },
         "Restrictions": {
-          "Title": "Restrictions",
+          "Title": "Restriction",
           "Description": "Restriction",
           "Placeholder": "Describe the restriction...",
           "Advances": "Advances",

@@ -87,14 +87,28 @@
               <span></span>
             </div>
             {{#each ability.characteristics}}
-            <div class="ability-list-entry">
+            <div class="ability-list-entry{{#if this.isRestrictionTarget}} is-restriction-target{{/if}}">
               <div class="ability-entry-row ability-entry-row--characteristic">
                 <select name="system.ability.characteristics.{{@index}}.id">
                   {{selectOptions ../abilityCharacteristicOptions selected=this.id valueAttr="value" labelAttr="label"}}
                 </select>
+                {{#if this.isRestrictionTarget}}
+                <button
+                  type="button"
+                  class="ability-level-display"
+                  data-action="ability-characteristic-level-picker"
+                  data-index="{{@index}}"
+                  title="{{localize 'RMRPG.Item.Ability.Characteristics.EditLevelHint'}}"
+                  aria-label="{{localize 'RMRPG.Item.Ability.Characteristics.LevelLabel'}}"
+                >
+                  <span class="ability-level-display-value">{{this.effectiveLevelLabel}}</span>
+                </button>
+                <input type="hidden" name="system.ability.characteristics.{{@index}}.level" value="{{this.level}}" />
+                {{else}}
                 <select name="system.ability.characteristics.{{@index}}.level">
                   {{selectOptions this.levelOptions selected=this.level valueAttr="value" labelAttr="label"}}
                 </select>
+                {{/if}}
                 {{#if this.showTypeSelect}}
                 <select name="system.ability.characteristics.{{@index}}.{{this.typeField}}">
                   {{selectOptions this.typeOptions selected=this.typeValue valueAttr="value" labelAttr="label"}}
@@ -102,7 +116,14 @@
                 {{else}}
                 <span class="ability-characteristic-type-placeholder">-</span>
                 {{/if}}
-                <span class="ability-characteristic-meta">{{this.selectedLevelCostLabel}}</span>
+                <span class="ability-characteristic-meta ability-characteristic-meta--pc{{#if this.showCostDiscount}} is-discount{{/if}}">
+                  {{#if this.showCostDiscount}}
+                  <span class="ability-characteristic-cost-old">{{this.selectedLevelOriginalCostLabel}}</span>
+                  <span class="ability-characteristic-cost-new">{{this.selectedLevelCostLabel}}</span>
+                  {{else}}
+                  {{this.selectedLevelCostLabel}}
+                  {{/if}}
+                </span>
                 <span class="ability-characteristic-meta{{#if this.overRanking}} is-warning{{/if}}">{{this.selectedLevelRankLabel}}</span>
                 <button
                   type="button"
@@ -174,30 +195,36 @@
 
         <section class="ability-section">
           <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Restrictions.Title"}}</div>
-          <div class="ability-field">
-            <label>{{localize "RMRPG.Item.Ability.Restrictions.Description"}}</label>
-            <textarea
-              name="system.ability.restrictions.description"
-              placeholder="{{localize 'RMRPG.Item.Ability.Restrictions.Placeholder'}}"
-            >{{ability.restrictions.description}}</textarea>
-          </div>
-          <div class="ability-field ability-field--inline">
-            <div class="ability-field-group">
-              <label>{{localize "RMRPG.Item.Ability.Restrictions.Advances"}}</label>
-              <input
-                type="number"
-                name="system.ability.restrictions.advances"
-                value="{{ability.restrictions.advances}}"
-                min="0"
-                step="1"
-              />
+          <div class="ability-restrictions-layout">
+            <div class="ability-restrictions-description">
+              {{editor
+                ability.restrictions.description
+                target="system.ability.restrictions.description"
+                button=true
+                editable=editable
+                engine="prosemirror"
+                placeholder=abilityRestrictionsPlaceholder
+                class="ability-restrictions-editor"
+              }}
             </div>
-            <div class="ability-field-group">
-              <label>{{localize "RMRPG.Item.Ability.Restrictions.TargetLabel"}}</label>
-              <select name="system.ability.restrictions.advancesTarget">
-                <option value="">{{localize "RMRPG.Item.Ability.Restrictions.TargetPlaceholder"}}</option>
-                {{selectOptions abilityRestrictionTargets selected=ability.restrictions.advancesTarget valueAttr="value" labelAttr="label"}}
-              </select>
+            <div class="ability-restrictions-controls">
+              <div class="ability-field-group ability-field-group--inline-title">
+                <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Restrictions.Advances"}}</div>
+                <input
+                  type="number"
+                  name="system.ability.restrictions.advances"
+                  value="{{ability.restrictions.advances}}"
+                  min="0"
+                  step="1"
+                />
+              </div>
+              <div class="ability-field-group">
+                <div class="ability-section-title">{{localize "RMRPG.Item.Ability.Restrictions.TargetLabel"}}</div>
+                <select name="system.ability.restrictions.advancesTarget">
+                  <option value="">{{localize "RMRPG.Item.Ability.Restrictions.TargetPlaceholder"}}</option>
+                  {{selectOptions abilityRestrictionTargets selected=ability.restrictions.advancesTarget valueAttr="value" labelAttr="label"}}
+                </select>
+              </div>
             </div>
           </div>
         </section>

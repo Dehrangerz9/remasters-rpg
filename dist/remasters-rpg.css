@@ -2120,6 +2120,100 @@
   display: grid;
   gap: 0.35rem;
 }
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-field-group--inline-title,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-field-group--inline-title {
+  align-items: center;
+  column-gap: 0.55rem;
+  grid-template-columns: minmax(0, 1fr) 84px;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-restrictions-layout,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-restrictions-layout {
+  align-items: start;
+  column-gap: 0.75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.85fr);
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-restrictions-description,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-restrictions-description {
+  min-width: 0;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-restrictions-controls,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-restrictions-controls {
+  align-content: start;
+  display: grid;
+  gap: 0.6rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-restrictions-controls .ability-section-title,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-restrictions-controls .ability-section-title {
+  margin-bottom: 0.2rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-restrictions-editor,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-restrictions-editor {
+  max-height: 230px;
+  min-height: 0;
+  overflow: hidden;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-restrictions-editor .editor-content,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-restrictions-editor .editor-content {
+  min-height: 0;
+  overflow-y: auto;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-restrictions-editor .editor-content .ProseMirror,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-restrictions-editor .editor-content .ProseMirror {
+  height: auto;
+  min-height: 0;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-level-display,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-level-display {
+  align-items: center;
+  background: transparent;
+  border: 1px dashed transparent;
+  border-radius: 6px;
+  color: var(--rmrpg-text);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: 700;
+  height: 1.8rem;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: 0 0.4rem;
+  position: relative;
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+  width: 100%;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-level-display::after,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-level-display::after {
+  color: currentColor;
+  content: "\f303";
+  font-family: "Font Awesome 5 Free";
+  font-size: 0.64rem;
+  font-weight: 900;
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.16s ease;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-level-display:hover,
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-level-display:focus-visible,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-level-display:hover,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-level-display:focus-visible {
+  background: rgba(39, 96, 134, 0.08);
+  border-color: rgba(39, 96, 134, 0.35);
+  color: #1f4f71;
+  outline: none;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-level-display:hover::after,
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-level-display:focus-visible::after,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-level-display:hover::after,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-level-display:focus-visible::after {
+  opacity: 0.75;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-level-display-value,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-level-display-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list,
 .rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list {
   display: grid;
@@ -2133,6 +2227,43 @@
   display: grid;
   gap: 0.5rem;
   padding: 0.6rem;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target {
+  background: #fff3bf;
+  border-color: #e2bf53;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target select,
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-level-display,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target select,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-level-display {
+  background: #fff8da;
+  border-color: #d8b03b;
+  color: #5f4a0d;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target select:focus,
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-level-display:hover,
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-level-display:focus-visible,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target select:focus,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-level-display:hover,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-level-display:focus-visible {
+  background: #fffce8;
+  border-color: #bf8f13;
+  color: #4f3d09;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-characteristic-meta,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-characteristic-meta {
+  color: #70550d;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-characteristic-type-placeholder,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-characteristic-type-placeholder {
+  color: #8a6f24;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-remove,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-list-entry.is-restriction-target .ability-remove {
+  background: #fff4ce;
+  border-color: #d9b348;
+  color: #8f6112;
 }
 .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-entry-row,
 .rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-entry-row {
@@ -2156,7 +2287,7 @@
   align-items: center;
   column-gap: 0.45rem;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.75fr) minmax(0, 1fr) 78px 112px auto;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.75fr) minmax(0, 1fr) 92px 112px auto;
 }
 .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-characteristic-header,
 .rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-characteristic-header {
@@ -2174,6 +2305,27 @@
   font-weight: 700;
   text-align: center;
   white-space: nowrap;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-characteristic-meta--pc.is-discount,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-characteristic-meta--pc.is-discount {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+  line-height: 1;
+  white-space: normal;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-characteristic-cost-old,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-characteristic-cost-old {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.62rem;
+  font-weight: 600;
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+.rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-characteristic-cost-new,
+.rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-characteristic-cost-new {
+  font-size: 0.74rem;
+  font-weight: 800;
 }
 .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-characteristic-type-placeholder,
 .rmrpg-sheet .rmrpg-item-sheet.ability-sheet .ability-characteristic-type-placeholder {
@@ -2455,6 +2607,10 @@
   .rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-header > :nth-child(2),
   .rmrpg-sheet.rmrpg-item-sheet .weapon-bonus-row > :nth-child(2) {
     flex: 1 1 90px;
+  }
+  .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-restrictions-layout {
+    grid-template-columns: 1fr;
+    row-gap: 0.6rem;
   }
   .rmrpg-sheet.rmrpg-item-sheet.ability-sheet .ability-characteristic-header {
     display: none;

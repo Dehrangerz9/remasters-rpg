@@ -163,11 +163,15 @@ export const buildItemContext = async (sheet, context) => {
                 tooltip: getCategoryTooltip(entry.category, localize)
             };
         });
-        const characteristics = ability.characteristics.map((entry) => {
+        const characteristics = ability.characteristics.map((entry, index) => {
             const limits = describeCharacteristicLimits(entry.id, modifiers, { actorRank });
             const levelChoices = getCharacteristicLevelChoices(entry.id, localize);
             const level = clampInteger(Number(entry.level ?? limits.min), limits.min, limits.max);
-            const selectedChoice = levelChoices.find((choice) => Number(choice.level) === level) ?? null;
+            const isRestrictionTarget = ability.restrictions.advancesTarget === index;
+            const restrictionAdvances = isRestrictionTarget ? ability.restrictions.advances : 0;
+            const effectiveLevel = clampInteger(level + restrictionAdvances, limits.min, limits.max);
+            const selectedBaseChoice = levelChoices.find((choice) => Number(choice.level) === level) ?? null;
+            const selectedEffectiveChoice = levelChoices.find((choice) => Number(choice.level) === effectiveLevel) ?? selectedBaseChoice;
             const fallbackOptions = [{ value: String(level), label: String(level) }];
             const levelOptions = levelChoices.length > 0
                 ? levelChoices.map((choice) => ({
@@ -175,14 +179,21 @@ export const buildItemContext = async (sheet, context) => {
                     label: choice.label
                 }))
                 : fallbackOptions;
-            const selectedLevelCostLabel = selectedChoice ? `${selectedChoice.cost} ${pcLabel}` : `0 ${pcLabel}`;
-            const selectedLevelRankLabelBase = selectedChoice?.minRank ? `${rankLabel} ${selectedChoice.minRank}` : "-";
-            const destructionDie = entry.id === "destruicao" ? DESTRUCTION_DIE_BY_LEVEL[level] ?? "" : "";
+            const selectedLevelCostLabel = selectedBaseChoice ? `${selectedBaseChoice.cost} ${pcLabel}` : `0 ${pcLabel}`;
+            const selectedLevelOriginalCostLabel = selectedEffectiveChoice
+                ? `${selectedEffectiveChoice.cost} ${pcLabel}`
+                : selectedLevelCostLabel;
+            const showCostDiscount = isRestrictionTarget &&
+                selectedBaseChoice !== null &&
+                selectedEffectiveChoice !== null &&
+                Number(selectedEffectiveChoice.cost ?? 0) > Number(selectedBaseChoice.cost ?? 0);
+            const selectedLevelRankLabelBase = selectedEffectiveChoice?.minRank ? `${rankLabel} ${selectedEffectiveChoice.minRank}` : "-";
+            const destructionDie = entry.id === "destruicao" ? DESTRUCTION_DIE_BY_LEVEL[effectiveLevel] ?? "" : "";
             const destructionPreviewLabel = destructionDie ? `${destructionDiceCount}${destructionDie}` : null;
             const selectedLevelRankLabel = entry.id === "destruicao" && destructionPreviewLabel
                 ? `${selectedLevelRankLabelBase} | ${destructionPreviewLabel}`
                 : selectedLevelRankLabelBase;
-            const overRanking = selectedChoice
+            const overRanking = selectedBaseChoice
                 ? isOverRankingCharacteristicLevel(entry.id, level, actorRank)
                 : false;
             const showDamageType = entry.id === "destruicao";
@@ -202,7 +213,12 @@ export const buildItemContext = async (sheet, context) => {
                         ? String(entry.areaType ?? "emanacao")
                         : "",
                 typeOptions: showDamageType ? damageTypeOptions : showAreaType ? areaTypeOptions : [],
+                isRestrictionTarget,
+                effectiveLevel,
+                effectiveLevelLabel: selectedEffectiveChoice?.label ?? String(effectiveLevel),
                 selectedLevelCostLabel,
+                selectedLevelOriginalCostLabel,
+                showCostDiscount,
                 selectedLevelRankLabel,
                 overRanking
             };
@@ -272,6 +288,7 @@ export const buildItemContext = async (sheet, context) => {
             costInfo.limits.characteristics !== null && ability.characteristics.length > costInfo.limits.characteristics;
         context.abilityRestrictionTargets = restrictionTargets;
         context.abilityHasOverRankingCharacteristics = characteristics.some((entry) => Boolean(entry.overRanking));
+        context.abilityRestrictionsPlaceholder = localize("RMRPG.Item.Ability.Restrictions.Placeholder");
         const categoryTags = categories
             .map((entry) => ({
             name: getCategoryTag(entry.category, localize),

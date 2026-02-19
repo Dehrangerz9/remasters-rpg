@@ -564,7 +564,7 @@ export const calculateAbilityCost = (raw: any, options?: AbilityRuleContext) => 
 
   const castingCost = resolveCost(castingTimeMap.get(ability.castingTime)?.cost, 1);
 
-  const characteristicsCost = ability.characteristics.reduce((total, entry, index) => {
+  const characteristicsCost = ability.characteristics.reduce((total, entry) => {
     const rule = characteristicMap.get(entry.id);
     if (!rule) return total;
     const minOverride = modifiers.characteristicMinOverrides?.[rule.id];
@@ -572,9 +572,7 @@ export const calculateAbilityCost = (raw: any, options?: AbilityRuleContext) => 
     const min = minOverride ?? rule.min;
     const max = maxOverride ?? rule.max;
     const baseLevel = clampInteger(entry.level, min, max);
-    const extra = ability.restrictions.advancesTarget === index ? ability.restrictions.advances : 0;
-    const effectiveLevel = clampInteger(baseLevel + extra, min, max);
-    return total + resolveCharacteristicCost(rule, effectiveLevel);
+    return total + resolveCharacteristicCost(rule, baseLevel);
   }, 0);
 
   const enhancementCost = ability.enhancements.reduce((total, entry) => {

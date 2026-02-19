@@ -2,6 +2,7 @@ import {
   buildAbilityOptions,
   getAbilityCategoryRule,
   getAbilityCharacteristicRule,
+  getCharacteristicLevelChoices,
   getCategoryLabel,
   getCategoryTag,
   getCategoryTooltip,
@@ -292,6 +293,59 @@ export const setupAbilityListeners = (sheet: any, html: JQuery) => {
     const ability = normalizeAbilityData(sheet.item.system?.ability);
     if (index >= ability.characteristics.length) return;
     ability.characteristics.splice(index, 1);
+    const actorRank = getActorRank(sheet);
+    const sanitized = sanitizeAbilityData(ability, { actorRank });
+    const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
+    await sheet.item.update({ "system.ability": sanitized, "system.cost": cost });
+  });
+
+  html.find("[data-action='ability-characteristic-level-picker']").on("click", async (event: any) => {
+    event.preventDefault();
+    const index = Number(event.currentTarget.dataset.index);
+    if (!Number.isFinite(index) || index < 0) return;
+
+    await sheet._onSubmit(event, { preventClose: true, preventRender: true });
+    const ability = normalizeAbilityData(sheet.item.system?.ability);
+    if (index >= ability.characteristics.length) return;
+
+    const entry = ability.characteristics[index];
+    const levelChoices = getCharacteristicLevelChoices(entry.id, localize);
+    const fallbackRule = getAbilityCharacteristicRule(entry.id);
+    const fallbackChoices =
+      fallbackRule
+        ? Array.from({ length: Math.max(1, fallbackRule.max - fallbackRule.min + 1) }, (_, i) => {
+            const level = fallbackRule.min + i;
+            return { value: String(level), label: String(level), level };
+          })
+        : [{ value: String(entry.level ?? 1), label: String(entry.level ?? 1), level: Number(entry.level ?? 1) }];
+
+    const choices = levelChoices.length ? levelChoices : fallbackChoices;
+    const optionsHtml = choices
+      .map((choice) => {
+        const value = String((choice as any).value ?? (choice as any).level ?? "");
+        const label = String((choice as any).label ?? value);
+        const selected = Number(value) === Number(entry.level) ? " selected" : "";
+        return `<option value="${value}"${selected}>${label}</option>`;
+      })
+      .join("");
+
+    const selectedLevel = await Dialog.prompt({
+      title: localize("RMRPG.Item.Ability.Characteristics.LevelLabel"),
+      content: `
+        <form class="rmrpg-level-picker">
+          <div class="form-group">
+            <label>${localize("RMRPG.Item.Ability.Characteristics.LevelLabel")}</label>
+            <select name="level">${optionsHtml}</select>
+          </div>
+        </form>
+      `,
+      callback: (html: any) => Number(html.find("[name='level']").val())
+    });
+
+    if (selectedLevel === null || selectedLevel === undefined || selectedLevel === "") return;
+    const parsedLevel = Number(selectedLevel);
+    if (!Number.isFinite(parsedLevel)) return;
+    entry.level = parsedLevel;
     const actorRank = getActorRank(sheet);
     const sanitized = sanitizeAbilityData(ability, { actorRank });
     const cost = calculateAbilityCost(sanitized, { actorRank }).totalCost;
