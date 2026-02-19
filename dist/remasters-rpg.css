@@ -3636,7 +3636,7 @@
 .chat-message .message-content .rmrpg-cast-actions {
   display: grid;
   gap: 0.24rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 .chat-message .message-content .rmrpg-cast-actions button {
   align-items: center;

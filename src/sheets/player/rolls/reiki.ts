@@ -9,8 +9,9 @@ const buildReikiChatContent = (params: {
   next: number;
   max: number;
   updated: boolean;
+  formulaLabel: string;
 }) => {
-  const { actor, total, messageKey, current, next, max, updated } = params;
+  const { actor, total, messageKey, current, next, max, updated, formulaLabel } = params;
   const actorName = String(actor?.name ?? "-");
   const actorImg = String(actor?.img ?? "icons/svg/mystery-man.svg");
   const createdBy = String(game.user?.name ?? "-");
@@ -28,7 +29,7 @@ const buildReikiChatContent = (params: {
         </div>
       </header>
       <h3 class="rmrpg-reiki-title">${escapeHtml(localize("RMRPG.Actor.Player.ReikiRoll"))}</h3>
-      <div class="rmrpg-reiki-formula">1d6</div>
+      <div class="rmrpg-reiki-formula">${escapeHtml(formulaLabel)}</div>
       <div class="rmrpg-reiki-total">${total}</div>
       <div class="rmrpg-reiki-result ${stateClass}">${escapeHtml(resultLabel)}</div>
       <div class="rmrpg-reiki-resource">${escapeHtml(localize("RMRPG.Actor.Player.ReikiCharges"))}: ${escapeHtml(resourceLabel)}</div>
@@ -36,10 +37,17 @@ const buildReikiChatContent = (params: {
   `;
 };
 
-export const rollReikiSurge = async (sheet: any) => {
+export const rollReikiSurge = async (
+  sheet: any,
+  options: {
+    lossThreshold?: number;
+  } = {}
+) => {
   const roll = await new Roll("1d6").evaluate();
   const total = Number(roll.total ?? 0);
   const speaker = ChatMessage.getSpeaker({ actor: sheet.actor });
+  const thresholdRaw = Number(options.lossThreshold ?? 3);
+  const lossThreshold = Number.isFinite(thresholdRaw) ? Math.max(1, Math.floor(thresholdRaw)) : 3;
 
   const reikiData = sheet.actor.system.player?.reiki ?? {};
   const current = Math.max(0, Math.floor(Number(reikiData.current ?? 0)));
@@ -47,7 +55,7 @@ export const rollReikiSurge = async (sheet: any) => {
 
   let next = current;
   let messageKey = "RMRPG.Chat.ReikiNoLoss";
-  if (total < 3) {
+  if (total < lossThreshold) {
     next = Math.max(0, current - 1);
     messageKey = "RMRPG.Chat.ReikiLoss";
   }
@@ -67,7 +75,8 @@ export const rollReikiSurge = async (sheet: any) => {
       current,
       next: Math.min(next, max),
       max,
-      updated
+      updated,
+      formulaLabel: `1d6 (CD ${lossThreshold})`
     })
   });
 };

@@ -5,6 +5,7 @@ import { collectItemTags, escapeHtml } from "../item-summary.js";
 import { openRollDialog } from "../rolls/dialog.js";
 import { rollDamageWithDialog } from "../rolls/damage.js";
 import { rollSkillOrDerivedCheck } from "../rolls/check.js";
+import { rollReikiSurge } from "../rolls/reiki.js";
 const DESTRUCTION_DIE_BY_LEVEL = {
     1: "",
     2: "d4",
@@ -18,6 +19,39 @@ const DERIVED_KEYS = new Set(DERIVED_CONFIG.map((entry) => entry.key).filter((ke
 const DERIVED_LABEL_BY_KEY = new Map(DERIVED_CONFIG.filter((entry) => entry.key !== "iniciativa").map((entry) => [entry.key, entry.labelKey]));
 let hookRegistered = false;
 const escapeAttr = (value) => escapeHtml(value).replace(/`/g, "&#96;");
+const safeFromUuid = async (uuid) => {
+    if (!uuid)
+        return null;
+    try {
+        return await fromUuid(uuid);
+    }
+    catch (_error) {
+        return null;
+    }
+};
+const resolveCastSourceFromCard = async (root) => {
+    const actorId = String(root.getAttribute("data-actor-id") ?? "").trim();
+    const itemId = String(root.getAttribute("data-item-id") ?? "").trim();
+    const actorUuid = String(root.getAttribute("data-actor-uuid") ?? "").trim();
+    const itemUuid = String(root.getAttribute("data-item-uuid") ?? "").trim();
+    let actor = actorId ? game.actors?.get(actorId) : null;
+    if (!actor && actorUuid) {
+        const actorDoc = await safeFromUuid(actorUuid);
+        actor = actorDoc?.documentName === "Actor" ? actorDoc : actorDoc?.actor ?? null;
+    }
+    let item = itemId && actor ? actor.items?.get(itemId) : null;
+    if (!item && itemUuid) {
+        const itemDoc = await safeFromUuid(itemUuid);
+        item = itemDoc?.documentName === "Item" ? itemDoc : itemDoc?.item ?? null;
+    }
+    if (!actor && item?.parent?.documentName === "Actor") {
+        actor = item.parent;
+    }
+    if (!item && itemId && actor) {
+        item = actor.items?.get(itemId) ?? null;
+    }
+    return { actor, item };
+};
 const normalizeDamageType = (value) => {
     const key = String(value ?? "none").trim().toLowerCase();
     if (key === "physical")
@@ -161,6 +195,27 @@ const resolveDamageFallbackFormula = (actor, item, config) => {
     const destructionFormula = resolveDestructionBaseFormula(actor, item);
     return destructionFormula || "0";
 };
+const resolveCastReikiPlan = (item) => {
+    const castingCost = String(item?.system?.ability?.castingCost ?? "default");
+    const enhancements = Array.isArray(item?.system?.ability?.enhancements) ? item.system.ability.enhancements : [];
+    const hasEnhancement = (id) => enhancements.some((entry) => String(entry?.id ?? "") === id);
+    let checks = 1;
+    if (castingCost === "free") {
+        checks = 0;
+    }
+    else if (castingCost === "enhanced-check") {
+        checks = 2;
+    }
+    if (hasEnhancement("conjuracao-destrutiva")) {
+        checks += 1;
+    }
+    const reikiDcReduction = hasEnhancement("dado-reiki-aprimorado") ? 1 : 0;
+    const lossThreshold = Math.max(1, 3 - reikiDcReduction);
+    return {
+        checks: Math.max(0, Math.floor(checks)),
+        lossThreshold
+    };
+};
 const buildAttackModifiers = (actor, config) => {
     const modifiers = [];
     const attributeKey = resolveCastingAttribute(actor, config);
@@ -251,6 +306,8 @@ const buildCastChatContent = async (actor, item) => {
       class="rmrpg-cast-card"
       data-actor-id="${escapeAttr(String(actor?.id ?? ""))}"
       data-item-id="${escapeAttr(String(item?.id ?? ""))}"
+      data-actor-uuid="${escapeAttr(String(actor?.uuid ?? ""))}"
+      data-item-uuid="${escapeAttr(String(item?.uuid ?? ""))}"
     >
       <header class="rmrpg-cast-header">
         <img class="rmrpg-cast-avatar" src="${escapeAttr(actorImg)}" alt="${escapeAttr(actorName)}" />
@@ -352,31 +409,46 @@ export const setupAbilityCastChatInteractions = () => {
         return;
     hookRegistered = true;
     Hooks.on("renderChatMessage", (chatItem, html) => {
-        const card = html.find(".rmrpg-cast-card");
-        if (!card.length)
+        const cards = html.find(".rmrpg-cast-card");
+        if (!cards.length)
             return;
-        if (!chatItem?.isOwner)
-            return;
-        const actorId = String(card.data("actorId") ?? "");
-        const itemId = String(card.data("itemId") ?? "");
-        const actor = actorId ? game.actors?.get(actorId) : null;
-        const item = itemId && actor ? actor.items?.get(itemId) : null;
-        if (!actor || !item || item.type !== "ability")
-            return;
-        card.find("[data-action='cast-roll-attack']").on("click", async (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            await rollAbilityAttack(actor, item);
-        });
-        card.find("[data-action='cast-roll-secondary']").on("click", async (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            await rollAbilitySecondaryForSelectedTargets(actor, item);
-        });
-        card.find("[data-action='cast-roll-damage']").on("click", async (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            await rollAbilityDamage(actor, item);
+        cards.each((_index, element) => {
+            const root = element;
+            const withSource = async (callback) => {
+                const source = await resolveCastSourceFromCard(root);
+                if (!source.actor || !source.item || source.item.type !== "ability") {
+                    ui.notifications.warn(localize("RMRPG.Errors.CastSourceNotFound"));
+                    return;
+                }
+                await callback(source.actor, source.item);
+            };
+            root.querySelectorAll("[data-action='cast-roll-attack']").forEach((button) => {
+                button.addEventListener("click", async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    await withSource(async (actor, item) => {
+                        await rollAbilityAttack(actor, item);
+                    });
+                });
+            });
+            root.querySelectorAll("[data-action='cast-roll-secondary']").forEach((button) => {
+                button.addEventListener("click", async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    await withSource(async (actor, item) => {
+                        await rollAbilitySecondaryForSelectedTargets(actor, item);
+                    });
+                });
+            });
+            root.querySelectorAll("[data-action='cast-roll-damage']").forEach((button) => {
+                button.addEventListener("click", async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    await withSource(async (actor, item) => {
+                        await rollAbilityDamage(actor, item);
+                    });
+                });
+            });
         });
     });
 };
@@ -388,4 +460,10 @@ export const sendCastAbilityToChat = async (sheet, item) => {
         speaker: ChatMessage.getSpeaker({ actor: sheet.actor }),
         content
     });
+    const reikiPlan = resolveCastReikiPlan(item);
+    for (let checkIndex = 0; checkIndex < reikiPlan.checks; checkIndex += 1) {
+        await rollReikiSurge({ actor: sheet.actor }, {
+            lossThreshold: reikiPlan.lossThreshold
+        });
+    }
 };

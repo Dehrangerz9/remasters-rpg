@@ -288,7 +288,8 @@
     },
     "Errors": {
       "SelectSingleTarget": "Select exactly one targeted or controlled token.",
-      "SelectOneOrMoreTargets": "Select one or more targeted or controlled tokens."
+      "SelectOneOrMoreTargets": "Select one or more targeted or controlled tokens.",
+      "CastSourceNotFound": "Could not resolve the cast source for this chat card."
     },
     "Item": {
       "Name": "Item Name",

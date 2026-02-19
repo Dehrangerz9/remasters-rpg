@@ -288,7 +288,8 @@
     },
     "Errors": {
       "SelectSingleTarget": "Selecione exatamente um alvo ou token controlado.",
-      "SelectOneOrMoreTargets": "Selecione um ou mais alvos ou tokens controlados."
+      "SelectOneOrMoreTargets": "Selecione um ou mais alvos ou tokens controlados.",
+      "CastSourceNotFound": "Nao foi possivel resolver a origem da conjuracao neste card do chat."
     },
     "Item": {
       "Name": "Nome do Item",
