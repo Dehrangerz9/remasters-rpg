@@ -102,6 +102,8 @@
         "ListTitle": "Habilidades",
         "AddLabel": "Adicionar habilidade",
         "NewName": "Nova Habilidade",
+        "Edit": "Editar habilidade",
+        "Cast": "Conjurar habilidade",
         "Delete": "Excluir habilidade",
         "Empty": "Nenhuma habilidade ainda.",
         "Columns": {
@@ -123,9 +125,13 @@
         "AddItem": "Adicionar item",
         "Search": "Buscar",
         "NewItem": "Novo item",
+        "Edit": "Editar item",
+        "SendToChat": "Enviar ao chat",
         "MoveUp": "Mover para cima",
         "MoveDown": "Mover para baixo",
         "Delete": "Excluir item",
+        "DeleteConfirmTitle": "Confirmar exclusão",
+        "DeleteConfirmBody": "Deseja excluir \"{name}\"?",
         "Empty": "Nenhum item ainda.",
         "Columns": {
           "Item": "Item",

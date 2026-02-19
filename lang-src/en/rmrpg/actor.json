@@ -102,6 +102,8 @@
         "ListTitle": "Abilities",
         "AddLabel": "Add ability",
         "NewName": "New Ability",
+        "Edit": "Edit ability",
+        "Cast": "Cast ability",
         "Delete": "Delete ability",
         "Empty": "No abilities yet.",
         "Columns": {
@@ -123,9 +125,13 @@
         "AddItem": "Add item",
         "Search": "Search",
         "NewItem": "New item",
+        "Edit": "Edit item",
+        "SendToChat": "Send to chat",
         "MoveUp": "Move up",
         "MoveDown": "Move down",
         "Delete": "Delete item",
+        "DeleteConfirmTitle": "Confirm deletion",
+        "DeleteConfirmBody": "Delete \"{name}\"?",
         "Empty": "No items yet.",
         "Columns": {
           "Item": "Item",

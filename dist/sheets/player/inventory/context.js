@@ -1,5 +1,6 @@
 import { EQUIPMENT_TYPES, EQUIPMENT_CATEGORIES, ITEM_STATUS_ORDER, ITEM_STATUS_ICONS } from "../../actor/config.js";
 import { clampInteger, localize } from "../../global-functions/utils.js";
+import { collectItemTags, getItemDescriptionText } from "../item-summary.js";
 export const applyPlayerInventoryContext = (context) => {
     const statusLabels = {
         stowed: localize("RMRPG.Item.Status.Stowed"),
@@ -22,6 +23,8 @@ export const applyPlayerInventoryContext = (context) => {
         const totalWeight = Math.round(safeWeight * quantity * 10) / 10;
         const rawStatus = String(item.system?.status ?? "stowed");
         const status = ITEM_STATUS_ORDER.includes(rawStatus) ? rawStatus : "stowed";
+        const tags = collectItemTags(item);
+        const description = getItemDescriptionText(item);
         return {
             id: item.id,
             name: item.name,
@@ -33,7 +36,9 @@ export const applyPlayerInventoryContext = (context) => {
             status,
             statusClass: `status-${status}`,
             statusIcon: ITEM_STATUS_ICONS[status] ?? ITEM_STATUS_ICONS.stowed,
-            statusLabel: statusLabels[status] ?? statusLabels.stowed
+            statusLabel: statusLabels[status] ?? statusLabels.stowed,
+            tags,
+            description
         };
     });
     context.equipmentCategories = EQUIPMENT_CATEGORIES.map((category) => ({

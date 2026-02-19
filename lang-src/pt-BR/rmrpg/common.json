@@ -2,7 +2,8 @@
   "RMRPG": {
     "Common": {
       "Roll": "Rolar",
-      "Description": "Descrição"
+      "Description": "Descrição",
+      "Tags": "Tags"
     }
   }
 }

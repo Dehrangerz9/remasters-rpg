@@ -1010,6 +1010,10 @@
   border-radius: 8px;
   cursor: grab;
   padding: 0.35rem 0.4rem;
+  transition: border-color 0.15s ease;
+}
+.rmrpg-sheet .equipment-row.is-expanded {
+  border-color: var(--rmrpg-accent-soft);
 }
 .rmrpg-sheet .item-icon {
   border: 1px solid var(--rmrpg-border);
@@ -1017,6 +1021,33 @@
   height: 32px;
   object-fit: cover;
   width: 32px;
+}
+.rmrpg-sheet .item-icon-button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+}
+.rmrpg-sheet .item-icon-button:hover .item-icon {
+  border-color: var(--rmrpg-accent);
+}
+.rmrpg-sheet .item-chat-overlay {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  color: var(--rmrpg-accent);
+  display: inline-flex;
+  inset: 0;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 0.15s ease;
+}
+.rmrpg-sheet .item-icon-button:hover .item-chat-overlay,
+.rmrpg-sheet .item-icon-button:focus-visible .item-chat-overlay {
+  opacity: 1;
 }
 .rmrpg-sheet .item-name {
   background: none;
@@ -1090,23 +1121,18 @@
   border-color: #d7a8a8;
   color: #a64646;
 }
-.rmrpg-sheet .item-reorder {
-  display: grid;
-  gap: 0.2rem;
-  justify-items: center;
-}
-.rmrpg-sheet .reorder-btn {
+.rmrpg-sheet .item-edit {
   align-items: center;
   background: #fff;
   border: 1px solid var(--rmrpg-border);
   border-radius: 6px;
   color: var(--rmrpg-text-soft);
   display: inline-flex;
-  height: 1.1rem;
+  height: 2rem;
   justify-content: center;
-  width: 1.1rem;
+  width: 2rem;
 }
-.rmrpg-sheet .reorder-btn:hover {
+.rmrpg-sheet .item-edit:hover {
   color: var(--rmrpg-accent);
 }
 .rmrpg-sheet .item-delete {
@@ -1119,6 +1145,43 @@
   height: 2rem;
   justify-content: center;
   width: 2rem;
+}
+.rmrpg-sheet .item-details {
+  background: #f8fbfc;
+  border: 1px dashed var(--rmrpg-border);
+  border-radius: 6px;
+  cursor: auto;
+  display: none;
+  gap: 0.35rem;
+  grid-column: 1/-1;
+  padding: 0.45rem 0.5rem;
+}
+.rmrpg-sheet .equipment-row.is-expanded .item-details {
+  display: grid;
+}
+.rmrpg-sheet .item-details-description,
+.rmrpg-sheet .item-details-tags {
+  font-size: 0.75rem;
+  margin: 0;
+}
+.rmrpg-sheet .item-details-tags {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.rmrpg-sheet .item-tags-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+.rmrpg-sheet .item-tag {
+  background: #fff;
+  border: 1px solid #dde5e9;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.1rem 0.45rem;
 }
 .rmrpg-sheet .equipment-empty {
   color: var(--rmrpg-text-soft);
@@ -1285,11 +1348,22 @@
 }
 .rmrpg-sheet .abilities-table .equipment-header,
 .rmrpg-sheet .abilities-table .equipment-row {
-  grid-template-columns: 36px minmax(0, 1fr) 90px 42px;
+  grid-template-columns: 36px minmax(0, 1fr) 90px 170px 42px 42px;
 }
 .rmrpg-sheet .item-cost {
   font-size: 0.85rem;
   font-weight: 700;
+}
+.rmrpg-sheet .ability-cast {
+  background: var(--rmrpg-accent-soft);
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 6px;
+  color: var(--rmrpg-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  height: 2rem;
+  padding: 0 0.45rem;
+  text-transform: uppercase;
 }
 .rmrpg-sheet .add-ability {
   align-self: flex-start;

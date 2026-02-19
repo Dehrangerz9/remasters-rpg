@@ -1,8 +1,10 @@
 import { clampInteger } from "../../global-functions/utils.js";
 import { ITEM_STATUS_ORDER } from "../../actor/config.js";
-import { updateItemSortOrder } from "../../actor/drag.js";
+import { sendInventoryItemToChat } from "./chat.js";
 
 export const bindPlayerInventoryListeners = (sheet: any, html: JQuery) => {
+  const inventoryRoot = html.find("[data-tab='inventory']");
+
   html.find("[data-action='item-qty']").on("click", async (event: any) => {
     event.preventDefault();
     const id = String(event.currentTarget.dataset.id ?? "");
@@ -35,6 +37,11 @@ export const bindPlayerInventoryListeners = (sheet: any, html: JQuery) => {
     if (!id) return;
     const item = sheet.actor.items?.get(id);
     if (!item) return;
+    const confirmed = await Dialog.confirm({
+      title: game.i18n.localize("RMRPG.Actor.Inventory.DeleteConfirmTitle"),
+      content: `<p>${game.i18n.format("RMRPG.Actor.Inventory.DeleteConfirmBody", { name: item.name })}</p>`
+    });
+    if (!confirmed) return;
     await item.delete();
   });
 
@@ -50,10 +57,7 @@ export const bindPlayerInventoryListeners = (sheet: any, html: JQuery) => {
         type: category
       }
     ]);
-    const item = created?.[0];
-    if (item) {
-      item.sheet?.render(true);
-    }
+    if (!created?.length) return;
   });
 
   html.find("[data-action='category-search']").on("click", (event: any) => {
@@ -61,26 +65,19 @@ export const bindPlayerInventoryListeners = (sheet: any, html: JQuery) => {
     event.stopPropagation();
   });
 
-  html.find("[data-action='item-move']").on("click", async (event: any) => {
+  inventoryRoot.find("[data-action='item-toggle-details']").on("click", (event: any) => {
     event.preventDefault();
-    event.stopPropagation();
-    const button = event.currentTarget as HTMLElement;
-    const id = String(button.dataset.id ?? "");
-    const direction = String(button.dataset.direction ?? "");
-    if (!id || (direction !== "up" && direction !== "down")) return;
-    const row = button.closest(".equipment-row") as HTMLElement | null;
-    const table = row?.closest(".equipment-table") as HTMLElement | null;
-    if (!row || !table) return;
+    const row = (event.currentTarget as HTMLElement).closest(".equipment-row");
+    if (!row) return;
+    row.classList.toggle("is-expanded");
+  });
 
-    const rows = Array.from(table.querySelectorAll(".equipment-row")) as HTMLElement[];
-    const index = rows.findIndex((entry) => entry.dataset.id === id);
-    if (index === -1) return;
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= rows.length) return;
-
-    const ordered = rows.map((entry) => entry.dataset.id ?? "").filter(Boolean);
-    const [moved] = ordered.splice(index, 1);
-    ordered.splice(targetIndex, 0, moved);
-    await updateItemSortOrder(sheet, ordered);
+  inventoryRoot.find("[data-action='item-chat']").on("click", async (event: any) => {
+    event.preventDefault();
+    const id = String(event.currentTarget.dataset.id ?? "");
+    if (!id) return;
+    const item = sheet.actor.items?.get(id);
+    if (!item) return;
+    await sendInventoryItemToChat(sheet, item);
   });
 };

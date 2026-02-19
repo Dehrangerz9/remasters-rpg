@@ -57,13 +57,33 @@
           <span>{{localize "RMRPG.Actor.Abilities.Columns.Name"}}</span>
           <span>{{localize "RMRPG.Actor.Abilities.Columns.Cost"}}</span>
           <span></span>
+          <span></span>
+          <span></span>
         </div>
         {{#if abilityItems.length}}
         {{#each abilityItems}}
         <div class="equipment-row ability-row" data-item-id="{{this.id}}" data-id="{{this.id}}" draggable="true">
           <img class="item-icon" src="{{this.img}}" title="{{this.name}}" />
-          <button type="button" class="item-name" data-action="item-open" data-id="{{this.id}}">{{this.name}}</button>
+          <button type="button" class="item-name" data-action="item-toggle-details" data-id="{{this.id}}">{{this.name}}</button>
           <span class="item-cost">{{this.cost}}</span>
+          <button
+            type="button"
+            class="ability-cast"
+            data-action="ability-cast"
+            data-id="{{this.id}}"
+          >
+            {{localize "RMRPG.Actor.Abilities.Cast"}}
+          </button>
+          <button
+            type="button"
+            class="item-edit"
+            data-action="item-open"
+            data-id="{{this.id}}"
+            aria-label="{{localize 'RMRPG.Actor.Abilities.Edit'}}"
+            title="{{localize 'RMRPG.Actor.Abilities.Edit'}}"
+          >
+            <i class="fas fa-pen"></i>
+          </button>
           <button
             type="button"
             class="item-delete"
@@ -74,6 +94,24 @@
           >
             <i class="fas fa-trash"></i>
           </button>
+          <div class="item-details">
+            <p class="item-details-description">
+              <strong>{{localize "RMRPG.Common.Description"}}:</strong>
+              {{#if this.description}}{{this.description}}{{else}}-{{/if}}
+            </p>
+            <div class="item-details-tags">
+              <strong>{{localize "RMRPG.Common.Tags"}}:</strong>
+              <div class="item-tags-list">
+                {{#if this.tags.length}}
+                {{#each this.tags}}
+                <span class="item-tag">{{this}}</span>
+                {{/each}}
+                {{else}}
+                <span class="item-tag item-tag-empty">-</span>
+                {{/if}}
+              </div>
+            </div>
+          </div>
         </div>
         {{/each}}
         {{else}}

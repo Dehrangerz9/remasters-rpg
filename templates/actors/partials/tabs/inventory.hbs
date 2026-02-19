@@ -53,8 +53,20 @@
             {{#if this.items.length}}
             {{#each this.items}}
             <div class="equipment-row" data-item-id="{{this.id}}" data-id="{{this.id}}" data-category="{{../key}}" draggable="true">
-              <img class="item-icon" src="{{this.img}}" title="{{this.name}}" />
-              <button type="button" class="item-name" data-action="item-open" data-id="{{this.id}}">{{this.name}}</button>
+              <button
+                type="button"
+                class="item-icon-button"
+                data-action="item-chat"
+                data-id="{{this.id}}"
+                aria-label="{{localize 'RMRPG.Actor.Inventory.SendToChat'}}"
+                title="{{localize 'RMRPG.Actor.Inventory.SendToChat'}}"
+              >
+                <img class="item-icon" src="{{this.img}}" title="{{this.name}}" />
+                <span class="item-chat-overlay" aria-hidden="true">
+                  <i class="fas fa-comments"></i>
+                </span>
+              </button>
+              <button type="button" class="item-name" data-action="item-toggle-details" data-id="{{this.id}}">{{this.name}}</button>
               <div class="item-qty">
                 <span class="qty-value">{{this.quantity}}</span>
                 <div class="qty-controls">
@@ -77,30 +89,16 @@
               >
                 <i class="{{this.statusIcon}}"></i>
               </button>
-              <div class="item-reorder">
-                <button
-                  type="button"
-                  class="reorder-btn"
-                  data-action="item-move"
-                  data-direction="up"
-                  data-id="{{this.id}}"
-                  aria-label="{{localize 'RMRPG.Actor.Inventory.MoveUp'}}"
-                  title="{{localize 'RMRPG.Actor.Inventory.MoveUp'}}"
-                >
-                  <i class="fas fa-chevron-up"></i>
-                </button>
-                <button
-                  type="button"
-                  class="reorder-btn"
-                  data-action="item-move"
-                  data-direction="down"
-                  data-id="{{this.id}}"
-                  aria-label="{{localize 'RMRPG.Actor.Inventory.MoveDown'}}"
-                  title="{{localize 'RMRPG.Actor.Inventory.MoveDown'}}"
-                >
-                  <i class="fas fa-chevron-down"></i>
-                </button>
-              </div>
+              <button
+                type="button"
+                class="item-edit"
+                data-action="item-open"
+                data-id="{{this.id}}"
+                aria-label="{{localize 'RMRPG.Actor.Inventory.Edit'}}"
+                title="{{localize 'RMRPG.Actor.Inventory.Edit'}}"
+              >
+                <i class="fas fa-pen"></i>
+              </button>
               <button
                 type="button"
                 class="item-delete"
@@ -111,6 +109,24 @@
               >
                 <i class="fas fa-trash"></i>
               </button>
+              <div class="item-details">
+                <p class="item-details-description">
+                  <strong>{{localize "RMRPG.Common.Description"}}:</strong>
+                  {{#if this.description}}{{this.description}}{{else}}-{{/if}}
+                </p>
+                <div class="item-details-tags">
+                  <strong>{{localize "RMRPG.Common.Tags"}}:</strong>
+                  <div class="item-tags-list">
+                    {{#if this.tags.length}}
+                    {{#each this.tags}}
+                    <span class="item-tag">{{this}}</span>
+                    {{/each}}
+                    {{else}}
+                    <span class="item-tag item-tag-empty">-</span>
+                    {{/if}}
+                  </div>
+                </div>
+              </div>
             </div>
             {{/each}}
             {{else}}

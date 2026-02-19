@@ -142,6 +142,11 @@
     border-radius: 8px;
     cursor: grab;
     padding: 0.35rem 0.4rem;
+    transition: border-color 0.15s ease;
+  }
+
+  .equipment-row.is-expanded {
+    border-color: var(--rmrpg-accent-soft);
   }
 
   .item-icon {
@@ -150,6 +155,37 @@
     height: 32px;
     object-fit: cover;
     width: 32px;
+  }
+
+  .item-icon-button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+  }
+
+  .item-icon-button:hover .item-icon {
+    border-color: var(--rmrpg-accent);
+  }
+
+  .item-chat-overlay {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
+    color: var(--rmrpg-accent);
+    display: inline-flex;
+    inset: 0;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transition: opacity 0.15s ease;
+  }
+
+  .item-icon-button:hover .item-chat-overlay,
+  .item-icon-button:focus-visible .item-chat-overlay {
+    opacity: 1;
   }
 
   .item-name {
@@ -234,22 +270,16 @@
     color: #a64646;
   }
 
-  .item-reorder {
-    display: grid;
-    gap: 0.2rem;
-    justify-items: center;
-  }
-
-  .reorder-btn {
+  .item-edit {
     align-items: center;
     background: #fff;
     border: 1px solid var(--rmrpg-border);
     border-radius: 6px;
     color: var(--rmrpg-text-soft);
     display: inline-flex;
-    height: 1.1rem;
+    height: 2rem;
     justify-content: center;
-    width: 1.1rem;
+    width: 2rem;
 
     &:hover {
       color: var(--rmrpg-accent);
@@ -266,6 +296,49 @@
     height: 2rem;
     justify-content: center;
     width: 2rem;
+  }
+
+  .item-details {
+    background: #f8fbfc;
+    border: 1px dashed var(--rmrpg-border);
+    border-radius: 6px;
+    cursor: auto;
+    display: none;
+    gap: 0.35rem;
+    grid-column: 1 / -1;
+    padding: 0.45rem 0.5rem;
+  }
+
+  .equipment-row.is-expanded .item-details {
+    display: grid;
+  }
+
+  .item-details-description,
+  .item-details-tags {
+    font-size: 0.75rem;
+    margin: 0;
+  }
+
+  .item-details-tags {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .item-tags-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .item-tag {
+    background: #fff;
+    border: 1px solid #dde5e9;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.1rem 0.45rem;
   }
 
   .equipment-empty {

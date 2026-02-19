@@ -152,12 +152,24 @@
 
   .abilities-table .equipment-header,
   .abilities-table .equipment-row {
-    grid-template-columns: 36px minmax(0, 1fr) 90px 42px;
+    grid-template-columns: 36px minmax(0, 1fr) 90px 170px 42px 42px;
   }
 
   .item-cost {
     font-size: 0.85rem;
     font-weight: 700;
+  }
+
+  .ability-cast {
+    background: var(--rmrpg-accent-soft);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 6px;
+    color: var(--rmrpg-accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    height: 2rem;
+    padding: 0 0.45rem;
+    text-transform: uppercase;
   }
 
   .add-ability {
