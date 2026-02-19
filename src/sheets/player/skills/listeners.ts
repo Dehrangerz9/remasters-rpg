@@ -11,10 +11,12 @@ export const bindPlayerSkillListeners = (sheet: any, html: JQuery) => {
     const button = event.currentTarget as HTMLElement;
     const label = String(button.dataset.label ?? "");
     const row = button.closest(".skill-row");
-    const attribute = String(row?.querySelector("select")?.value ?? button.dataset.attr ?? "");
+    const attribute = String(
+      (row?.querySelector(".skill-attribute-select") as HTMLSelectElement | null)?.value ?? button.dataset.attr ?? ""
+    );
     const bonus = Number(button.dataset.bonus ?? 0);
     if (!attribute) return;
-    const trained = Boolean((row?.querySelector("input[type='checkbox']") as HTMLInputElement | null)?.checked);
+    const trained = Boolean((row?.querySelector(".skill-trained-toggle") as HTMLInputElement | null)?.checked);
     const rankBonus = Number(sheet.actor.system.rank?.bonus ?? 0);
     const attributeValue = Number(sheet.actor.system.attributes?.[attribute]?.value ?? 0);
 

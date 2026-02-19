@@ -35,28 +35,33 @@
       <div class="skills-list">
         {{#each skillEntries}}
         <div class="skill-row">
-          <input type="checkbox" name="{{this.trainedPath}}" {{checked this.trained}} />
-          <span class="skill-label">
-            {{#if this.labelKey}}
-              {{localize this.labelKey}}
-            {{else}}
-              {{this.label}}
-            {{/if}}
-          </span>
-          <select name="{{this.attributePath}}">
-            {{selectOptions ../attributeOptions selected=this.attribute valueAttr="value" labelAttr="label"}}
-          </select>
           <button
             type="button"
-            class="skill-roll"
+            class="skill-label-roll"
             data-action="roll-skill"
             data-attr="{{this.attribute}}"
             data-bonus="{{this.bonus}}"
             data-trained="{{this.trained}}"
             data-label="{{this.displayLabel}}"
+            aria-label="{{localize 'RMRPG.Common.Roll'}} {{this.displayLabel}}"
+            title="{{localize 'RMRPG.Common.Roll'}} {{this.displayLabel}}"
           >
-            +{{this.totalBonus}} <i class="fas fa-dice-d20"></i>
+            <p class="skill-roll-content">
+              <i class="fas fa-dice-d20" aria-hidden="true"></i>
+              <span class="skill-label-text">
+                {{#if this.labelKey}}
+                  {{localize this.labelKey}}
+                {{else}}
+                  {{this.label}}
+                {{/if}}
+              </span>
+              <span class="skill-roll-inline">{{this.totalBonusLabel}}</span>
+            </p>
           </button>
+          <select class="skill-attribute-select" name="{{this.attributePath}}">
+            {{selectOptions ../attributeOptions selected=this.attribute valueAttr="value" labelAttr="label"}}
+          </select>
+          <input class="skill-trained-toggle" type="checkbox" name="{{this.trainedPath}}" {{checked this.trained}} />
         </div>
         {{/each}}
       </div>

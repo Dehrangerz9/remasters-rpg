@@ -5,7 +5,7 @@
     }
 
     .skill-row {
-      flex-wrap: wrap;
+      grid-template-columns: minmax(0, 1fr) 108px 1.1rem;
     }
   }
 }
@@ -40,14 +40,14 @@
     }
 
     .skill-row {
-      flex-wrap: wrap;
-    }
-
-    .skill-roll {
-      justify-self: end;
+      grid-template-columns: minmax(0, 1fr) 116px 1.1rem;
     }
 
     .main-sections {
+      grid-template-columns: 1fr;
+    }
+
+    .tab[data-tab="main"] .skills-list {
       grid-template-columns: 1fr;
     }
 
@@ -82,6 +82,20 @@
     .header-top {
       align-items: flex-start;
       flex-direction: column;
+    }
+
+    .skill-row {
+      grid-template-columns: minmax(0, 1fr) 1.1rem;
+    }
+
+    .skill-attribute-select {
+      grid-column: 1 / 2;
+    }
+
+    .skill-trained-toggle {
+      grid-column: 2 / 3;
+      grid-row: 1 / span 2;
+      align-self: center;
     }
   }
 }

@@ -1,4 +1,8 @@
 .rmrpg-sheet {
+  .tab[data-tab="main"] .advantages-section {
+    grid-column: 1 / 2;
+  }
+
   .advantages-section {
     background: var(--rmrpg-surface);
     border: 1px solid var(--rmrpg-border);

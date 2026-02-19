@@ -9,11 +9,11 @@ export const bindPlayerSkillListeners = (sheet, html) => {
         const button = event.currentTarget;
         const label = String(button.dataset.label ?? "");
         const row = button.closest(".skill-row");
-        const attribute = String(row?.querySelector("select")?.value ?? button.dataset.attr ?? "");
+        const attribute = String(row?.querySelector(".skill-attribute-select")?.value ?? button.dataset.attr ?? "");
         const bonus = Number(button.dataset.bonus ?? 0);
         if (!attribute)
             return;
-        const trained = Boolean(row?.querySelector("input[type='checkbox']")?.checked);
+        const trained = Boolean(row?.querySelector(".skill-trained-toggle")?.checked);
         const rankBonus = Number(sheet.actor.system.rank?.bonus ?? 0);
         const attributeValue = Number(sheet.actor.system.attributes?.[attribute]?.value ?? 0);
         const modifiers = [

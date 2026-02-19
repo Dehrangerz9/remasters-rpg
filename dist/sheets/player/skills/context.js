@@ -1,5 +1,5 @@
 import { SKILL_DEFS } from "../../actor/config.js";
-import { localize } from "../../global-functions/utils.js";
+import { formatSigned, localize } from "../../global-functions/utils.js";
 export const applyPlayerSkillsContext = (context) => {
     const skills = context.system.player?.skills ?? {};
     const baseSkills = SKILL_DEFS.map((definition) => {
@@ -28,6 +28,7 @@ export const applyPlayerSkillsContext = (context) => {
             isCustom: false,
             trained,
             totalBonus,
+            totalBonusLabel: formatSigned(totalBonus),
             attribute,
             bonus,
             labelKey,
@@ -53,6 +54,7 @@ export const applyPlayerSkillsContext = (context) => {
             customIndex: index,
             trained,
             totalBonus,
+            totalBonusLabel: formatSigned(totalBonus),
             attribute,
             bonus,
             labelKey: null,
