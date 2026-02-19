@@ -80,7 +80,8 @@
         "Normal": "Normal",
         "Double": "Dobro",
         "Half": "Metade",
-        "Soak": "Resistir"
+        "Soak": "Resistir",
+        "Block": "Bloquear"
       },
       "Advancements": {
         "Placeholder": "Descreva o que foi comprado",
@@ -262,6 +263,21 @@
           "Situational": "Situacional",
           "Untyped": "Sem Tipo"
         }
+      },
+      "Damage": {
+        "Title": "Rolagem de Dano: {label}",
+        "ChatTitle": "Rolagem de Dano: {label}",
+        "Dice": "Dados",
+        "Label": "Rótulo",
+        "Formula": "Fórmula",
+        "Modifiers": "Modificadores",
+        "TypeValue": "Tipo / Valor",
+        "Roll": "Rolar Dano",
+        "BaseDamage": "Dano Base",
+        "BonusDamage": "Dano Bônus {index}",
+        "NoSelection": "Nenhuma parte selecionada",
+        "InvalidDamagePart": "Insira rótulo e fórmula válidos para a parte de dano.",
+        "TagAttack": "Ataque"
       }
     },
     "Errors": {

@@ -2,7 +2,7 @@ import { localize, normalizeBonusArray } from "../../global-functions/utils.js";
 import { getAttributeLabel } from "../../actor/helpers.js";
 import { openRollDialog } from "../rolls/dialog.js";
 import { rollReikiSurge } from "../rolls/reiki.js";
-import { createDamageControls } from "../rolls/damage.js";
+import { rollDamageWithDialog } from "../rolls/damage.js";
 import { rollSkillOrDerivedCheck } from "../rolls/check.js";
 const ACTION_CREATE_MAP = {
     attack: {
@@ -173,7 +173,8 @@ export const bindPlayerActionListeners = (sheet, html) => {
             damageButton: damageFormula && damageFormula !== "0"
                 ? {
                     formula: damageFormula,
-                    itemName: String(item?.name ?? "")
+                    itemName: String(item?.name ?? ""),
+                    itemId: String(item?.id ?? "")
                 }
                 : null
         });
@@ -186,16 +187,18 @@ export const bindPlayerActionListeners = (sheet, html) => {
         const button = event.currentTarget;
         const id = String(button.dataset.id ?? "");
         const formula = String(button.dataset.formula ?? "").trim();
+        const multiplier = Number(button.dataset.damageMultiplier ?? 1);
         if (!formula)
             return;
         const item = id ? sheet.actor.items?.get(id) : null;
-        const roll = await new Roll(formula).evaluate();
-        await roll.toMessage({
-            speaker: ChatMessage.getSpeaker({ actor: sheet.actor }),
-            flavor: item ? `${sheet.actor.name} - ${item.name}` : `${sheet.actor.name} Damage`
+        await rollDamageWithDialog({
+            actor: sheet.actor,
+            item,
+            fallbackFormula: formula,
+            itemName: String(item?.name ?? ""),
+            sourceLabel: item ? `${item.name}` : localize("RMRPG.Actor.Actions.Damage"),
+            criticalMultiplier: Number.isFinite(multiplier) ? multiplier : 1
         });
-        const total = Number(roll.total ?? 0);
-        await createDamageControls(sheet, total);
     });
     html.find("[data-action='action-item-add']").on("click", async (event) => {
         event.preventDefault();

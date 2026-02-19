@@ -80,7 +80,8 @@
         "Normal": "Normal",
         "Double": "Dobro",
         "Half": "Metade",
-        "Soak": "Resistir"
+        "Soak": "Resistir",
+        "Block": "Bloquear"
       },
       "Advancements": {
         "Placeholder": "Descreva o que foi comprado",

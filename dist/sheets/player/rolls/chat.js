@@ -1,3 +1,4 @@
+import { rollDamageWithDialog } from "./damage.js";
 let hookRegistered = false;
 export const setupCheckChatInteractions = () => {
     if (hookRegistered)
@@ -35,13 +36,16 @@ export const setupCheckChatInteractions = () => {
                 return;
             const actorId = String(trigger.dataset.actorId ?? "");
             const itemName = String(trigger.dataset.itemName ?? "").trim();
+            const itemId = String(trigger.dataset.itemId ?? "").trim();
             const actor = actorId ? game.actors?.get(actorId) : null;
-            const roll = await new Roll(formula).evaluate();
-            await roll.toMessage({
-                speaker: ChatMessage.getSpeaker({ actor: actor ?? null }),
-                flavor: itemName
-                    ? `${actor?.name ?? game.user?.name ?? ""} - ${itemName}`
-                    : `${actor?.name ?? game.user?.name ?? ""} ${game.i18n.localize("RMRPG.Actor.Actions.Damage")}`
+            const item = itemId && actor ? actor.items?.get(itemId) : null;
+            await rollDamageWithDialog({
+                actor,
+                item,
+                fallbackFormula: formula,
+                itemName,
+                sourceLabel: itemName || game.i18n.localize("RMRPG.Actor.Actions.Damage"),
+                criticalMultiplier: 1
             });
         });
     });

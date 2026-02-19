@@ -138,6 +138,7 @@ const buildCheckChatContent = (params) => {
             data-formula="${escapeHtml(damageButton.formula)}"
             data-actor-id="${escapeHtml(String(actor?.id ?? ""))}"
             data-item-name="${escapeHtml(String(damageButton.itemName ?? ""))}"
+            data-item-id="${escapeHtml(String(damageButton.itemId ?? ""))}"
           >
             ${escapeHtml(localize("RMRPG.Actor.Actions.Damage"))}
           </button>

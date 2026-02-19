@@ -80,7 +80,8 @@
         "Normal": "Normal",
         "Double": "Double",
         "Half": "Half",
-        "Soak": "Soak"
+        "Soak": "Soak",
+        "Block": "Block"
       },
       "Advancements": {
         "Placeholder": "Describe what was purchased",
@@ -262,6 +263,21 @@
           "Situational": "Situational",
           "Untyped": "Untyped"
         }
+      },
+      "Damage": {
+        "Title": "Damage Roll: {label}",
+        "ChatTitle": "Damage Roll: {label}",
+        "Dice": "Dice",
+        "Label": "Label",
+        "Formula": "Formula",
+        "Modifiers": "Modifiers",
+        "TypeValue": "Type / Value",
+        "Roll": "Roll Damage",
+        "BaseDamage": "Base Damage",
+        "BonusDamage": "Bonus Damage {index}",
+        "NoSelection": "No selected parts",
+        "InvalidDamagePart": "Enter a valid label and formula for the damage part.",
+        "TagAttack": "Attack"
       }
     },
     "Errors": {

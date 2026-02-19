@@ -80,7 +80,8 @@
         "Normal": "Normal",
         "Double": "Double",
         "Half": "Half",
-        "Soak": "Soak"
+        "Soak": "Soak",
+        "Block": "Block"
       },
       "Advancements": {
         "Placeholder": "Describe what was purchased",

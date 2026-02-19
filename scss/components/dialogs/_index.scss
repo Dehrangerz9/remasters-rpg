@@ -49,3 +49,228 @@
     margin: 0;
   }
 }
+
+.dialog .rmrpg-damage-dialog {
+  display: grid;
+  gap: 0.6rem;
+
+  .rmrpg-damage-dialog-section {
+    border: 1px solid #c7c0b1;
+    border-radius: 6px;
+    display: grid;
+    gap: 0.4rem;
+    padding: 0.4rem;
+
+    h3 {
+      color: #2b241b;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+
+  .rmrpg-damage-dialog-head {
+    align-items: center;
+    color: #6b5e4d;
+    display: grid;
+    font-size: 0.7rem;
+    font-weight: 700;
+    gap: 0.35rem;
+    grid-template-columns: 1.4fr 1fr 1fr auto;
+    text-transform: uppercase;
+  }
+
+  .rmrpg-damage-dialog-row {
+    align-items: center;
+    border-top: 1px solid #ded5c6;
+    display: grid;
+    gap: 0.35rem;
+    grid-template-columns: 1.4fr 1fr 1fr auto;
+    min-height: 2rem;
+    padding-top: 0.25rem;
+  }
+
+  .rmrpg-damage-dialog-cell {
+    min-width: 0;
+  }
+
+  .rmrpg-damage-dialog-label {
+    color: #2e2a22;
+    font-size: 0.85rem;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .rmrpg-damage-dialog-formula {
+    color: #1d2f3f;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .rmrpg-damage-dialog-type {
+    display: flex;
+  }
+
+  .rmrpg-damage-type-badge {
+    align-items: center;
+    border-radius: 4px;
+    display: inline-flex;
+    font-size: 0.66rem;
+    font-weight: 700;
+    gap: 0.22rem;
+    line-height: 1;
+    padding: 0.16rem 0.3rem;
+    white-space: nowrap;
+  }
+
+  .rmrpg-damage-type-physical {
+    background: #ece8df;
+    color: #4f4636;
+  }
+
+  .rmrpg-damage-type-elemental {
+    background: #f6e2d5;
+    color: #9c4e1f;
+  }
+
+  .rmrpg-damage-type-mental {
+    background: #dbebfb;
+    color: #275c8b;
+  }
+
+  .rmrpg-damage-type-deteriorating {
+    background: #dcefd9;
+    color: #356837;
+  }
+
+  .rmrpg-damage-type-none {
+    background: #ebebeb;
+    color: #5c5c5c;
+  }
+
+  .rmrpg-damage-dialog-toggle {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .rmrpg-damage-switch {
+    align-items: center;
+    display: inline-flex;
+    position: relative;
+
+    input {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    span {
+      background: #c5c5c5;
+      border-radius: 999px;
+      display: inline-flex;
+      height: 1.15rem;
+      position: relative;
+      transition: background-color 0.15s ease;
+      width: 2.05rem;
+
+      &::after {
+        background: #fff;
+        border-radius: 999px;
+        content: "";
+        height: 0.9rem;
+        left: 0.13rem;
+        position: absolute;
+        top: 0.12rem;
+        transition: transform 0.15s ease;
+        width: 0.9rem;
+      }
+    }
+
+    input:checked + span {
+      background: #1a3e8c;
+    }
+
+    input:checked + span::after {
+      transform: translateX(0.88rem);
+    }
+  }
+
+  .rmrpg-damage-dialog-add {
+    display: grid;
+    gap: 0.35rem;
+    grid-template-columns: 1.4fr 1fr 1fr auto;
+
+    input,
+    select {
+      min-width: 0;
+    }
+
+    button {
+      white-space: nowrap;
+    }
+  }
+
+  .rmrpg-damage-dialog-add-mod {
+    grid-template-columns: 1fr 80px 1fr 1fr auto;
+  }
+
+  .rmrpg-damage-dialog-preview {
+    align-items: center;
+    background: #182f82;
+    border: 1px solid #0f255f;
+    border-radius: 6px;
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    font-weight: 700;
+    gap: 0.25rem;
+    justify-content: center;
+    min-height: 2rem;
+    padding: 0.2rem 0.3rem;
+  }
+
+  .rmrpg-damage-preview-term {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.22rem;
+  }
+
+  .rmrpg-damage-preview-physical {
+    color: #e8ddd0;
+  }
+
+  .rmrpg-damage-preview-elemental {
+    color: #ffd4ab;
+  }
+
+  .rmrpg-damage-preview-mental {
+    color: #b9dbff;
+  }
+
+  .rmrpg-damage-preview-deteriorating {
+    color: #bde9b7;
+  }
+
+  .rmrpg-damage-preview-none {
+    color: #e9e9e9;
+  }
+
+  .rmrpg-damage-preview-sep {
+    opacity: 0.8;
+  }
+
+  .rmrpg-damage-preview-mult {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    font-size: 0.76rem;
+    line-height: 1;
+    padding: 0.16rem 0.28rem;
+  }
+
+  .rmrpg-damage-preview-empty {
+    opacity: 0.75;
+  }
+}
