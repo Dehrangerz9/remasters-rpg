@@ -81,6 +81,15 @@ Hooks.once("init", () => {
       }
     }
   });
+
+  game.settings.register(SYSTEM_ID, "gmSecretTargetInfo", {
+    name: "RMRPG.Settings.GMSecretTargetInfo.Name",
+    hint: "RMRPG.Settings.GMSecretTargetInfo.Hint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false
+  });
 });
 
 Hooks.once("setup", () => {

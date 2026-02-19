@@ -26,16 +26,16 @@ export const bindPlayerActionListeners = (sheet, html) => {
         const targets = Array.from(game.user?.targets ?? []);
         const token = targets[0] ?? null;
         if (!token?.actor)
-            return { dc: null, label: "" };
+            return { dc: null, targetInfoLabel: "" };
         const raw = Number(token.actor.system?.defense?.calculated ?? token.actor.system?.defense?.value);
         if (!Number.isFinite(raw))
-            return { dc: null, label: "" };
+            return { dc: null, targetInfoLabel: "" };
         const dc = Math.floor(raw);
         const targetLabel = String(token.actor?.name ?? token.name ?? "").trim();
         const defenseLabel = localize("RMRPG.Actor.Defense.Title");
         return {
             dc,
-            label: targetLabel ? `${defenseLabel} ${targetLabel} ${dc}` : `${defenseLabel} ${dc}`
+            targetInfoLabel: targetLabel ? `${targetLabel} ${defenseLabel} ${dc}` : `${defenseLabel} ${dc}`
         };
     };
     html.find("[data-action='action-item-delete']").on("click", async (event) => {
@@ -161,14 +161,12 @@ export const bindPlayerActionListeners = (sheet, html) => {
             const value = Math.floor(Number(modifier.value ?? 0));
             return `${modifier.name} ${value >= 0 ? `+${value}` : `${value}`}`;
         });
-        if (targetDc.label) {
-            breakdownTags.push(targetDc.label);
-        }
         await rollSkillOrDerivedCheck({
             actor: sheet.actor,
             label: item ? `${item.name}` : localize("RMRPG.Actor.Actions.Attacks"),
             totalModifier: result.total,
             dc: targetDc.dc,
+            targetInfoLabel: targetDc.targetInfoLabel,
             breakdownTags,
             damageButton: damageFormula && damageFormula !== "0"
                 ? {

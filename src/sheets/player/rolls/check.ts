@@ -1,4 +1,5 @@
 import { localize } from "../../global-functions/utils.js";
+import { SYSTEM_ID } from "../../../constants.js";
 
 export type CheckOutcome = "critical-success" | "success" | "failure" | "critical-failure";
 
@@ -7,6 +8,7 @@ type RollCheckOptions = {
   label: string;
   totalModifier: number;
   dc?: number | null;
+  targetInfoLabel?: string;
   passosDeSucessos?: number;
   passosDeFalha?: number;
   breakdownTags?: string[];
@@ -116,6 +118,7 @@ const buildCheckChatContent = (params: {
   outcome: CheckOutcome | null;
   dc: number | null;
   naturalD20: number | null;
+  targetInfoLabel: string;
   breakdownTags: string[];
   damageButton: {
     formula: string;
@@ -123,7 +126,7 @@ const buildCheckChatContent = (params: {
     itemId?: string;
   } | null;
 }) => {
-  const { actor, label, rollTotal, totalModifier, roll, outcome, dc, naturalD20, breakdownTags, damageButton } = params;
+  const { actor, label, rollTotal, totalModifier, roll, outcome, dc, targetInfoLabel, breakdownTags, damageButton } = params;
   const actorName = String(actor?.name ?? "-");
   const actorImg = String(actor?.img ?? "icons/svg/mystery-man.svg");
   const createdBy = String(game.user?.name ?? "-");
@@ -158,14 +161,28 @@ const buildCheckChatContent = (params: {
       </div>
     `;
 
+  const hideTargetInfoAsSecret = (() => {
+    try {
+      return Boolean(game.settings?.get?.(SYSTEM_ID, "gmSecretTargetInfo"));
+    } catch (_error) {
+      return false;
+    }
+  })();
+
   const outcomeMarkup =
     dc !== null && outcome
       ? `
-        <div class="rmrpg-check-outcome">
-          <span class="rmrpg-check-outcome-label">${escapeHtml(localize("RMRPG.Dialogs.Roll.Outcome"))}</span>
+        <div class="rmrpg-check-outcome ${
+          outcome === "success" || outcome === "critical-success" ? "is-success" : "is-failure"
+        }">
           <span class="rmrpg-check-outcome-value">${escapeHtml(localize(OUTCOME_LABEL_KEY[outcome]))}</span>
-          <span class="rmrpg-check-outcome-vs">${rollTotal} vs DC ${dc}</span>
-          ${naturalD20 !== null ? `<span class="rmrpg-check-outcome-natural">d20: ${naturalD20}</span>` : ""}
+          ${
+            hideTargetInfoAsSecret && targetInfoLabel
+              ? `<section class="secret rmrpg-check-outcome-secret"><span class="rmrpg-check-outcome-dc">(${escapeHtml(
+                  targetInfoLabel
+                )})</span></section>`
+              : `<span class="rmrpg-check-outcome-dc">(${escapeHtml(targetInfoLabel || `DC ${dc}`)})</span>`
+          }
         </div>
       `
       : "";
@@ -199,6 +216,7 @@ const buildCheckChatContent = (params: {
         </div>
       </header>
       <h3 class="rmrpg-check-title">${escapeHtml(label)}</h3>
+      ${outcomeMarkup}
       <div class="rmrpg-check-divider"></div>
       <div class="rmrpg-check-tags">${tagsMarkup}</div>
       <details class="rmrpg-check-breakdown">
@@ -208,7 +226,6 @@ const buildCheckChatContent = (params: {
         <div class="rmrpg-check-dice-list">${diceMarkup}</div>
       </details>
       <div class="rmrpg-check-total">${rollTotal}</div>
-      ${outcomeMarkup}
       ${damageButtonMarkup}
     </article>
   `;
@@ -219,6 +236,7 @@ export const rollSkillOrDerivedCheck = async ({
   label,
   totalModifier,
   dc = null,
+  targetInfoLabel = "",
   passosDeSucessos = 0,
   passosDeFalha = 0,
   breakdownTags = [],
@@ -247,6 +265,7 @@ export const rollSkillOrDerivedCheck = async ({
     outcome,
     dc: normalizedDc,
     naturalD20,
+    targetInfoLabel: String(targetInfoLabel ?? "").trim(),
     breakdownTags,
     damageButton
   });

@@ -4,6 +4,10 @@
       "PunkCity": {
         "Name": "Punk City Theme",
         "Hint": "Enable the Punk City cyberpunk red/dark theme for sheets."
+      },
+      "GMSecretTargetInfo": {
+        "Name": "Hide target in roll result",
+        "Hint": "When enabled, the target string (e.g. \"Dummy VD 14\") in roll outcome is wrapped as GM secret."
       }
     }
   }

@@ -27,6 +27,13 @@ export const setupCheckChatInteractions = () => {
         if (!root)
             return;
         root.append(button);
+        const secretBlocks = card.find(".rmrpg-check-outcome-secret");
+        if (secretBlocks.length) {
+            if (game.user?.isGM) {
+                secretBlocks.addClass("revealed");
+            }
+            card.find(".rmrpg-check-outcome .reveal, .rmrpg-check-outcome .secret-reveal").remove();
+        }
         card.find("[data-action='check-roll-damage']").on("click", async (event) => {
             event.preventDefault();
             event.stopPropagation();

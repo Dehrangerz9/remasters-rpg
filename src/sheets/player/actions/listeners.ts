@@ -28,15 +28,15 @@ export const bindPlayerActionListeners = (sheet: any, html: JQuery) => {
   const resolveTargetDc = () => {
     const targets = Array.from(game.user?.targets ?? []);
     const token: any = targets[0] ?? null;
-    if (!token?.actor) return { dc: null, label: "" };
+    if (!token?.actor) return { dc: null, targetInfoLabel: "" };
     const raw = Number(token.actor.system?.defense?.calculated ?? token.actor.system?.defense?.value);
-    if (!Number.isFinite(raw)) return { dc: null, label: "" };
+    if (!Number.isFinite(raw)) return { dc: null, targetInfoLabel: "" };
     const dc = Math.floor(raw);
     const targetLabel = String(token.actor?.name ?? token.name ?? "").trim();
     const defenseLabel = localize("RMRPG.Actor.Defense.Title");
     return {
       dc,
-      label: targetLabel ? `${defenseLabel} ${targetLabel} ${dc}` : `${defenseLabel} ${dc}`
+      targetInfoLabel: targetLabel ? `${targetLabel} ${defenseLabel} ${dc}` : `${defenseLabel} ${dc}`
     };
   };
 
@@ -164,15 +164,13 @@ export const bindPlayerActionListeners = (sheet: any, html: JQuery) => {
         const value = Math.floor(Number(modifier.value ?? 0));
         return `${modifier.name} ${value >= 0 ? `+${value}` : `${value}`}`;
       });
-    if (targetDc.label) {
-      breakdownTags.push(targetDc.label);
-    }
 
     await rollSkillOrDerivedCheck({
       actor: sheet.actor,
       label: item ? `${item.name}` : localize("RMRPG.Actor.Actions.Attacks"),
       totalModifier: result.total,
       dc: targetDc.dc,
+      targetInfoLabel: targetDc.targetInfoLabel,
       breakdownTags,
       damageButton:
         damageFormula && damageFormula !== "0"

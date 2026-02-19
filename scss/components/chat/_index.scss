@@ -227,8 +227,7 @@
 
   .rmrpg-check-outcome {
     align-items: center;
-    background: #f4f8fb;
-    border: 1px dashed #b8c9d5;
+    border: 1px solid transparent;
     border-radius: 6px;
     color: #274d67;
     display: flex;
@@ -238,20 +237,58 @@
     padding: 0.18rem 0.3rem;
   }
 
+  .rmrpg-check-outcome.is-success {
+    background: #ecf7ef;
+    border-color: #c7dfca;
+    color: #2f6a3c;
+  }
+
+  .rmrpg-check-outcome.is-failure {
+    background: #fbeeee;
+    border-color: #e1c8c8;
+    color: #8a3f3f;
+  }
+
   .rmrpg-check-outcome-label {
-    color: #5c7382;
+    color: inherit;
     font-weight: 700;
     text-transform: uppercase;
   }
 
   .rmrpg-check-outcome-value {
-    color: #123a63;
+    color: inherit;
     font-weight: 800;
   }
 
-  .rmrpg-check-outcome-vs,
-  .rmrpg-check-outcome-natural {
+  .rmrpg-check-outcome-dc {
     font-weight: 700;
+  }
+
+  .rmrpg-check-outcome-secret {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+
+    .rmrpg-check-outcome-dc {
+      margin: 0;
+    }
+
+    &.secret,
+    &.secret.revealed {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .reveal,
+    .secret-reveal {
+      display: none !important;
+    }
   }
 
   .rmrpg-check-actions {

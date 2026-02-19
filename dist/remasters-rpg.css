@@ -3264,8 +3264,7 @@
 }
 .chat-message .message-content .rmrpg-check-outcome {
   align-items: center;
-  background: #f4f8fb;
-  border: 1px dashed #b8c9d5;
+  border: 1px solid transparent;
   border-radius: 6px;
   color: #274d67;
   display: flex;
@@ -3274,18 +3273,49 @@
   gap: 0.28rem;
   padding: 0.18rem 0.3rem;
 }
+.chat-message .message-content .rmrpg-check-outcome.is-success {
+  background: #ecf7ef;
+  border-color: #c7dfca;
+  color: #2f6a3c;
+}
+.chat-message .message-content .rmrpg-check-outcome.is-failure {
+  background: #fbeeee;
+  border-color: #e1c8c8;
+  color: #8a3f3f;
+}
 .chat-message .message-content .rmrpg-check-outcome-label {
-  color: #5c7382;
+  color: inherit;
   font-weight: 700;
   text-transform: uppercase;
 }
 .chat-message .message-content .rmrpg-check-outcome-value {
-  color: #123a63;
+  color: inherit;
   font-weight: 800;
 }
-.chat-message .message-content .rmrpg-check-outcome-vs,
-.chat-message .message-content .rmrpg-check-outcome-natural {
+.chat-message .message-content .rmrpg-check-outcome-dc {
   font-weight: 700;
+}
+.chat-message .message-content .rmrpg-check-outcome-secret {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.chat-message .message-content .rmrpg-check-outcome-secret .rmrpg-check-outcome-dc {
+  margin: 0;
+}
+.chat-message .message-content .rmrpg-check-outcome-secret.secret, .chat-message .message-content .rmrpg-check-outcome-secret.secret.revealed {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+.chat-message .message-content .rmrpg-check-outcome-secret .reveal,
+.chat-message .message-content .rmrpg-check-outcome-secret .secret-reveal {
+  display: none !important;
 }
 .chat-message .message-content .rmrpg-check-actions {
   display: flex;

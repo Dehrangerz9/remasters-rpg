@@ -4,6 +4,10 @@
       "PunkCity": {
         "Name": "Tema Punk City",
         "Hint": "Ativa o tema cyberpunk vermelho/escuro nas fichas."
+      },
+      "GMSecretTargetInfo": {
+        "Name": "Ocultar alvo no resultado do roll",
+        "Hint": "Quando ligado, a string do alvo (ex.: \"Dummy VD 14\") no resultado do roll fica em segredo de GM."
       }
     }
   }
