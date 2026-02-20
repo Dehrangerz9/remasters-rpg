@@ -585,6 +585,22 @@ const buildDamageChatContent = (result) => {
     </article>
   `;
 };
+const buildDamageApplicationChatContent = (params) => {
+    const { targetActor, finalDamage, soakValue, currentHp, nextHp, useBlock } = params;
+    const actorName = String(targetActor?.name ?? "-");
+    const summary = localize(useBlock ? "RMRPG.Chat.DamageAbsorbed" : "RMRPG.Chat.DamageApplied", {
+        name: actorName,
+        damage: finalDamage,
+        soak: soakValue
+    });
+    const hpLabel = localize("RMRPG.Actor.HitPoints");
+    return `
+    <article class="rmrpg-damage-result-card">
+      <div class="rmrpg-damage-result-summary">${escapeHtml(summary)}</div>
+      <div class="rmrpg-damage-result-resource">${escapeHtml(hpLabel)}: ${currentHp} -> ${nextHp}</div>
+    </article>
+  `;
+};
 const applyDamageToTarget = async (sourceActor, baseDamage, multiplier, useBlock) => {
     const targets = Array.from(game.user?.targets ?? []);
     const controlled = canvas?.tokens?.controlled ?? [];
@@ -601,13 +617,15 @@ const applyDamageToTarget = async (sourceActor, baseDamage, multiplier, useBlock
     const currentHp = Math.max(0, toSafeInteger(token.actor.system?.hp?.value, 0));
     const nextHp = Math.max(0, currentHp - finalDamage);
     await token.actor.update({ "system.hp.value": nextHp });
-    const messageKey = useBlock ? "RMRPG.Chat.DamageAbsorbed" : "RMRPG.Chat.DamageApplied";
     await ChatMessage.create({
         speaker: ChatMessage.getSpeaker({ actor: sourceActor ?? null }),
-        content: localize(messageKey, {
-            name: token.actor.name,
-            damage: finalDamage,
-            soak: soakValue
+        content: buildDamageApplicationChatContent({
+            targetActor: token.actor,
+            finalDamage,
+            soakValue,
+            currentHp,
+            nextHp,
+            useBlock
         })
     });
     if (useBlock) {

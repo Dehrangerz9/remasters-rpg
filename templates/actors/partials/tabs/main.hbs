@@ -75,7 +75,6 @@
       <div class="section-header">
         <h3>{{localize "RMRPG.Actor.Advantages.Title"}}</h3>
       </div>
-      <button type="button" class="add-feat" data-action="add-feat">{{localize "RMRPG.Actor.Feats.AddLabel"}}</button>
       {{#unless feats.length}}
       <div class="feat-drop-zone" data-action="feat-drop">
         <span>{{localize "RMRPG.Actor.Feats.DropHint"}}</span>
@@ -134,6 +133,7 @@
         </div>
         {{/each}}
       </div>
+      <button type="button" class="add-feat" data-action="add-feat">{{localize "RMRPG.Actor.Feats.AddLabel"}}</button>
     </section>
   </div>
   {{/if}}

@@ -160,17 +160,23 @@
   position: relative;
 }
 .rmrpg-sheet .status-card h3 {
+  border-bottom: 0;
   color: var(--rmrpg-text-soft);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   margin: 0;
+  padding-bottom: 0;
+  text-decoration: none;
   text-transform: uppercase;
 }
 .rmrpg-sheet .status-card h1 {
+  border-bottom: 0;
   font-size: 1.5rem;
   line-height: 1.2;
   margin: 0;
+  padding-bottom: 0;
+  text-decoration: none;
 }
 .rmrpg-sheet .status-card small {
   color: var(--rmrpg-text-soft);
@@ -187,6 +193,23 @@
   padding: 0 0.4rem;
   text-align: center;
   width: 100%;
+}
+.rmrpg-sheet .status-card .stat-input:focus {
+  border-color: var(--rmrpg-accent);
+  box-shadow: 0 0 0 1px var(--rmrpg-accent-ring);
+  outline: none;
+}
+.rmrpg-sheet .status-card select {
+  background: #fff;
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 8px;
+  height: 2rem;
+  padding: 0 0.4rem;
+}
+.rmrpg-sheet .status-card select:focus {
+  border-color: var(--rmrpg-accent);
+  box-shadow: 0 0 0 1px var(--rmrpg-accent-ring);
+  outline: none;
 }
 .rmrpg-sheet .card-cog {
   background: #fff;
@@ -279,19 +302,20 @@
   white-space: nowrap;
 }
 .rmrpg-sheet .bar-input {
-  background: transparent;
-  border: 0;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.9);
+  background: rgba(10, 12, 17, 0.36);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 6px;
   color: #fff;
   font-size: 0.8rem;
   font-weight: 700;
-  height: 1rem;
+  height: 1.15rem;
   min-width: 2rem;
-  padding: 0;
+  padding: 0 0.2rem;
   text-align: right;
-  width: 2.2rem;
+  width: 2.4rem;
 }
 .rmrpg-sheet .bar-input:focus {
+  border-color: #fff;
   box-shadow: none;
   outline: none;
 }
@@ -320,17 +344,20 @@
   text-transform: uppercase;
 }
 .rmrpg-sheet .temp-input {
-  background: transparent;
-  border: 0;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #b7c7e6;
+  border-radius: 6px;
   color: #234;
   font-size: 0.82rem;
   font-weight: 700;
+  height: 1.15rem;
   line-height: 1;
   min-width: 2.25rem;
-  padding: 0;
+  padding: 0 0.2rem;
   text-align: center;
 }
 .rmrpg-sheet .temp-input:focus {
+  border-color: var(--rmrpg-accent);
   box-shadow: none;
   outline: none;
 }
@@ -1116,6 +1143,21 @@
 }
 .rmrpg-sheet .add-feat {
   align-self: flex-start;
+  background: #123a63;
+  border: 1px solid #123a63;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  min-height: 1.9rem;
+  padding: 0.3rem 0.7rem;
+  text-transform: uppercase;
+}
+.rmrpg-sheet .add-feat:hover, .rmrpg-sheet .add-feat:focus-visible {
+  background: #0f3154;
+  border-color: #0f3154;
+  color: #fff;
+  outline: none;
 }
 
 .rmrpg-sheet .inventory-section {
@@ -1734,8 +1776,8 @@
 .rmrpg-sheet .advancement-toolbar {
   align-items: center;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.55rem;
+  justify-content: flex-start;
+  margin-top: 0.55rem;
 }
 .rmrpg-sheet .advancement-summary {
   display: flex;
@@ -1777,6 +1819,23 @@
   height: 1.7rem;
   justify-content: center;
   width: 1.9rem;
+}
+.rmrpg-sheet .add-advancement {
+  background: #123a63;
+  border: 1px solid #123a63;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  min-height: 1.9rem;
+  padding: 0.3rem 0.7rem;
+  text-transform: uppercase;
+}
+.rmrpg-sheet .add-advancement:hover, .rmrpg-sheet .add-advancement:focus-visible {
+  background: #0f3154;
+  border-color: #0f3154;
+  color: #fff;
+  outline: none;
 }
 
 .rmrpg-sheet .grid-2 {
@@ -4055,6 +4114,48 @@
 }
 .chat-message .message-content .rmrpg-damage-actions button i {
   font-size: 0.9rem;
+}
+
+.chat-message:has(.rmrpg-damage-result-card) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.chat-message:has(.rmrpg-damage-result-card) .message-header {
+  display: none;
+}
+
+.chat-message:has(.rmrpg-damage-result-card) .message-content {
+  margin: 0;
+  padding: 0;
+}
+
+.chat-message .message-content .rmrpg-damage-result-card {
+  background: linear-gradient(180deg, #fdfefe 0%, #f4f8fa 100%);
+  border: 1px solid #b8c8d0;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(20, 58, 84, 0.08);
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.55rem 0.58rem;
+}
+.chat-message .message-content .rmrpg-damage-result-summary {
+  color: #17344a;
+  font-size: 0.75rem;
+  line-height: 1.28;
+}
+.chat-message .message-content .rmrpg-damage-result-resource {
+  background: #f4f8fb;
+  border: 1px dashed #b8c9d5;
+  border-radius: 6px;
+  color: #274d67;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 0.18rem 0.3rem;
+  text-align: center;
 }
 
 .chat-message:has(.rmrpg-feat-card) {

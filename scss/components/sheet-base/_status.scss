@@ -10,18 +10,24 @@
     position: relative;
 
     h3 {
+      border-bottom: 0;
       color: var(--rmrpg-text-soft);
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.04em;
       margin: 0;
+      padding-bottom: 0;
+      text-decoration: none;
       text-transform: uppercase;
     }
 
     h1 {
+      border-bottom: 0;
       font-size: 1.5rem;
       line-height: 1.2;
       margin: 0;
+      padding-bottom: 0;
+      text-decoration: none;
     }
 
     small {
@@ -40,6 +46,26 @@
       padding: 0 0.4rem;
       text-align: center;
       width: 100%;
+
+      &:focus {
+        border-color: var(--rmrpg-accent);
+        box-shadow: 0 0 0 1px var(--rmrpg-accent-ring);
+        outline: none;
+      }
+    }
+
+    select {
+      background: #fff;
+      border: 1px solid var(--rmrpg-border);
+      border-radius: t.$radius-md;
+      height: 2rem;
+      padding: 0 0.4rem;
+
+      &:focus {
+        border-color: var(--rmrpg-accent);
+        box-shadow: 0 0 0 1px var(--rmrpg-accent-ring);
+        outline: none;
+      }
     }
   }
 
@@ -149,19 +175,20 @@
   }
 
   .bar-input {
-    background: transparent;
-    border: 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.9);
+    background: rgba(10, 12, 17, 0.36);
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: t.$radius-sm;
     color: #fff;
     font-size: 0.8rem;
     font-weight: 700;
-    height: 1rem;
+    height: 1.15rem;
     min-width: 2rem;
-    padding: 0;
+    padding: 0 0.2rem;
     text-align: right;
-    width: 2.2rem;
+    width: 2.4rem;
 
     &:focus {
+      border-color: #fff;
       box-shadow: none;
       outline: none;
     }
@@ -196,17 +223,20 @@
   }
 
   .temp-input {
-    background: transparent;
-    border: 0;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #b7c7e6;
+    border-radius: t.$radius-sm;
     color: #234;
     font-size: 0.82rem;
     font-weight: 700;
+    height: 1.15rem;
     line-height: 1;
     min-width: 2.25rem;
-    padding: 0;
+    padding: 0 0.2rem;
     text-align: center;
 
     &:focus {
+      border-color: var(--rmrpg-accent);
       box-shadow: none;
       outline: none;
     }

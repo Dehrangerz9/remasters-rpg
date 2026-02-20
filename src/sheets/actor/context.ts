@@ -30,7 +30,7 @@ export const buildActorContext = async (sheet: any, context: any) => {
   context.defenseCalculated = Number(context.system.defense?.calculated ?? 12 + context.derivedReflexo);
   context.defenseManual = Number(context.system.defense?.value ?? 0);
   context.hasManualDefense = context.defenseManual > 0;
-  context.movementRate = Number(context.system.movement?.rate ?? 0);
+  context.movementRate = Number(context.system.movement?.rate ?? 5);
   const resistance = context.system.resistance ?? {};
   context.resistanceEntries = RESISTANCE_CONFIG.map((entry) => ({
     key: entry.key,

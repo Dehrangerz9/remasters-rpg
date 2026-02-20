@@ -956,6 +956,52 @@
   }
 }
 
+.chat-message:has(.rmrpg-damage-result-card) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.chat-message:has(.rmrpg-damage-result-card) .message-header {
+  display: none;
+}
+
+.chat-message:has(.rmrpg-damage-result-card) .message-content {
+  margin: 0;
+  padding: 0;
+}
+
+.chat-message .message-content {
+  .rmrpg-damage-result-card {
+    background: linear-gradient(180deg, #fdfefe 0%, #f4f8fa 100%);
+    border: 1px solid #b8c8d0;
+    border-radius: 10px;
+    box-shadow: 0 8px 18px rgba(20, 58, 84, 0.08);
+    display: grid;
+    gap: 0.28rem;
+    padding: 0.55rem 0.58rem;
+  }
+
+  .rmrpg-damage-result-summary {
+    color: #17344a;
+    font-size: 0.75rem;
+    line-height: 1.28;
+  }
+
+  .rmrpg-damage-result-resource {
+    background: #f4f8fb;
+    border: 1px dashed #b8c9d5;
+    border-radius: 6px;
+    color: #274d67;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.2;
+    padding: 0.18rem 0.3rem;
+    text-align: center;
+  }
+}
+
 .chat-message:has(.rmrpg-feat-card) {
   background: transparent;
   border: 0;

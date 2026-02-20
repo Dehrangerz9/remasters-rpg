@@ -20,9 +20,15 @@ class RMRPGGenericActor extends Actor {
     system.rank.bonus = rankState.bonus;
 
     system.hp ??= {};
-    system.hp.value = Math.max(0, this.asNumber(system.hp.value));
-    system.hp.max = Math.max(1, this.asNumber(system.hp.max || 1));
-    system.hp.temp = Math.max(0, this.asNumber(system.hp.temp));
+    const rawHpMax = Number(system.hp.max);
+    const safeHpMax = Number.isFinite(rawHpMax) ? Math.max(1, Math.floor(rawHpMax)) : 20;
+    const rawHpValue = Number(system.hp.value);
+    const safeHpValue = Number.isFinite(rawHpValue) ? Math.max(0, Math.floor(rawHpValue)) : safeHpMax;
+    const rawHpTemp = Number(system.hp.temp);
+    const safeHpTemp = Number.isFinite(rawHpTemp) ? Math.max(0, Math.floor(rawHpTemp)) : 0;
+    system.hp.max = safeHpMax;
+    system.hp.value = Math.min(safeHpValue, safeHpMax);
+    system.hp.temp = safeHpTemp;
 
     const attributes = system.attributes ?? {};
     const corpo = this.asNumber(attributes.corpo?.value);
@@ -60,7 +66,8 @@ class RMRPGGenericActor extends Actor {
     system.derived.iniciativa = iniciativa;
 
     system.movement ??= {};
-    system.movement.rate = this.asNumber(system.movement.rate);
+    const rawMovementRate = Number(system.movement.rate);
+    system.movement.rate = Number.isFinite(rawMovementRate) ? rawMovementRate : 5;
 
     const manualDefense = this.asNumber(system.defense?.value);
     const calculatedDefense = manualDefense > 0 ? this.roundDown(manualDefense) : this.roundDown(12 + reflexo);
@@ -221,7 +228,8 @@ export class RMRPGActor extends RMRPGGenericActor {
       reikiCurrent = Math.max(0, Math.floor(rawCurrent));
     } else {
       const legacySlots = system.player.reiki.slots ?? {};
-      reikiCurrent = Object.values(legacySlots).filter(Boolean).length;
+      const legacyCount = Object.values(legacySlots).filter(Boolean).length;
+      reikiCurrent = legacyCount > 0 ? legacyCount : reikiMax;
     }
 
     system.player.reiki.max = reikiMax;

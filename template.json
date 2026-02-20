@@ -8,8 +8,8 @@
     "templates": {
       "common": {
         "hp": {
-          "value": 10,
-          "max": 10,
+          "value": 20,
+          "max": 20,
           "temp": 0
         },
         "attributes": {
@@ -49,7 +49,7 @@
           }
         },
         "movement": {
-          "rate": 0
+          "rate": 5
         },
         "defense": {
           "value": 0,
@@ -194,7 +194,7 @@
         },
         "advancements": {},
         "reiki": {
-          "current": 0,
+          "current": 3,
           "max": 3
         },
         "credits": 0,

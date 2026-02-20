@@ -2,8 +2,8 @@
   .advancement-toolbar {
     align-items: center;
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.55rem;
+    justify-content: flex-start;
+    margin-top: 0.55rem;
   }
 
   .advancement-summary {
@@ -50,5 +50,25 @@
     height: 1.7rem;
     justify-content: center;
     width: 1.9rem;
+  }
+
+  .add-advancement {
+    background: #123a63;
+    border: 1px solid #123a63;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    min-height: 1.9rem;
+    padding: 0.3rem 0.7rem;
+    text-transform: uppercase;
+
+    &:hover,
+    &:focus-visible {
+      background: #0f3154;
+      border-color: #0f3154;
+      color: #fff;
+      outline: none;
+    }
   }
 }

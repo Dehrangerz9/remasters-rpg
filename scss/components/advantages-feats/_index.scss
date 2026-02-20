@@ -194,5 +194,22 @@
 
   .add-feat {
     align-self: flex-start;
+    background: #123a63;
+    border: 1px solid #123a63;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    min-height: 1.9rem;
+    padding: 0.3rem 0.7rem;
+    text-transform: uppercase;
+
+    &:hover,
+    &:focus-visible {
+      background: #0f3154;
+      border-color: #0f3154;
+      color: #fff;
+      outline: none;
+    }
   }
 }

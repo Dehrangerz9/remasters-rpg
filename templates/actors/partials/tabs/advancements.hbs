@@ -1,8 +1,4 @@
 <div class="tab" data-group="primary" data-tab="advancements">
-  <div class="advancement-toolbar">
-    <button type="button" data-action="add-advancement">{{localize "RMRPG.Actor.Advancements.Add"}}</button>
-  </div>
-
   {{#if hasAdvancements}}
   <div class="advancement-list">
     {{#each advancementEntries}}
@@ -23,4 +19,8 @@
   {{else}}
   <p class="advancement-empty">{{localize "RMRPG.Actor.Advancements.Empty"}}</p>
   {{/if}}
+
+  <div class="advancement-toolbar">
+    <button type="button" class="add-advancement" data-action="add-advancement">{{localize "RMRPG.Actor.Advancements.Add"}}</button>
+  </div>
 </div>
