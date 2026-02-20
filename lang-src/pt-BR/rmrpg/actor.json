@@ -123,7 +123,9 @@
         "AddLabel": "Adicionar vantagem",
         "NewName": "Nova Vantagem",
         "Chat": "Enviar ao chat",
-        "Delete": "Excluir vantagem"
+        "Delete": "Excluir vantagem",
+        "DeleteConfirmTitle": "Confirmar exclusão",
+        "DeleteConfirmBody": "Deseja excluir \"{name}\"?"
       },
       "Inventory": {
         "Credits": "Créditos",

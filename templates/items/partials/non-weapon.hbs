@@ -20,6 +20,24 @@
 </div>
 {{/if}}
 
+{{#if isFeat}}
+<div class="feat-description-grid">
+  <div class="feat-field">
+    <label>{{localize "RMRPG.Item.Feat.RequirementField"}}</label>
+    <input
+      type="text"
+      name="system.requirements"
+      value="{{system.requirements}}"
+      placeholder="{{localize 'RMRPG.Item.Feat.RequirementField'}}"
+    />
+  </div>
+  <div class="description-block">
+    <div class="feat-section-title">{{localize "RMRPG.Item.Feat.Description"}}</div>
+    {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
+  </div>
+</div>
+{{else}}
 <div class="description-block">
   {{editor system.description target="system.description" button=true editable=editable engine="prosemirror"}}
 </div>
+{{/if}}

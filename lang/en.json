@@ -123,7 +123,9 @@
         "AddLabel": "Add advantage",
         "NewName": "New Advantage",
         "Chat": "Send to chat",
-        "Delete": "Delete advantage"
+        "Delete": "Delete advantage",
+        "DeleteConfirmTitle": "Confirm deletion",
+        "DeleteConfirmBody": "Delete \"{name}\"?"
       },
       "Inventory": {
         "Credits": "Credits",
@@ -295,6 +297,7 @@
       "Name": "Item Name",
       "Chat": "Chat",
       "Feat": {
+        "RequirementField": "Advantage Requirement",
         "Requirements": "Requirements",
         "Rank": "Rank",
         "Description": "Description"

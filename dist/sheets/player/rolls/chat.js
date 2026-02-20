@@ -5,7 +5,7 @@ export const setupCheckChatInteractions = () => {
         return;
     hookRegistered = true;
     Hooks.on("renderChatMessage", (chatItem, html) => {
-        const card = html.find(".rmrpg-check-card");
+        const card = html.find(".rmrpg-check-card, .rmrpg-feat-card");
         if (!card.length)
             return;
         if (!chatItem?.isOwner)

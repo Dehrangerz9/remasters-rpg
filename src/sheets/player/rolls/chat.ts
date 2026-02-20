@@ -7,7 +7,7 @@ export const setupCheckChatInteractions = () => {
   hookRegistered = true;
 
   Hooks.on("renderChatMessage", (chatItem: any, html: JQuery) => {
-    const card = html.find(".rmrpg-check-card");
+    const card = html.find(".rmrpg-check-card, .rmrpg-feat-card");
     if (!card.length) return;
     if (!chatItem?.isOwner) return;
     if (card.find(".rmrpg-check-delete").length) return;

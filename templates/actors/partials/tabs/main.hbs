@@ -84,14 +84,53 @@
       <div class="feats-list">
         {{#each feats}}
         <div class="feat-row" data-id="{{this.id}}" draggable="true">
-          <img class="feat-icon" src="{{this.img}}" title="{{this.name}}" />
-          <button type="button" class="feat-name" data-action="feat-open" data-id="{{this.id}}">{{this.name}}</button>
-          <button type="button" class="feat-chat" data-action="feat-chat" data-id="{{this.id}}" aria-label="{{localize 'RMRPG.Actor.Feats.Chat'}}">
-            <i class="fas fa-comment"></i>
+          <button
+            type="button"
+            class="feat-icon-button"
+            data-action="feat-chat"
+            data-id="{{this.id}}"
+            aria-label="{{localize 'RMRPG.Actor.Feats.Chat'}}"
+            title="{{localize 'RMRPG.Actor.Feats.Chat'}}"
+          >
+            <img class="feat-icon" src="{{this.img}}" title="{{this.name}}" />
+            <span class="feat-chat-overlay" aria-hidden="true">
+              <i class="fas fa-comments"></i>
+            </span>
           </button>
-          <button type="button" class="feat-remove" data-action="feat-delete" data-id="{{this.id}}" aria-label="{{localize 'RMRPG.Actor.Feats.Delete'}}">
-            <i class="fas fa-trash"></i>
+          <button
+            type="button"
+            class="feat-name"
+            data-action="feat-toggle-details"
+            data-id="{{this.id}}"
+            aria-expanded="false"
+          >
+            {{this.name}}
           </button>
+          <div class="feat-actions">
+            <button
+              type="button"
+              class="feat-edit"
+              data-action="feat-open"
+              data-id="{{this.id}}"
+              aria-label="{{localize 'RMRPG.Actor.Inventory.Edit'}}"
+              title="{{localize 'RMRPG.Actor.Inventory.Edit'}}"
+            >
+              <i class="fas fa-pen"></i>
+            </button>
+            <button type="button" class="feat-remove" data-action="feat-delete" data-id="{{this.id}}" aria-label="{{localize 'RMRPG.Actor.Feats.Delete'}}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <div class="feat-details">
+            <p class="feat-detail-line">
+              <span class="feat-detail-label">{{localize "RMRPG.Item.Feat.Requirements"}}</span>
+              <span class="feat-detail-value">{{#if this.requirementsText}}{{this.requirementsText}}{{else}}-{{/if}}</span>
+            </p>
+            <div class="feat-details-divider"></div>
+            <p class="feat-detail-line feat-detail-line-description">
+              <span class="feat-detail-value">{{#if this.descriptionText}}{{this.descriptionText}}{{else}}-{{/if}}</span>
+            </p>
+          </div>
         </div>
         {{/each}}
       </div>

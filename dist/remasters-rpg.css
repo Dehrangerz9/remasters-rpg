@@ -986,32 +986,80 @@
   border: 1px solid #e1e7ea;
   border-radius: 8px;
   cursor: grab;
-  display: flex;
+  display: grid;
   gap: 0.45rem;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
   padding: 0.35rem 0.4rem;
 }
+.rmrpg-sheet .feat-icon-button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+}
 .rmrpg-sheet .feat-icon {
+  border: 1px solid var(--rmrpg-border);
   border-radius: 6px;
   height: 32px;
   object-fit: cover;
   width: 32px;
 }
+.rmrpg-sheet .feat-chat-overlay {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  color: var(--rmrpg-accent);
+  display: inline-flex;
+  inset: 0;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 0.15s ease;
+}
+.rmrpg-sheet .feat-icon-button:hover .feat-icon {
+  border-color: var(--rmrpg-accent);
+}
+.rmrpg-sheet .feat-icon-button:hover .feat-chat-overlay,
+.rmrpg-sheet .feat-icon-button:focus-visible .feat-chat-overlay {
+  opacity: 1;
+}
 .rmrpg-sheet .feat-name {
-  flex: 1 1 auto;
-  font-size: 0.85rem;
-  font-weight: 600;
   background: none;
   border: 0;
   color: inherit;
   cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  justify-self: start;
   min-width: 0;
+  overflow: hidden;
   padding: 0;
   text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .rmrpg-sheet .feat-name:hover {
   color: var(--rmrpg-accent);
 }
-.rmrpg-sheet .feat-chat,
+.rmrpg-sheet .feat-row.is-expanded .feat-name {
+  color: var(--rmrpg-accent);
+}
+.rmrpg-sheet .feat-actions {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.25rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.rmrpg-sheet .feat-row:hover .feat-actions,
+.rmrpg-sheet .feat-row:focus-within .feat-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+.rmrpg-sheet .feat-edit,
 .rmrpg-sheet .feat-remove {
   align-items: center;
   background: #fff;
@@ -1019,13 +1067,52 @@
   border-radius: 6px;
   color: var(--rmrpg-accent);
   display: inline-flex;
-  height: 2rem;
+  height: 1.8rem;
   justify-content: center;
-  width: 2rem;
+  width: 1.8rem;
 }
 .rmrpg-sheet .feat-remove {
   border-color: #d7a8a8;
   color: #a64646;
+}
+.rmrpg-sheet .feat-details {
+  background: #f8fbfc;
+  border: 1px dashed var(--rmrpg-border);
+  border-radius: 6px;
+  cursor: auto;
+  display: none;
+  gap: 0.3rem;
+  grid-column: 1/-1;
+  padding: 0.45rem 0.5rem;
+}
+.rmrpg-sheet .feat-row.is-expanded .feat-details {
+  display: grid;
+}
+.rmrpg-sheet .feat-detail-line {
+  align-items: baseline;
+  display: flex;
+  gap: 0.35rem;
+  margin: 0;
+}
+.rmrpg-sheet .feat-detail-line-description {
+  display: block;
+}
+.rmrpg-sheet .feat-detail-label {
+  color: var(--rmrpg-text-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.rmrpg-sheet .feat-detail-value {
+  font-size: 0.76rem;
+  line-height: 1.3;
+}
+.rmrpg-sheet .feat-details-divider {
+  background: #d9e3e8;
+  height: 1px;
+  width: 100%;
 }
 .rmrpg-sheet .add-feat {
   align-self: flex-start;
@@ -2818,19 +2905,19 @@
   flex-direction: column;
   gap: 0.55rem;
 }
-.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-description-grid .description-block label,
-.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-description-grid .description-block label {
-  color: var(--rmrpg-text-soft);
-  font-size: 0.62rem;
+.rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-section-title,
+.rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-section-title {
+  color: var(--rmrpg-accent);
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field,
 .rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-field {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.24rem;
 }
 .rmrpg-sheet.rmrpg-item-sheet.feat-sheet .feat-field label,
 .rmrpg-sheet .rmrpg-item-sheet.feat-sheet .feat-field label {
@@ -3968,6 +4055,145 @@
 }
 .chat-message .message-content .rmrpg-damage-actions button i {
   font-size: 0.9rem;
+}
+
+.chat-message:has(.rmrpg-feat-card) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.chat-message:has(.rmrpg-feat-card) .message-header {
+  display: none;
+}
+
+.chat-message:has(.rmrpg-feat-card) .message-content {
+  margin: 0;
+  padding: 0;
+}
+
+.chat-message .message-content .rmrpg-feat-card {
+  background: linear-gradient(180deg, #fdfefe 0%, #f4f8fa 100%);
+  border: 1px solid #b8c8d0;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(20, 58, 84, 0.08);
+  display: grid;
+  gap: 0.38rem;
+  padding: 0.55rem 0.58rem;
+  position: relative;
+}
+.chat-message .message-content .rmrpg-feat-header {
+  align-items: center;
+  display: flex;
+  gap: 0.45rem;
+  min-width: 0;
+}
+.chat-message .message-content .rmrpg-feat-avatar {
+  border: 1px solid #c5d2d8;
+  border-radius: 999px;
+  height: 32px;
+  object-fit: cover;
+  width: 32px;
+}
+.chat-message .message-content .rmrpg-feat-meta {
+  display: grid;
+  min-width: 0;
+}
+.chat-message .message-content .rmrpg-feat-name {
+  color: #17344a;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.05;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chat-message .message-content .rmrpg-feat-user {
+  color: #5a6f7b;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.05;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chat-message .message-content .rmrpg-feat-title {
+  color: #17344a;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+}
+.chat-message .message-content .rmrpg-feat-divider {
+  background: #c8d5dc;
+  height: 1px;
+  width: 100%;
+}
+.chat-message .message-content .rmrpg-feat-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+}
+.chat-message .message-content .rmrpg-feat-tag {
+  align-items: center;
+  background: #e6f0f5;
+  border: 1px solid #c7d9e3;
+  border-radius: 999px;
+  color: #1f4d69;
+  display: inline-flex;
+  font-size: 0.66rem;
+  font-weight: 700;
+  gap: 0.22rem;
+  line-height: 1.1;
+  padding: 0.12rem 0.38rem;
+  white-space: nowrap;
+}
+.chat-message .message-content .rmrpg-feat-tag-label {
+  color: #2c627f;
+  text-transform: uppercase;
+}
+.chat-message .message-content .rmrpg-feat-tag-value {
+  color: #123a63;
+}
+.chat-message .message-content .rmrpg-feat-block {
+  background: #f8fbfd;
+  border: 1px solid #d4e0e7;
+  border-radius: 6px;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.3rem 0.38rem;
+}
+.chat-message .message-content .rmrpg-feat-block-title {
+  color: #1f4d69;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-transform: uppercase;
+}
+.chat-message .message-content .rmrpg-feat-block-text {
+  color: #17344a;
+  font-size: 0.76rem;
+  line-height: 1.28;
+  margin: 0;
+}
+.chat-message .message-content .rmrpg-feat-content-divider {
+  background: #d9e3e8;
+  height: 1px;
+  margin: 0.05rem 0;
+  width: 100%;
+}
+.chat-message .message-content .rmrpg-feat-description {
+  color: #17344a;
+  font-size: 0.76rem;
+  line-height: 1.3;
+}
+.chat-message .message-content .rmrpg-feat-description > :first-child {
+  margin-top: 0;
+}
+.chat-message .message-content .rmrpg-feat-description > :last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 1320px) {

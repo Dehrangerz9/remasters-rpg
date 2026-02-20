@@ -4,6 +4,7 @@
       "Name": "Item Name",
       "Chat": "Chat",
       "Feat": {
+        "RequirementField": "Advantage Requirement",
         "Requirements": "Requirements",
         "Rank": "Rank",
         "Description": "Description"
