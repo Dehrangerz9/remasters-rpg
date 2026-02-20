@@ -2,8 +2,8 @@ import { bindPlayerListeners } from "../player/listeners.js";
 import { bindNpcListeners } from "../npc/sheet.js";
 import { bindSummonListeners } from "../summon/sheet.js";
 import { bindInlineIntegerInput } from "./inputs.js";
+import { ATTRIBUTE_CONFIG } from "./config.js";
 import {
-  openAttributeDialog,
   openDefenseDialog,
   openDerivedDialog,
   openHpDialog,
@@ -14,11 +14,6 @@ import { bindReorderList, setItemDragData } from "./drag.js";
 import { clampInteger } from "../global-functions/utils.js";
 
 export const activateActorListeners = (sheet: any, html: JQuery) => {
-  html.find("[data-action='set-attribute']").on("click", async (event: any) => {
-    event.preventDefault();
-    await openAttributeDialog(sheet);
-  });
-
   html.find("[data-action='set-defense']").on("click", async (event: any) => {
     event.preventDefault();
     await openDefenseDialog(sheet);
@@ -73,6 +68,17 @@ export const activateActorListeners = (sheet: any, html: JQuery) => {
     const reikiMax = Math.max(0, Math.floor(Number(sheet.actor.system.player?.reiki?.max ?? 0)));
     await sheet.actor.update({ "system.player.reiki.current": clampInteger(value, 0, reikiMax) });
   });
+
+  for (const attribute of ATTRIBUTE_CONFIG) {
+    bindInlineIntegerInput(
+      sheet,
+      html,
+      `[data-action='inline-attribute-value'][data-attribute='${attribute.key}']`,
+      async (value) => {
+        await sheet.actor.update({ [`system.attributes.${attribute.key}.value`]: value });
+      }
+    );
+  }
 
   if (sheet.actor.type === "player") {
     bindPlayerListeners(sheet, html);

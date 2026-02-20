@@ -1,22 +1,24 @@
 <div class="tab" data-group="primary" data-tab="main">
   <section class="attributes-section">
-    <button
-      type="button"
-      class="card-cog attributes-cog"
-      data-action="set-attribute"
-      aria-label="{{localize 'RMRPG.Dialogs.Attributes.Title'}}"
-    >
-      ⚙
-    </button>
     <div class="attributes-header">
-      <h3>{{localize "RMRPG.Actor.Attributes.Title"}}</h3>
+      <p class="attributes-title">{{localize "RMRPG.Actor.Attributes.Title"}}</p>
     </div>
 
     <div class="attributes-grid">
       {{#each attributeCards}}
       <article class="attribute-card">
-        <h3>{{localize this.labelKey}}</h3>
-        <h1>{{this.value}}</h1>
+        <input
+          class="attribute-value-input"
+          type="number"
+          inputmode="numeric"
+          step="1"
+          data-action="inline-attribute-value"
+          data-attribute="{{this.key}}"
+          name="system.attributes.{{this.key}}.value"
+          value="{{this.value}}"
+          aria-label="{{localize this.labelKey}}"
+        />
+        <p class="attribute-label">{{localize this.labelKey}}</p>
       </article>
       {{/each}}
     </div>

@@ -7,60 +7,104 @@
     display: grid;
     gap: t.$gap-sm;
     padding: t.$pad-card;
-    position: relative;
   }
 
   .attributes-header {
     align-items: center;
     display: flex;
-    justify-content: space-between;
+  }
 
-    h3 {
-      color: var(--rmrpg-text-soft);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin: 0;
-      text-transform: uppercase;
-    }
+  .attributes-title {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 0;
+    text-transform: uppercase;
   }
 
   .attributes-grid {
     display: grid;
-    gap: t.$gap-sm;
+    gap: 0.3rem;
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
-  .attributes-section:hover .card-cog {
-    opacity: 1;
-  }
-
-  .attribute-card {
-    @extend %surface-card;
+  .attributes-section .attribute-card {
+    background: transparent;
+    border: 0;
     border-radius: t.$radius-md;
     display: grid;
-    gap: 0.2rem;
     justify-items: center;
-    min-height: 92px;
-    padding: t.$pad-card-tight t.$pad-card-tight 0.5rem;
+    padding: t.$pad-card-tight;
     position: relative;
     text-align: center;
+    overflow: hidden;
 
-    h3 {
-      color: var(--rmrpg-text-soft);
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      margin: 0;
-      text-decoration: none;
-      text-transform: uppercase;
+    &::before {
+      background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.55), transparent 64%), var(--rmrpg-accent-soft);
+      border: 1px solid var(--rmrpg-accent-ring);
+      border-radius: 50%;
+      content: "";
+      height: 50px;
+      left: 50%;
+      pointer-events: none;
+      position: absolute;
+      top: 1.6rem;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      z-index: 0;
+    }
+  }
+
+  .attributes-section .attribute-label {
+    color: var(--rmrpg-text-soft);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    margin: 0;
+    position: relative;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+
+  .attributes-section .attribute-value-input {
+    appearance: textfield;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0;
+    box-shadow: none !important;
+    color: #162734;
+    font-size: 1.95rem;
+    font-weight: 700;
+    height: 2rem;
+    line-height: 1;
+    margin: 0 0 13px 0;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    width: 3rem;
+    z-index: 1;
+
+    &:hover,
+    &:focus,
+    &:focus-visible,
+    &:active {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      outline: none !important;
     }
 
-    h1 {
-      font-size: 1.45rem;
-      line-height: 1.15;
-      margin: 0.2rem 0 0;
-      text-decoration: none;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &::-moz-focus-inner {
+      border: 0;
+      padding: 0;
     }
   }
 }

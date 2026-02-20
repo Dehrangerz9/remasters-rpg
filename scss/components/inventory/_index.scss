@@ -13,9 +13,13 @@
   }
 
   .credits-card {
+    background: var(--rmrpg-surface);
+    border: 1px solid var(--rmrpg-border);
+    border-radius: 8px;
     display: grid;
     gap: 0.35rem;
     min-width: 180px;
+    padding: 0.55rem;
 
     h3 {
       align-items: center;

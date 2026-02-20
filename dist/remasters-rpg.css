@@ -78,7 +78,7 @@
   justify-content: center;
 }
 
-.rmrpg-sheet .status-card, .rmrpg-sheet .sheet-header, .rmrpg-sheet .attributes-section, .rmrpg-sheet .attribute-card, .rmrpg-sheet .actions-section {
+.rmrpg-sheet .status-card, .rmrpg-sheet .sheet-header, .rmrpg-sheet .attributes-section, .rmrpg-sheet .actions-section {
   background: var(--rmrpg-surface);
   border: 1px solid var(--rmrpg-border);
   border-radius: 10px;
@@ -549,14 +549,12 @@
   display: grid;
   gap: 0.45rem;
   padding: 0.65rem;
-  position: relative;
 }
 .rmrpg-sheet .attributes-header {
   align-items: center;
   display: flex;
-  justify-content: space-between;
 }
-.rmrpg-sheet .attributes-header h3 {
+.rmrpg-sheet .attributes-title {
   color: var(--rmrpg-text-soft);
   font-size: 0.7rem;
   font-weight: 700;
@@ -566,36 +564,76 @@
 }
 .rmrpg-sheet .attributes-grid {
   display: grid;
-  gap: 0.45rem;
+  gap: 0.3rem;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
-.rmrpg-sheet .attributes-section:hover .card-cog {
-  opacity: 1;
-}
-.rmrpg-sheet .attribute-card {
+.rmrpg-sheet .attributes-section .attribute-card {
+  background: transparent;
+  border: 0;
   border-radius: 8px;
   display: grid;
-  gap: 0.2rem;
   justify-items: center;
-  min-height: 92px;
-  padding: 0.55rem 0.55rem 0.5rem;
+  padding: 0.55rem;
   position: relative;
   text-align: center;
+  overflow: hidden;
 }
-.rmrpg-sheet .attribute-card h3 {
+.rmrpg-sheet .attributes-section .attribute-card::before {
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.55), transparent 64%), var(--rmrpg-accent-soft);
+  border: 1px solid var(--rmrpg-accent-ring);
+  border-radius: 50%;
+  content: "";
+  height: 50px;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: 1.6rem;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  z-index: 0;
+}
+.rmrpg-sheet .attributes-section .attribute-label {
   color: var(--rmrpg-text-soft);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.04em;
+  line-height: 1.1;
   margin: 0;
-  text-decoration: none;
+  position: relative;
   text-transform: uppercase;
+  z-index: 1;
 }
-.rmrpg-sheet .attribute-card h1 {
-  font-size: 1.45rem;
-  line-height: 1.15;
-  margin: 0.2rem 0 0;
-  text-decoration: none;
+.rmrpg-sheet .attributes-section .attribute-value-input {
+  appearance: textfield;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0;
+  box-shadow: none !important;
+  color: #162734;
+  font-size: 1.95rem;
+  font-weight: 700;
+  height: 2rem;
+  line-height: 1;
+  margin: 0 0 13px 0;
+  padding: 0;
+  position: relative;
+  text-align: center;
+  width: 3rem;
+  z-index: 1;
+}
+.rmrpg-sheet .attributes-section .attribute-value-input:hover, .rmrpg-sheet .attributes-section .attribute-value-input:focus, .rmrpg-sheet .attributes-section .attribute-value-input:focus-visible, .rmrpg-sheet .attributes-section .attribute-value-input:active {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.rmrpg-sheet .attributes-section .attribute-value-input::-webkit-outer-spin-button, .rmrpg-sheet .attributes-section .attribute-value-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.rmrpg-sheet .attributes-section .attribute-value-input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
 }
 .rmrpg-sheet .main-sections {
   display: grid;
@@ -1005,9 +1043,13 @@
   flex-wrap: wrap;
 }
 .rmrpg-sheet .credits-card {
+  background: var(--rmrpg-surface);
+  border: 1px solid var(--rmrpg-border);
+  border-radius: 8px;
   display: grid;
   gap: 0.35rem;
   min-width: 180px;
+  padding: 0.55rem;
 }
 .rmrpg-sheet .credits-card h3 {
   align-items: center;
